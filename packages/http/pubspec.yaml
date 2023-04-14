@@ -1,0 +1,20 @@
+name: http_adpater
+description: Dart package which manages the http requests
+version: 1.0.0
+publish_to: none
+
+environment:
+  sdk: '>=2.19.5 <3.0.0'
+
+dependencies:
+  http: ^0.13.5
+  equatable: ^2.0.5
+  flutter:
+    sdk: flutter
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  mocktail: ^0.3.0
+  very_good_analysis: ^3.1.0
+  faker: ^2.1.0
