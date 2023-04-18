@@ -1,4 +1,4 @@
-import 'package:cache_adpater/src/src.dart';
+import 'package:cache_adapter/src/src.dart';
 
 import '../mocks/mocks.dart';
 

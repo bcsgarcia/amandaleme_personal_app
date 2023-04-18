@@ -1,5 +1,5 @@
 import 'package:faker/faker.dart';
-import 'package:http_adpater/src/src.dart';
+import 'package:http_adapter/src/src.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:test/test.dart';
 

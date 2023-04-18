@@ -11,6 +11,20 @@ dependencies:
     sdk: flutter
 
   cupertino_icons: ^1.0.2
+  flutter_bloc: ^8.1.2
+  flow_builder: ^0.0.9
+  http: ^0.13.5
+  localstorage: ^4.0.1+2
+
+
+
+# Ours Packages
+  authentication_repository:
+    path: packages/authentication_repository
+  http_adapter: 
+    path: packages/http
+  cache_adapter:
+    path: packages/cache
 
 dev_dependencies:
   flutter_test:

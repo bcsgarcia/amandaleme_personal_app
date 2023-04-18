@@ -1,4 +1,4 @@
-name: http_adpater
+name: authentication_repository
 description: Dart package which manages the user domain.
 version: 1.0.0
 publish_to: none
@@ -10,7 +10,11 @@ dependencies:
   equatable: ^2.0.5
   flutter:
     sdk: flutter
-
+  http_adapter:
+    path: ../http
+  cache_adapter:
+    path: ../cache
+    
 dev_dependencies:
   flutter_test:
     sdk: flutter

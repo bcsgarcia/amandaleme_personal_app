@@ -1,4 +1,4 @@
-name: http_adpater
+name: http_adapter
 description: Dart package which manages the http requests
 version: 1.0.0
 publish_to: none
