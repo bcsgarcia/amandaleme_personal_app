@@ -31,14 +31,15 @@ class RemoteAuthentication implements Authentication {
   @visibleForTesting
   static const userCacheKey = '__user_cache_key__';
 
-  Stream<UserAuthenticationModel> get user {
-    final token = cacheStorage.fetch('token') as String;
-    return Stream.value(UserAuthenticationModel(token: token));
+  Stream<UserAuthenticationModel> get user async* {
+    // await cacheStorage.clear();
+    final _token = await cacheStorage.fetch('token');
+    yield UserAuthenticationModel(token: _token == null ? '' : _token);
   }
 
   UserAuthenticationModel get currentUser {
-    final _token = cacheStorage.fetch('token') as String;
-    return UserAuthenticationModel(token: _token);
+    final _token = cacheStorage.fetch('token');
+    return UserAuthenticationModel(token: _token == null ? '' : _token);
   }
 
   @override
@@ -48,9 +49,9 @@ class RemoteAuthentication implements Authentication {
     try {
       final httpResponse =
           await httpClient.request(url: url, method: 'post', body: body);
-      cacheStorage.save(key: 'token', value: httpResponse);
+      await cacheStorage.save(key: 'token', value: httpResponse['accessToken']);
       return UserAuthenticationModel.fromJson(httpResponse);
-    } on HttpError catch (_) {
+    } catch (error) {
       rethrow;
     }
   }

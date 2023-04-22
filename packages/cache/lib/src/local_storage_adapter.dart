@@ -1,23 +1,23 @@
-import 'package:localstorage/localstorage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'cache/cache.dart';
 
 class LocalStorageAdapter implements CacheStorage {
-  final LocalStorage localStorage;
+  final SharedPreferences localStorage;
 
   LocalStorageAdapter({required this.localStorage});
 
   Future<void> save({required String key, required dynamic value}) async {
-    await localStorage.deleteItem(key);
-    await localStorage.setItem(key, value);
+    await localStorage.remove(key);
+    await localStorage.setString(key, value);
   }
 
   Future<void> delete(String key) async {
-    await localStorage.deleteItem(key);
+    await localStorage.remove(key);
   }
 
-  Future<dynamic> fetch(String key) async {
-    return await localStorage.getItem(key);
+  dynamic fetch(String key) {
+    return localStorage.get(key);
   }
 
   @override

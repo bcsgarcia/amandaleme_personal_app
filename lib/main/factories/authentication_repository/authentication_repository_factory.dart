@@ -1,10 +1,11 @@
 import 'package:authentication_repository/authentication_repository.dart';
+import 'package:cache_adapter/cache_adapter.dart';
 
-import '../../factories/cache/cache.dart';
 import '../http/http.dart';
 
-Authentication makeAuthenticationRepositoryFactory() => RemoteAuthentication(
+Authentication makeAuthenticationRepositoryFactory(CacheStorage cacheStorage) =>
+    RemoteAuthentication(
       httpClient: makeHttpAdapter(),
-      cacheStorage: makeLocalStorageAdapter(),
-      url: makeApiUrlDEV('auth'),
+      cacheStorage: cacheStorage,
+      url: makeApiUrlDEV('auth/app'),
     );

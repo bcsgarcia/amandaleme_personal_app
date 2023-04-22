@@ -34,6 +34,7 @@ class HttpAdapter implements HttpClient {
         response = await futureResponse.timeout(Duration(seconds: 10));
       }
     } catch (error) {
+      print(error);
       throw HttpError.serverError;
     }
     return _handleResponse(response);
@@ -42,6 +43,7 @@ class HttpAdapter implements HttpClient {
   dynamic _handleResponse(Response response) {
     switch (response.statusCode) {
       case 200:
+      case 201:
         return response.body.isEmpty ? null : jsonDecode(response.body);
       case 204:
         return null;

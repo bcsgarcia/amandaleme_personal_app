@@ -14,17 +14,24 @@ dependencies:
   flutter_bloc: ^8.1.2
   flow_builder: ^0.0.9
   http: ^0.13.5
-  localstorage: ^4.0.1+2
+  shared_preferences: ^2.1.0
+  formz: ^0.6.0
+  google_fonts: ^4.0.3
+  video_player: ^2.6.1
 
 
 
 # Ours Packages
   authentication_repository:
     path: packages/authentication_repository
+  company_repository:
+    path: packages/company_repository
   http_adapter: 
     path: packages/http
   cache_adapter:
     path: packages/cache
+  form_inputs:
+    path: packages/form_inputs
 
 dev_dependencies:
   flutter_test:
@@ -36,6 +43,8 @@ flutter:
 
   assets:
     - assets/
+    - assets/images/
+    - assets/images/logos/
 
   fonts:
     - family: Roboto

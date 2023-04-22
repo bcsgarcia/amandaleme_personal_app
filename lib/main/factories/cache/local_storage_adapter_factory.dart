@@ -1,5 +1,9 @@
 import 'package:cache_adapter/cache_adapter.dart';
-import 'package:localstorage/localstorage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-CacheStorage makeLocalStorageAdapter() =>
-    LocalStorageAdapter(localStorage: LocalStorage('amandalemeApp'));
+class CacheStorageFactory {
+  static Future<CacheStorage> makeLocalStorageAdapter() async {
+    final localStorage = await SharedPreferences.getInstance();
+    return LocalStorageAdapter(localStorage: localStorage);
+  }
+}
