@@ -6,14 +6,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../cubit/meet_app_cubit.dart';
 import 'widgets/widgets.dart';
 
-class MeetAppPage extends StatefulWidget {
-  const MeetAppPage({super.key});
+class MeetAppScreen extends StatefulWidget {
+  const MeetAppScreen({super.key});
 
   @override
-  State<MeetAppPage> createState() => _MeetAppPageState();
+  State<MeetAppScreen> createState() => _MeetAppScreenState();
 }
 
-class _MeetAppPageState extends State<MeetAppPage> {
+class _MeetAppScreenState extends State<MeetAppScreen> {
   late MeetAppCubit _meetAppCubit;
 
   int activePage = 0;

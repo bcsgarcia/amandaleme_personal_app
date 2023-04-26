@@ -18,10 +18,13 @@ dependencies:
   formz: ^0.6.0
   google_fonts: ^4.0.3
   video_player: ^2.6.1
+  intl: ^0.18.1
 
 
 
 # Ours Packages
+  workoutsheet_repository:
+    path: packages/workoutsheet_repository
   authentication_repository:
     path: packages/authentication_repository
   company_repository:
@@ -45,6 +48,7 @@ flutter:
     - assets/
     - assets/images/
     - assets/images/logos/
+    - assets/images/gyms/
 
   fonts:
     - family: Roboto
