@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:home_repository/home_repository.dart';
 
+import 'bloc/app_bloc.dart';
+
 class RouteNames {
   static const String login = '/login';
   static const String home = '/home';
@@ -36,5 +38,17 @@ class AppRouter {
           ),
         );
     }
+  }
+}
+
+List<Page<dynamic>> onGenerateAppViewPages(
+  AppStatus state,
+  List<Page<dynamic>> pages,
+) {
+  switch (state) {
+    case AppStatus.authenticated:
+      return [HomePage.page()];
+    case AppStatus.unauthenticated:
+      return [LoginPage.page()];
   }
 }

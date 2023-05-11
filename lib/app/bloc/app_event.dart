@@ -9,8 +9,8 @@ class AppLogoutRequested extends AppEvent {
 }
 
 // ignore: unused_element
-class _AppUserChanged extends AppEvent {
-  const _AppUserChanged(this.user);
+class AppUserChanged extends AppEvent {
+  const AppUserChanged(this.user);
 
   final UserAuthenticationModel user;
 }

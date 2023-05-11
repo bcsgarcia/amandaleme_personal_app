@@ -6,6 +6,7 @@ import 'package:amandaleme_personal_app/profile/profile_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:home_repository/home_repository.dart';
+import 'package:social_share/social_share.dart';
 import 'package:user_repository/user_repository.dart';
 
 class HomeDrawerMenu extends StatelessWidget {
@@ -61,6 +62,10 @@ class HomeDrawerMenu extends StatelessWidget {
     context.read<AppBloc>().add(const AppLogoutRequested());
   }
 
+  shareSocial() {
+    SocialShare.shareOptions("texto de share!!");
+  }
+
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -110,7 +115,7 @@ class HomeDrawerMenu extends StatelessWidget {
                 DrawerOption(
                   iconName: 'user-plus',
                   name: 'Convide um amigo',
-                  function: () {},
+                  function: () => shareSocial(),
                 ),
               ],
             ),

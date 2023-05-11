@@ -19,6 +19,7 @@ dependencies:
   google_fonts: ^4.0.3
   video_player: ^2.6.1
   intl: ^0.18.1
+  social_share: ^2.3.1
 
 
 

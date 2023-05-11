@@ -2,11 +2,21 @@ import 'package:amandaleme_personal_app/home/cubit/home_cubit.dart';
 import 'package:amandaleme_personal_app/home/screen/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:home_repository/home_repository.dart';
 
 import '../app/common_widgets/common_widgets.dart';
 
 class HomePage extends StatelessWidget {
   HomePage({super.key});
+
+  static Page<void> page() => MaterialPage<void>(
+        child: BlocProvider(
+          create: (context) => HomeCubit(
+            RepositoryProvider.of<IHomeRepository>(context),
+          ),
+          child: HomePage(),
+        ),
+      );
 
   late HomeCubit _homeCubit;
 

@@ -34,6 +34,7 @@ class LoginCubit extends Cubit<LoginState> {
         email: state.emailInput.value,
         pass: state.passInput.value,
       ));
+
       emit(state.copyWith(status: FormzSubmissionStatus.success));
     } catch (e) {
       emit(state.copyWith(status: FormzSubmissionStatus.failure));

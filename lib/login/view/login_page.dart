@@ -7,12 +7,14 @@ import '../../meet_app/view/meet_app_screen.dart';
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
 
+  static Page<void> page() => const MaterialPage<void>(child: LoginPage());
+
   @override
   State<LoginPage> createState() => _LoginPageState();
 }
 
 class _LoginPageState extends State<LoginPage> {
-  final Widget _bodyLogin = const LoginBody();
+  final Widget _bodyLogin = LoginBody();
   final Widget _bodyMeetApp = const MeetAppScreen();
 
   late Widget _bodyPage;

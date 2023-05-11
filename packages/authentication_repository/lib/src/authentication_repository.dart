@@ -1,3 +1,5 @@
+import 'dart:async'; // Import needed for StreamController
+
 import 'package:cache_adapter/cache_adapter.dart';
 import 'package:flutter/foundation.dart';
 import 'package:http_adapter/http_adapter.dart';
@@ -16,27 +18,50 @@ abstract class Authentication {
 }
 
 class RemoteAuthentication implements Authentication {
-  const RemoteAuthentication({
+  // Private constructor
+  RemoteAuthentication._({
     required this.httpClient,
     required this.cacheStorage,
     required this.url,
-  });
+    required StreamController<UserAuthenticationModel> userStreamController,
+  }) : _userStreamController = userStreamController;
 
+  factory RemoteAuthentication({
+    required HttpClient httpClient,
+    required CacheStorage cacheStorage,
+    required String url,
+  }) {
+    final userStreamController =
+        StreamController<UserAuthenticationModel>.broadcast();
+    return RemoteAuthentication._(
+      httpClient: httpClient,
+      cacheStorage: cacheStorage,
+      url: url,
+      userStreamController: userStreamController,
+    );
+  }
+
+  final StreamController<UserAuthenticationModel> _userStreamController;
   final HttpClient httpClient;
   final String url;
   final CacheStorage cacheStorage;
 
-  /// User cache key.
-  /// Should only be used for testing purposes.
+  // User cache key.
+  // Should only be used for testing purposes.
   @visibleForTesting
   static const userCacheKey = '__user_cache_key__';
 
-  Stream<UserAuthenticationModel> get user async* {
-    // await cacheStorage.clear();
+  Stream<UserAuthenticationModel> _createUserStream() async* {
     final _token = await cacheStorage.fetch('token');
     yield UserAuthenticationModel(token: _token == null ? '' : _token);
   }
 
+  // Stream getter
+  @override
+  Stream<UserAuthenticationModel> get user => _userStreamController.stream;
+
+  // Getter for the current user
+  @override
   UserAuthenticationModel get currentUser {
     final _token = cacheStorage.fetch('token');
     return UserAuthenticationModel(token: _token == null ? '' : _token);
@@ -50,7 +75,12 @@ class RemoteAuthentication implements Authentication {
       final httpResponse =
           await httpClient.request(url: url, method: 'post', body: body);
       await cacheStorage.save(key: 'token', value: httpResponse['accessToken']);
-      return UserAuthenticationModel.fromJson(httpResponse);
+      final user = UserAuthenticationModel.fromJson(httpResponse);
+
+      // Notify listeners that the user has changed
+      _userStreamController.add(user);
+
+      return user;
     } catch (error) {
       rethrow;
     }
@@ -59,5 +89,11 @@ class RemoteAuthentication implements Authentication {
   @override
   Future<void> logout() async {
     cacheStorage.clear();
+    // Notify listeners that the user has logged out
+    _userStreamController.add(UserAuthenticationModel(token: ''));
+  }
+
+  void dispose() {
+    _userStreamController.close();
   }
 }

@@ -1,6 +1,7 @@
 import 'package:amandaleme_personal_app/app/theme/light_theme.dart';
 import 'package:authentication_repository/authentication_repository.dart';
 import 'package:company_repository/company_repository.dart';
+import 'package:flow_builder/flow_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:home_repository/home_repository.dart';
@@ -51,7 +52,7 @@ class AppView extends StatelessWidget {
 
   String? initialRoute(BuildContext context) {
     if (context.read<AppBloc>().state.status == AppStatus.authenticated) {
-      return '/home';
+      return '/login';
     } else {
       return '/login';
     }
@@ -59,17 +60,11 @@ class AppView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<AppBloc, AppState>(
-      listener: (context, state) {
-        if (state.status == AppStatus.unauthenticated) {
-          Navigator.pushNamedAndRemoveUntil(
-              context, '/login', (route) => false);
-        }
-      },
-      child: MaterialApp(
-        theme: theme,
-        initialRoute: initialRoute(context),
-        onGenerateRoute: AppRouter.generateRoute,
+    return MaterialApp(
+      theme: theme,
+      home: FlowBuilder<AppStatus>(
+        state: context.select((AppBloc bloc) => bloc.state.status),
+        onGeneratePages: onGenerateAppViewPages,
       ),
     );
   }

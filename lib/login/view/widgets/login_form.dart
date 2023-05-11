@@ -11,13 +11,12 @@ class LoginForm extends StatelessWidget {
 
   final _formKey = GlobalKey<FormState>();
 
+  final ScrollController _scrollController = ScrollController();
+
   @override
   Widget build(BuildContext context) {
     return BlocListener<LoginCubit, LoginState>(
       listener: (context, state) {
-        if (state.status.isSuccess) {
-          Navigator.pushReplacementNamed(context, '/home');
-        }
         if (state.status.isFailure) {
           ScaffoldMessenger.of(context)
             ..hideCurrentSnackBar()
@@ -31,12 +30,13 @@ class LoginForm extends StatelessWidget {
       child: Align(
         alignment: const Alignment(0, -1 / 3),
         child: SingleChildScrollView(
+          controller: _scrollController,
           child: Form(
             key: _formKey,
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                _EmailInput(),
+                _EmailInput(scrollController: _scrollController),
                 const SizedBox(height: 10),
                 _PasswordInput(),
                 const SizedBox(height: 10),
@@ -59,6 +59,9 @@ class LoginForm extends StatelessWidget {
 }
 
 class _EmailInput extends StatelessWidget {
+  final ScrollController scrollController;
+
+  const _EmailInput({super.key, required this.scrollController});
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -81,6 +84,7 @@ class _EmailInput extends StatelessWidget {
           builder: (context, state) {
             return TextFormField(
               key: const Key('loginForm_emailInput_textField'),
+              scrollPadding: EdgeInsets.all(MediaQuery.of(context).size.height),
               onChanged: (email) =>
                   context.read<LoginCubit>().emailChanged(email),
               keyboardType: TextInputType.emailAddress,
@@ -102,7 +106,7 @@ class _PasswordInput extends StatefulWidget {
 }
 
 class _PasswordInputState extends State<_PasswordInput> {
-  bool showPass = false;
+  bool showPass = true;
 
   viewPassword() {
     showPass = !showPass;
@@ -162,7 +166,6 @@ class _LoginButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<LoginCubit, LoginState>(
-      // buildWhen: (previous, current) => previous.status != current.status,
       builder: (context, state) {
         return state.status.isInProgress
             ? const CircularProgressIndicator()
