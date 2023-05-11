@@ -3,7 +3,7 @@ import 'package:authentication_repository/authentication_repository.dart';
 import 'package:company_repository/company_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:workoutsheet_repository/workoutsheet_repository.dart';
+import 'package:home_repository/home_repository.dart';
 
 import '../app_route.dart';
 import '../bloc/app_bloc.dart';
@@ -13,14 +13,14 @@ class App extends StatelessWidget {
     super.key,
     required Authentication authenticationRepository,
     required CompanyRepository companyRepository,
-    required IWorkoutSheetRepository iWorkoutSheetRepository,
+    required IHomeRepository homeRepository,
   })  : _authenticationRepository = authenticationRepository,
         _companyRepository = companyRepository,
-        _iWorkoutSheetRepository = iWorkoutSheetRepository;
+        _iHomeRepository = homeRepository;
 
   final Authentication _authenticationRepository;
   final CompanyRepository _companyRepository;
-  final IWorkoutSheetRepository _iWorkoutSheetRepository;
+  final IHomeRepository _iHomeRepository;
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +33,7 @@ class App extends StatelessWidget {
           value: _companyRepository,
         ),
         RepositoryProvider.value(
-          value: _iWorkoutSheetRepository,
+          value: _iHomeRepository,
         ),
       ],
       child: BlocProvider(
@@ -59,10 +59,18 @@ class AppView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: theme,
-      initialRoute: initialRoute(context),
-      onGenerateRoute: AppRouter.generateRoute,
+    return BlocListener<AppBloc, AppState>(
+      listener: (context, state) {
+        if (state.status == AppStatus.unauthenticated) {
+          Navigator.pushNamedAndRemoveUntil(
+              context, '/login', (route) => false);
+        }
+      },
+      child: MaterialApp(
+        theme: theme,
+        initialRoute: initialRoute(context),
+        onGenerateRoute: AppRouter.generateRoute,
+      ),
     );
   }
 }

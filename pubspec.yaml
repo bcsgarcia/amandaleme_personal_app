@@ -23,8 +23,10 @@ dependencies:
 
 
 # Ours Packages
-  workoutsheet_repository:
-    path: packages/workoutsheet_repository
+  user_repository:
+    path: packages/user_repository
+  home_repository:
+    path: packages/home_repository
   authentication_repository:
     path: packages/authentication_repository
   company_repository:
@@ -49,6 +51,7 @@ flutter:
     - assets/images/
     - assets/images/logos/
     - assets/images/gyms/
+    - assets/images/icons/
 
   fonts:
     - family: Roboto

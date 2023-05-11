@@ -2,7 +2,7 @@ import 'package:amandaleme_personal_app/app/common_widgets/common_widgets.dart';
 import 'package:amandaleme_personal_app/app/theme/light_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:workoutsheet_repository/workoutsheet_repository.dart';
+import 'package:home_repository/home_repository.dart';
 
 import '../../../app/common_widgets/random_image.dart';
 

@@ -6,25 +6,21 @@ class UserModel extends Equatable {
   final DateTime birthday;
   final String? phone;
   final bool isActive;
-  final DateTime lastUpdate;
-  final DateTime? signDate;
   final String gender;
   final String idCompany;
   final String? photoUrl;
-  final String idAuth;
+  final String email;
 
   UserModel({
+    this.photoUrl,
+    this.phone,
     required this.id,
     required this.name,
     required this.birthday,
-    this.phone,
     required this.isActive,
-    required this.lastUpdate,
-    this.signDate,
     required this.gender,
     required this.idCompany,
-    this.photoUrl,
-    required this.idAuth,
+    required this.email,
   });
 
   @override
@@ -34,29 +30,23 @@ class UserModel extends Equatable {
         birthday,
         phone,
         isActive,
-        lastUpdate,
-        signDate,
         gender,
         idCompany,
         photoUrl,
-        idAuth,
+        email,
       ];
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
     return UserModel(
-      id: json['id'],
-      name: json['name'],
-      birthday: DateTime.parse(json['birthday']),
-      phone: json['phone'],
-      isActive: json['isActive'] == 1,
-      lastUpdate: DateTime.parse(json['lastUpdate']),
-      signDate:
-          json['signDate'] != null ? DateTime.parse(json['signDate']) : null,
-      gender: json['gender'],
-      idCompany: json['idCompany'],
-      photoUrl: json['photoUrl'],
-      idAuth: json['idAuth'],
-    );
+        id: json['id'],
+        name: json['name'],
+        birthday: DateTime.parse(json['birthday']),
+        phone: json['phone'],
+        isActive: json['isActive'] == 1,
+        gender: json['gender'],
+        idCompany: json['idCompany'],
+        photoUrl: json['photoUrl'],
+        email: json['email']);
   }
 
   Map<String, dynamic> toJson() {
@@ -66,12 +56,10 @@ class UserModel extends Equatable {
       'birthday': birthday.toIso8601String(),
       'phone': phone,
       'isActive': isActive ? 1 : 0,
-      'lastUpdate': lastUpdate.toIso8601String(),
-      'signDate': signDate?.toIso8601String(),
       'gender': gender,
       'idCompany': idCompany,
       'photoUrl': photoUrl,
-      'idAuth': idAuth,
+      'email': email,
     };
   }
 }

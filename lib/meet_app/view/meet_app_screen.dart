@@ -1,3 +1,4 @@
+import 'package:amandaleme_personal_app/app/common_widgets/error_dialog_widget.dart';
 import 'package:amandaleme_personal_app/login/view/widgets/widgets.dart';
 import 'package:company_repository/company_repository.dart';
 import 'package:flutter/material.dart';
@@ -28,55 +29,80 @@ class _MeetAppScreenState extends State<MeetAppScreen> {
   @override
   Widget build(BuildContext context) {
     return Expanded(
-      child: BlocBuilder<MeetAppCubit, MeetAppState>(
+      child: BlocListener<MeetAppCubit, MeetAppState>(
         bloc: _meetAppCubit,
-        builder: (context, state) {
-          if (state.status == MeetAppStatus.inProgress) {
-            return const Center(
-              child: CircularProgressIndicator(),
+        listener: (context, state) {
+          if (state.status == MeetAppStatus.failure) {
+            showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return ErrorDialog(
+                  title: 'Error Title',
+                  description: 'Error description.',
+                  button1Label: 'Cancel',
+                  button1OnPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  button2Label: 'Retry',
+                  button2OnPressed: () {
+                    Navigator.of(context).pop();
+                    _meetAppCubit.retrieveMeetAppScreen();
+                  },
+                );
+              },
             );
           }
+        },
+        child: BlocBuilder<MeetAppCubit, MeetAppState>(
+          bloc: _meetAppCubit,
+          builder: (context, state) {
+            if (state.status == MeetAppStatus.inProgress) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            }
 
-          if (state.status == MeetAppStatus.success) {
-            return ListView(
-              children: [
-                const LoginHeader(),
-                const SizedBox(height: 20),
-                AmandaApresentation(
-                  aboutCompanyModel: state.screenModel!.aboutCompany,
-                ),
-                const SizedBox(height: 20),
-                Center(
-                  child: CompanyVideo(
+            if (state.status == MeetAppStatus.success) {
+              return ListView(
+                children: [
+                  const LoginHeader(),
+                  const SizedBox(height: 20),
+                  AmandaApresentation(
+                    aboutCompanyModel: state.screenModel!.aboutCompany,
+                  ),
+                  const SizedBox(height: 20),
+                  Center(
+                    child: CompanyVideo(
+                      videoUrl: state.screenModel!.aboutCompany.videoUrl,
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  const CallToActionButton(
+                    text: 'Quero treinar com a Amanda',
+                  ),
+                  const SizedBox(height: 20),
+                  MyClassVideo(
                     videoUrl: state.screenModel!.aboutCompany.videoUrl,
                   ),
-                ),
-                const SizedBox(height: 20),
-                const CallToActionButton(
-                  text: 'Quero treinar com a Amanda',
-                ),
-                const SizedBox(height: 20),
-                MyClassVideo(
-                  videoUrl: state.screenModel!.aboutCompany.videoUrl,
-                ),
-                const SizedBox(height: 20),
-                Testimonies(
-                  testimonies: state.screenModel!.testemonies,
-                ),
-                const SizedBox(height: 20),
-                ResultsBeforeAndAfter(
-                  images: state.screenModel!.photosBeforeAndAfter,
-                ),
-                const SizedBox(height: 20),
-                const CallToActionButton(
-                  text: 'Quero treinar com a Amanda',
-                ),
-              ],
-            );
-          }
+                  const SizedBox(height: 20),
+                  Testimonies(
+                    testimonies: state.screenModel!.testemonies,
+                  ),
+                  const SizedBox(height: 20),
+                  ResultsBeforeAndAfter(
+                    images: state.screenModel!.photosBeforeAndAfter,
+                  ),
+                  const SizedBox(height: 20),
+                  const CallToActionButton(
+                    text: 'Quero treinar com a Amanda',
+                  ),
+                ],
+              );
+            }
 
-          return Container();
-        },
+            return Container();
+          },
+        ),
       ),
     );
   }

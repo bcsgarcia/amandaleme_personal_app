@@ -2,12 +2,12 @@ import 'package:http_adapter/http_adapter.dart';
 
 import 'models/models.dart';
 
-abstract class IWorkoutSheetRepository {
+abstract class IHomeRepository {
   Future<HomeScreenModel> getHomeScreen();
 }
 
-class WorkoutSheetRespository implements IWorkoutSheetRepository {
-  const WorkoutSheetRespository({
+class HomeRespository implements IHomeRepository {
+  const HomeRespository({
     required this.httpClient,
     required this.url,
   });
@@ -19,7 +19,7 @@ class WorkoutSheetRespository implements IWorkoutSheetRepository {
   Future<HomeScreenModel> getHomeScreen() async {
     try {
       final response =
-          await this.httpClient.request(url: '$url/screen/home', method: 'get');
+          await this.httpClient.request(url: '$url/screen', method: 'get');
       print(response);
 
       return HomeScreenModel.fromJson(response);

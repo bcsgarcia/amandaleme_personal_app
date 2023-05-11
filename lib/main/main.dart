@@ -22,7 +22,6 @@ Future<void> main() async {
   runApp(App(
     authenticationRepository: authenticationRepository,
     companyRepository: makeCompanyRepositoryFactory(),
-    iWorkoutSheetRepository:
-        makeWorkoutSheetRepositoryFactory(localStorageAdapter),
+    homeRepository: makeHomeRepositoryFactory(localStorageAdapter),
   ));
 }

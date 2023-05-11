@@ -31,7 +31,9 @@ class AppHeader extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.only(top: 40, left: 12),
                   child: IconButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Scaffold.of(context).openDrawer();
+                    },
                     icon: const Icon(
                       Icons.menu,
                       color: Colors.white,

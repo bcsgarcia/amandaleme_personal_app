@@ -1,6 +1,6 @@
 import 'package:amandaleme_personal_app/app/common_widgets/common_widgets.dart';
 import 'package:flutter/material.dart';
-import 'package:workoutsheet_repository/workoutsheet_repository.dart';
+import 'package:home_repository/home_repository.dart';
 
 import 'widgets/widgets.dart';
 
@@ -15,6 +15,9 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: HomeDrawerMenu(
+        drawerScreenModel: homeScreenModel.drawerMenu,
+      ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [

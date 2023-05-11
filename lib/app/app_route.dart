@@ -3,11 +3,12 @@ import 'package:amandaleme_personal_app/home/home.page.dart';
 import 'package:amandaleme_personal_app/login/view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:workoutsheet_repository/workoutsheet_repository.dart';
+import 'package:home_repository/home_repository.dart';
 
 class RouteNames {
   static const String login = '/login';
   static const String home = '/home';
+  static const String profile = '/profile';
 }
 
 class AppRouter {
@@ -21,9 +22,9 @@ class AppRouter {
         return MaterialPageRoute(
           builder: (context) => BlocProvider(
             create: (context) => HomeCubit(
-              RepositoryProvider.of<IWorkoutSheetRepository>(context),
+              RepositoryProvider.of<IHomeRepository>(context),
             ),
-            child: const HomePage(),
+            child: HomePage(),
           ),
         );
       default:
