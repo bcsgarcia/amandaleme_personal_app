@@ -1,4 +1,4 @@
-name: home_repository
+name: notification_repository
 description: Dart package which manages the user domain.
 version: 1.0.0
 publish_to: none
@@ -10,17 +10,10 @@ dependencies:
   equatable: ^2.0.5
   flutter:
     sdk: flutter
+  
   http_adapter:
     path: ../http
-  cache_adapter:
-    path: ../cache
-  user_repository:
-    path: ../user_repository
-  company_repository:
-    path: ../company_repository
-  notification_repository:
-    path: ../notification_repository
-    
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

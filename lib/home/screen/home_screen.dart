@@ -21,7 +21,7 @@ class HomeScreen extends StatelessWidget {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          const AppHeader(),
+          AppHeader(notifications: homeScreenModel.notifications),
           const SizedBox(height: 30),
           const HomeTitle(title: 'Meu programa de treinamento'),
           MyTrainingPlanWidget(workoutSheets: homeScreenModel.myTrainingPlan),

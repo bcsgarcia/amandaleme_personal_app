@@ -5,6 +5,7 @@ enum HomePageStatus {
   loadInProgress,
   loadSuccess,
   failure,
+  unautorized,
 }
 
 class HomePageState extends Equatable {

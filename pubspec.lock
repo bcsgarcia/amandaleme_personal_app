@@ -282,6 +282,13 @@ packages:
       url: "https://mobile20unpubfrontdoor.azurefd.net"
     source: hosted
     version: "1.0.0"
+  notification_repository:
+    dependency: "direct main"
+    description:
+      path: "packages/notification_repository"
+      relative: true
+    source: path
+    version: "1.0.0"
   path:
     dependency: transitive
     description:

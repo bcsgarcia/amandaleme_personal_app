@@ -61,7 +61,7 @@ class LoginForm extends StatelessWidget {
 class _EmailInput extends StatelessWidget {
   final ScrollController scrollController;
 
-  const _EmailInput({super.key, required this.scrollController});
+  const _EmailInput({required this.scrollController});
   @override
   Widget build(BuildContext context) {
     return Column(

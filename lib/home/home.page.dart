@@ -6,6 +6,7 @@ import 'package:home_repository/home_repository.dart';
 
 import '../app/common_widgets/common_widgets.dart';
 
+// ignore: must_be_immutable
 class HomePage extends StatelessWidget {
   HomePage({super.key});
 

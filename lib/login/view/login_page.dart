@@ -14,7 +14,7 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  final Widget _bodyLogin = LoginBody();
+  final Widget _bodyLogin = const LoginBody();
   final Widget _bodyMeetApp = const MeetAppScreen();
 
   late Widget _bodyPage;

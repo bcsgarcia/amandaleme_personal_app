@@ -1,3 +1,4 @@
+import 'package:amandaleme_personal_app/workoutsheets/workoutsheet_page.dart';
 import 'package:flutter/material.dart';
 import 'package:home_repository/home_repository.dart';
 
@@ -16,7 +17,15 @@ class AllMyWorkoutSheets extends StatelessWidget {
         itemCount: myWorkousheets.length,
         itemBuilder: (context, i) {
           var item = myWorkousheets[i];
-          return OptionWorkoutSheet(workoutSheet: item);
+          return GestureDetector(
+            onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => WorkoutsheetPage(workoutSheet: item),
+              ),
+            ),
+            child: OptionWorkoutSheet(workoutSheet: item),
+          );
         },
       ),
     );

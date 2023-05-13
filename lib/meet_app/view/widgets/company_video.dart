@@ -88,7 +88,7 @@ class CompanyVideoState extends State<CompanyVideo> {
                 backgroundColor: whiteColor,
                 radius: 20, // Control the radius of the CircleAvatar widget
                 child: isLoading
-                    ? CircularProgressIndicator(
+                    ? const CircularProgressIndicator(
                         color: primaryColor,
                       )
                     : IconButton(

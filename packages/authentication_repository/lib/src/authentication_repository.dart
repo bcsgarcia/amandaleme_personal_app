@@ -51,11 +51,6 @@ class RemoteAuthentication implements Authentication {
   @visibleForTesting
   static const userCacheKey = '__user_cache_key__';
 
-  Stream<UserAuthenticationModel> _createUserStream() async* {
-    final _token = await cacheStorage.fetch('token');
-    yield UserAuthenticationModel(token: _token == null ? '' : _token);
-  }
-
   // Stream getter
   @override
   Stream<UserAuthenticationModel> get user => _userStreamController.stream;

@@ -38,6 +38,8 @@ dependencies:
     path: packages/cache
   form_inputs:
     path: packages/form_inputs
+  notification_repository:
+    path: packages/notification_repository
 
 dev_dependencies:
   flutter_test:

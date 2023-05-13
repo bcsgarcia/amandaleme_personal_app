@@ -1,12 +1,13 @@
 class WorkoutModel {
-  String title;
-  String subtitle;
-  String description;
-  String imageUrl;
-  String videoUrl;
-  int order;
-  int breaktime;
-  String serie;
+  final String title;
+  final String subtitle;
+  final String description;
+  final String imageUrl;
+  final String videoUrl;
+  final int order;
+  final int breaktime;
+  final String serie;
+  bool done;
 
   WorkoutModel({
     required this.title,
@@ -17,6 +18,7 @@ class WorkoutModel {
     required this.order,
     required this.breaktime,
     required this.serie,
+    this.done = false,
   });
 
   factory WorkoutModel.fromJson(Map json) {

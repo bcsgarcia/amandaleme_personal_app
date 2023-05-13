@@ -1,4 +1,5 @@
 import 'package:amandaleme_personal_app/app/bloc_observer.dart';
+import 'package:amandaleme_personal_app/main/factories/notification_repository/notification_repository_factory.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/date_symbol_data_local.dart';
@@ -23,5 +24,7 @@ Future<void> main() async {
     authenticationRepository: authenticationRepository,
     companyRepository: makeCompanyRepositoryFactory(),
     homeRepository: makeHomeRepositoryFactory(localStorageAdapter),
+    notificationRepository:
+        makeNotificationRepositoryFactory(localStorageAdapter),
   ));
 }

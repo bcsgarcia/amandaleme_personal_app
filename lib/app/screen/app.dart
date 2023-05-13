@@ -5,6 +5,7 @@ import 'package:flow_builder/flow_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:home_repository/home_repository.dart';
+import 'package:notification_repository/notification_repository.dart';
 
 import '../app_route.dart';
 import '../bloc/app_bloc.dart';
@@ -15,13 +16,16 @@ class App extends StatelessWidget {
     required Authentication authenticationRepository,
     required CompanyRepository companyRepository,
     required IHomeRepository homeRepository,
+    required NotificationRepository notificationRepository,
   })  : _authenticationRepository = authenticationRepository,
         _companyRepository = companyRepository,
-        _iHomeRepository = homeRepository;
+        _iHomeRepository = homeRepository,
+        _notificationRepository = notificationRepository;
 
   final Authentication _authenticationRepository;
   final CompanyRepository _companyRepository;
   final IHomeRepository _iHomeRepository;
+  final NotificationRepository _notificationRepository;
 
   @override
   Widget build(BuildContext context) {
@@ -35,6 +39,9 @@ class App extends StatelessWidget {
         ),
         RepositoryProvider.value(
           value: _iHomeRepository,
+        ),
+        RepositoryProvider.value(
+          value: _notificationRepository,
         ),
       ],
       child: BlocProvider(

@@ -52,6 +52,7 @@ class AppHeaderWithTitleLeadinAndAction extends StatelessWidget {
               child: Center(
                 child: Text(
                   title,
+                  textAlign: TextAlign.center,
                   style: Theme.of(context).textTheme.titleLarge!.copyWith(
                         fontSize: 28,
                         fontWeight: FontWeight.bold,

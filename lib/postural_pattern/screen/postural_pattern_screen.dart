@@ -20,7 +20,7 @@ class PosturalPatternScreen extends StatelessWidget {
           children: [
             Expanded(
               child: ListView(
-                padding: EdgeInsets.only(top: 150),
+                padding: const EdgeInsets.only(top: 150),
                 children: [
                   const SizedBox(height: 30),
                   Padding(
