@@ -16,8 +16,14 @@ class PasswordInput extends FormzInput<String, PasswordValidationError> {
   /// {@macro password}
   const PasswordInput.dirty([super.value = '']) : super.dirty();
 
+  static final RegExp _passRegExp = RegExp(
+    r'^.{3,}$',
+  );
+
   @override
   PasswordValidationError? validator(String? value) {
-    return PasswordValidationError.invalid;
+    return _passRegExp.hasMatch(value ?? '')
+        ? null
+        : PasswordValidationError.invalid;
   }
 }

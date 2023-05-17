@@ -1,4 +1,5 @@
 import 'package:company_repository/company_repository.dart';
+// ignore: depend_on_referenced_packages
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

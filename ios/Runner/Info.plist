@@ -53,6 +53,13 @@
 		<true/>
 	</dict>
 
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+	<string>instagram</string>
+	<string>twitter</string>
+	<string>whatsapp</string>
+	</array>
+
 
 </dict>
 </plist>
