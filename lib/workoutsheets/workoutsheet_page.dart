@@ -20,7 +20,29 @@ class WorkoutsheetPage extends StatefulWidget {
 class _WorkoutsheetPageState extends State<WorkoutsheetPage> {
   WorkoutSheetModel get _workoutSheet => widget.workoutSheet;
 
+  bool showFloatingButton = true;
+
   final workoutsheetCubit = WorkoutsheetCubit();
+
+  verifyIfWorkoutHasBeenDone() {
+    if (_workoutSheet.date != null) {
+      showFloatingButton = false;
+      for (var element in _workoutSheet.workouts) {
+        element.done = true;
+      }
+    } else {
+      for (var element in _workoutSheet.workouts) {
+        element.done = false;
+      }
+    }
+    print(_workoutSheet);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    verifyIfWorkoutHasBeenDone();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,12 +53,16 @@ class _WorkoutsheetPageState extends State<WorkoutsheetPage> {
             BlocBuilder<WorkoutsheetCubit, WorkoutsheetPageState>(
           bloc: workoutsheetCubit,
           builder: (context, state) {
-            if (state.status == WorkoutsheetPageStatus.complete) {
-              return WorkoutFloatingButton(
-                  title: 'Finalizar treino', function: () {});
+            if (showFloatingButton) {
+              if (state.status == WorkoutsheetPageStatus.complete) {
+                return WorkoutFloatingButton(
+                    title: 'Finalizar treino', function: () {});
+              } else {
+                return WorkoutFloatingButton(
+                    title: 'Iniciar treino', function: () {});
+              }
             } else {
-              return WorkoutFloatingButton(
-                  title: 'Iniciar treino', function: () {});
+              return Container();
             }
           },
         ),

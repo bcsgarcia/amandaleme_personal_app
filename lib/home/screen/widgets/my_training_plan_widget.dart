@@ -1,10 +1,15 @@
 import 'package:amandaleme_personal_app/app/common_widgets/common_widgets.dart';
 import 'package:amandaleme_personal_app/app/theme/light_theme.dart';
+import 'package:amandaleme_personal_app/workoutsheet_video/workoutsheet_video_page.dart';
+import 'package:amandaleme_personal_app/workoutsheets/workoutsheet_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:home_repository/home_repository.dart';
 import 'package:intl/intl.dart';
 
 import '../../../app/common_widgets/random_image.dart';
+import '../../../workoutsheet_video/cubit/workoutsheet_video_cubit.dart';
+import '../../../workoutsheet_video/utils/utils.dart';
 
 // ignore: must_be_immutable
 class MyTrainingPlanWidget extends StatefulWidget {
@@ -60,6 +65,29 @@ class _MyTrainingPlanWidgetState extends State<MyTrainingPlanWidget> {
     }
   }
 
+  void _goToWorkoutsheet(int index) {
+    if (index == 0) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => BlocProvider(
+            create: (_) => WorkoutsheetVideoCubit(VideoPreparationService()),
+            child: WorkoutsheetVideoPage(workoutsheet: _workoutSheets[index]),
+          ),
+        ),
+      );
+    } else {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => WorkoutsheetPage(
+            workoutSheet: _workoutSheets[index],
+          ),
+        ),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -70,73 +98,74 @@ class _MyTrainingPlanWidgetState extends State<MyTrainingPlanWidget> {
         reverse: true,
         itemCount: _workoutSheets.length,
         itemBuilder: (context, index) {
-          double scaleFactor =
-              1 - (index - currentPage).abs().clamp(0, 1).toDouble();
+          double scaleFactor = 1 - (index - currentPage).abs().clamp(0, 1).toDouble();
           double scale = 0.8 + scaleFactor * 0.2;
           return Transform.scale(
             scale: scale,
-            child: Container(
-              margin: const EdgeInsets.symmetric(vertical: 5),
-              decoration: BoxDecoration(
-                boxShadow: [
-                  defaultBoxShadow(),
-                ],
-                borderRadius: BorderRadius.circular(15),
-                color: Colors.black12,
-                image: DecorationImage(
-                  image: AssetImage(
-                    _backgroundImages[index],
+            child: GestureDetector(
+              onTap: () => _goToWorkoutsheet(index),
+              child: Container(
+                margin: const EdgeInsets.symmetric(vertical: 5),
+                decoration: BoxDecoration(
+                  boxShadow: [
+                    defaultBoxShadow(),
+                  ],
+                  borderRadius: BorderRadius.circular(15),
+                  color: Colors.black12,
+                  image: DecorationImage(
+                    image: AssetImage(
+                      _backgroundImages[index],
+                    ),
+                    colorFilter: ColorFilter.mode(
+                      Colors.black.withOpacity(0.5),
+                      BlendMode.srcOver,
+                    ),
+                    fit: BoxFit.cover,
                   ),
-                  colorFilter: ColorFilter.mode(
-                    Colors.black.withOpacity(0.5),
-                    BlendMode.srcOver,
-                  ),
-                  fit: BoxFit.cover,
                 ),
-              ),
-              child: Column(
-                children: [
-                  Expanded(
-                    flex: 1,
-                    child: Align(
-                      alignment: Alignment.topRight,
-                      child: Padding(
-                        padding: const EdgeInsets.only(right: 10.0, top: 7),
-                        child: Text(
-                          DateFormat('E, d MMMM').format(
-                            _workoutSheets[index].date ?? DateTime.now(),
+                child: Column(
+                  children: [
+                    Expanded(
+                      flex: 1,
+                      child: Align(
+                        alignment: Alignment.topRight,
+                        child: Padding(
+                          padding: const EdgeInsets.only(right: 10.0, top: 7),
+                          child: Text(
+                            DateFormat('E, d MMMM').format(
+                              _workoutSheets[index].date ?? DateTime.now(),
+                            ),
+                            style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                                  color: Colors.white,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold,
+                                ),
                           ),
-                          style:
-                              Theme.of(context).textTheme.bodyLarge!.copyWith(
-                                    color: Colors.white,
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.bold,
-                                  ),
                         ),
                       ),
                     ),
-                  ),
-                  Expanded(
-                    flex: 3,
-                    child: _workoutSheets[index].date != null
-                        ? const IconWorkoutSheetFinished()
-                        : NameWorkoutSheet(
-                            text: _workoutSheets[index].name,
-                            paddingTop: 40,
-                          ),
-                  ),
-                  if (_workoutSheets[index].date != null)
                     Expanded(
-                      flex: 2,
-                      child: Align(
-                        alignment: Alignment.bottomCenter,
-                        child: NameWorkoutSheet(
-                          text: _workoutSheets[index].name,
-                          paddingBottom: 10,
+                      flex: 3,
+                      child: _workoutSheets[index].date != null
+                          ? const IconWorkoutSheetFinished()
+                          : NameWorkoutSheet(
+                              text: _workoutSheets[index].name,
+                              paddingTop: 40,
+                            ),
+                    ),
+                    if (_workoutSheets[index].date != null)
+                      Expanded(
+                        flex: 2,
+                        child: Align(
+                          alignment: Alignment.bottomCenter,
+                          child: NameWorkoutSheet(
+                            text: _workoutSheets[index].name,
+                            paddingBottom: 10,
+                          ),
                         ),
-                      ),
-                    )
-                ],
+                      )
+                  ],
+                ),
               ),
             ),
           );
@@ -161,11 +190,7 @@ class NameWorkoutSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(
-          top: paddingTop ?? 0.0,
-          bottom: paddingBottom ?? 0.0,
-          left: 8,
-          right: 8),
+      padding: EdgeInsets.only(top: paddingTop ?? 0.0, bottom: paddingBottom ?? 0.0, left: 8, right: 8),
       child: Text(
         text,
         textAlign: TextAlign.center,

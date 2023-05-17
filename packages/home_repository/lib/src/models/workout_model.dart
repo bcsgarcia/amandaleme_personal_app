@@ -1,4 +1,5 @@
 class WorkoutModel {
+  final String id;
   final String title;
   final String subtitle;
   final String description;
@@ -10,6 +11,7 @@ class WorkoutModel {
   bool done;
 
   WorkoutModel({
+    required this.id,
     required this.title,
     required this.subtitle,
     required this.description,
@@ -23,6 +25,7 @@ class WorkoutModel {
 
   factory WorkoutModel.fromJson(Map json) {
     return WorkoutModel(
+      id: json['id'],
       title: json['title'],
       subtitle: json['subtitle'],
       description: json['description'],
@@ -36,6 +39,7 @@ class WorkoutModel {
 
   Map toJson() {
     return {
+      'id': id,
       'title': title,
       'subtitle': subtitle,
       'description': description,

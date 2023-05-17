@@ -24,9 +24,6 @@ class _WorkoutsheetScreenState extends State<WorkoutsheetScreen> {
   @override
   void initState() {
     super.initState();
-    for (var element in _workoutSheet.workouts) {
-      element.done = false;
-    }
   }
 
   @override

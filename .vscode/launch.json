@@ -14,13 +14,16 @@
             "name": "amandaleme_personal_app (profile mode)",
             "request": "launch",
             "type": "dart",
-            "flutterMode": "profile"
+            "flutterMode": "profile",
+            "program": "lib/main/main.dart"
         },
         {
             "name": "amandaleme_personal_app (release mode)",
             "request": "launch",
             "type": "dart",
-            "flutterMode": "release"
+            "flutterMode": "release",
+            "program": "lib/main/main.dart"
+
         },
         {
             "name": "authentication_repository",
