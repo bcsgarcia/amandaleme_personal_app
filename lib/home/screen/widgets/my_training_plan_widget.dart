@@ -1,15 +1,11 @@
 import 'package:amandaleme_personal_app/app/common_widgets/common_widgets.dart';
 import 'package:amandaleme_personal_app/app/theme/light_theme.dart';
-import 'package:amandaleme_personal_app/workoutsheet_video/workoutsheet_video_page.dart';
 import 'package:amandaleme_personal_app/workoutsheets/workoutsheet_page.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:home_repository/home_repository.dart';
 import 'package:intl/intl.dart';
 
 import '../../../app/common_widgets/random_image.dart';
-import '../../../workoutsheet_video/cubit/workoutsheet_video_cubit.dart';
-import '../../../workoutsheet_video/utils/utils.dart';
 
 // ignore: must_be_immutable
 class MyTrainingPlanWidget extends StatefulWidget {
@@ -65,27 +61,15 @@ class _MyTrainingPlanWidgetState extends State<MyTrainingPlanWidget> {
     }
   }
 
-  void _goToWorkoutsheet(int index) {
-    if (index == 0) {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => BlocProvider(
-            create: (_) => WorkoutsheetVideoCubit(VideoPreparationService()),
-            child: WorkoutsheetVideoPage(workoutsheet: _workoutSheets[index]),
-          ),
+  void _goToWorkoutsheet(int index) async {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => WorkoutsheetPage(
+          workoutSheet: _workoutSheets[index],
         ),
-      );
-    } else {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => WorkoutsheetPage(
-            workoutSheet: _workoutSheets[index],
-          ),
-        ),
-      );
-    }
+      ),
+    );
   }
 
   @override

@@ -34,7 +34,7 @@ class _WorkoutItemState extends State<WorkoutItem> {
             child: ClipRRect(
               borderRadius: BorderRadius.circular(10),
               child: Image.network(
-                _workout.imageUrl,
+                _workout.medias.firstWhere((element) => element.type == 'image').url,
                 fit: BoxFit.fill,
               ),
             ),
@@ -52,8 +52,7 @@ class _WorkoutItemState extends State<WorkoutItem> {
                     style: Theme.of(context).textTheme.titleMedium!.copyWith(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
-                          decoration:
-                              _workout.done ? TextDecoration.lineThrough : null,
+                          decoration: _workout.done ? TextDecoration.lineThrough : null,
                         ),
                   ),
                   const SizedBox(height: 10),
@@ -61,16 +60,14 @@ class _WorkoutItemState extends State<WorkoutItem> {
                     'Série: ${_workout.serie}',
                     style: Theme.of(context).textTheme.titleMedium!.copyWith(
                           fontSize: 14,
-                          decoration:
-                              _workout.done ? TextDecoration.lineThrough : null,
+                          decoration: _workout.done ? TextDecoration.lineThrough : null,
                         ),
                   ),
                   Text(
                     'Descanso: ${_workout.breaktime.toString()}',
                     style: Theme.of(context).textTheme.titleMedium!.copyWith(
                           fontSize: 14,
-                          decoration:
-                              _workout.done ? TextDecoration.lineThrough : null,
+                          decoration: _workout.done ? TextDecoration.lineThrough : null,
                         ),
                   ),
                 ],

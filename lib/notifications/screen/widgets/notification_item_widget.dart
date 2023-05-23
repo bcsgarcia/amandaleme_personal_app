@@ -66,8 +66,7 @@ class NotificationItem extends StatelessWidget {
                   height: 1.4,
                 ),
           ),
-          if (notification.appointmentStartDate != null &&
-              notification.appointmentEndDate != null)
+          if (notification.appointmentStartDate != null && notification.appointmentEndDate != null)
             Row(
               children: [
                 Expanded(
@@ -104,9 +103,7 @@ class BadgeDateWidget extends StatelessWidget {
       margin: const EdgeInsets.only(top: 15),
       height: 34,
       decoration: BoxDecoration(
-        color: notificationRead.difference(DateTime.now()).inDays < 0
-            ? Colors.grey
-            : secondaryColor,
+        color: notificationRead.difference(DateTime.now()).inDays < 0 ? Colors.grey : secondaryColor,
         borderRadius: BorderRadius.circular(5),
       ),
       child: Row(
@@ -148,19 +145,17 @@ class BadgeTimeWidget extends StatelessWidget {
       margin: const EdgeInsets.only(top: 15),
       height: 34,
       decoration: BoxDecoration(
-        color: notificationStartRead.difference(DateTime.now()).inDays < 0
-            ? Colors.grey
-            : secondaryColor,
+        color: notificationStartRead.difference(DateTime.now()).inDays < 0 ? Colors.grey : secondaryColor,
         borderRadius: BorderRadius.circular(5),
       ),
       child: Row(
         children: [
-          const SizedBox(width: 13),
+          const SizedBox(width: 10),
           const Icon(
             Icons.access_time,
             color: Colors.white,
           ),
-          const SizedBox(width: 13),
+          const SizedBox(width: 10),
           Expanded(
             child: Row(
               children: [

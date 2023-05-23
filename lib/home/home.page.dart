@@ -3,8 +3,10 @@ import 'package:amandaleme_personal_app/home/screen/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:home_repository/home_repository.dart';
+import 'package:sync_repository/sync_repository.dart';
 
 import '../app/common_widgets/common_widgets.dart';
+import 'screen/sync_page.dart';
 
 // ignore: must_be_immutable
 class HomePage extends StatelessWidget {
@@ -13,7 +15,8 @@ class HomePage extends StatelessWidget {
   static Page<void> page() => MaterialPage<void>(
         child: BlocProvider(
           create: (context) => HomeCubit(
-            RepositoryProvider.of<IHomeRepository>(context),
+            homeRepository: RepositoryProvider.of<IHomeRepository>(context),
+            syncRepository: RepositoryProvider.of<SyncRepository>(context),
           ),
           child: HomePage(),
         ),
@@ -55,6 +58,13 @@ class HomePage extends StatelessWidget {
             builder: (context, state) {
               if (state.status == HomePageStatus.loadSuccess) {
                 return HomeScreen(homeScreenModel: state.screenModel!);
+              }
+
+              if (state.status == HomePageStatus.sync) {
+                return BlocProvider(
+                  create: (_) => context.read<HomeCubit>(),
+                  child: const DownloadProgressPage(),
+                );
               }
 
               return const Center(child: CircularProgressIndicator());

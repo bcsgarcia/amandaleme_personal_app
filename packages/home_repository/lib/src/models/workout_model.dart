@@ -1,10 +1,11 @@
+import 'package:home_repository/home_repository.dart';
+
 class WorkoutModel {
   final String id;
   final String title;
   final String subtitle;
   final String description;
-  final String imageUrl;
-  final String videoUrl;
+  final List<WorkoutMedia> medias;
   final int order;
   final int breaktime;
   final String serie;
@@ -15,8 +16,7 @@ class WorkoutModel {
     required this.title,
     required this.subtitle,
     required this.description,
-    required this.imageUrl,
-    required this.videoUrl,
+    required this.medias,
     required this.order,
     required this.breaktime,
     required this.serie,
@@ -29,11 +29,10 @@ class WorkoutModel {
       title: json['title'],
       subtitle: json['subtitle'],
       description: json['description'],
-      imageUrl: json['imageUrl'],
-      videoUrl: json['videoUrl'],
       order: json['order'],
       breaktime: json['breaktime'],
       serie: json['serie'],
+      medias: List<WorkoutMedia>.from(json['media'].map((item) => WorkoutMedia.fromJson(item))),
     );
   }
 
@@ -43,8 +42,7 @@ class WorkoutModel {
       'title': title,
       'subtitle': subtitle,
       'description': description,
-      'imageUrl': imageUrl,
-      'videoUrl': videoUrl,
+      'medias': medias,
       'order': order,
       'breaktime': breaktime,
       'serie': serie,

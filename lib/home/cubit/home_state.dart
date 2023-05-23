@@ -5,6 +5,7 @@ enum HomePageStatus {
   loadInProgress,
   loadSuccess,
   failure,
+  sync,
   unautorized,
 }
 

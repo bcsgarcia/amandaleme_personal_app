@@ -1,6 +1,6 @@
+import 'package:amandaleme_personal_app/app/theme/light_theme.dart';
 import 'package:flutter/material.dart';
 
-import '../theme/light_theme.dart';
 import 'box_shadow_default.dart';
 
 class AppHeaderWithTitleLeadinAndAction extends StatelessWidget {
@@ -38,7 +38,7 @@ class AppHeaderWithTitleLeadinAndAction extends StatelessWidget {
               child: Align(
                 alignment: Alignment.centerLeft,
                 child: Padding(
-                  padding: const EdgeInsets.only(top: 60, left: 12),
+                  padding: const EdgeInsets.only(top: 30, left: 12),
                   child: leadingButton ?? Container(),
                 ),
               ),
@@ -48,7 +48,7 @@ class AppHeaderWithTitleLeadinAndAction extends StatelessWidget {
             flex: 4,
             child: Container(
               height: double.infinity,
-              margin: const EdgeInsets.only(top: 60),
+              margin: const EdgeInsets.only(top: 30),
               child: Center(
                 child: Text(
                   title,

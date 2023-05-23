@@ -60,6 +60,10 @@
 	<string>whatsapp</string>
 	</array>
 
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Required for saving images to the photo library</string>
+
+
 
 </dict>
 </plist>

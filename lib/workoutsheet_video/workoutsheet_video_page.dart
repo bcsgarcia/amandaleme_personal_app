@@ -1,18 +1,19 @@
-import 'package:amandaleme_personal_app/workoutsheet_video/screen/screen.dart';
-import 'package:amandaleme_personal_app/workoutsheet_video/utils/workoutsheet_video_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:home_repository/home_repository.dart';
 
 import 'cubit/workoutsheet_video_cubit.dart';
+import 'screen/workoutsheet_video_screen.dart';
 
 class WorkoutsheetVideoPage extends StatefulWidget {
   const WorkoutsheetVideoPage({
     super.key,
     required this.workoutsheet,
+    this.startWorkoutIndex = 0,
   });
 
   final WorkoutSheetModel workoutsheet;
+  final int startWorkoutIndex;
 
   @override
   State<WorkoutsheetVideoPage> createState() => _WorkoutsheetVideoPageState();
@@ -20,38 +21,22 @@ class WorkoutsheetVideoPage extends StatefulWidget {
 
 class _WorkoutsheetVideoPageState extends State<WorkoutsheetVideoPage> {
   WorkoutSheetModel get _workoutsheet => widget.workoutsheet;
-
-  List<VideoControllerModel> controllers = [];
+  int get _startWorkoutIndex => widget.startWorkoutIndex;
 
   late int _workoutlength;
   late WorkoutsheetVideoCubit cubit;
-
-  int _index = 0;
-
-  void _nextWorkout() {
-    _index++;
-    setState(() {});
-  }
-
-  void _previousWorkout() {
-    _index--;
-    setState(() {});
-  }
 
   @override
   void initState() {
     super.initState();
     _workoutlength = _workoutsheet.workouts.length;
     cubit = context.read<WorkoutsheetVideoCubit>();
-    controllers = cubit.videoPreparationService.controllers;
-    cubit.prepareVideoPlayerControllers(_workoutsheet);
+    cubit.initWorkoutVideoControllers(_workoutsheet, _startWorkoutIndex);
   }
 
   @override
   void dispose() {
-    for (var controller in controllers) {
-      controller.controller.dispose();
-    }
+    cubit.close();
     super.dispose();
   }
 
@@ -66,14 +51,20 @@ class _WorkoutsheetVideoPageState extends State<WorkoutsheetVideoPage> {
         }
 
         if (state.status == WorkoutsheetVideoPageStatus.loadSuccess) {
-          return WorkoutsheetVideoScreen(
-            workout: _workoutsheet.workouts[_index],
-            nextButtonFunction: _index + 1 == _workoutlength ? null : _nextWorkout,
-            previousButtonFunction: _index > 0 ? _previousWorkout : null,
-            isShowPlay: _workoutsheet.workouts[_index].videoUrl.isNotEmpty,
-            subTitle: _workoutsheet.workouts[_index].subtitle,
-            description: _workoutsheet.workouts[_index].description,
-            videoPlayerController: controllers.firstWhere((element) => element.idWorkout == _workoutsheet.workouts[_index].id).controller,
+          final index = state.currentWorkoutIndex;
+
+          return BlocProvider.value(
+            value: context.read<WorkoutsheetVideoCubit>(),
+            child: WorkoutsheetVideoScreen(
+              workout: _workoutsheet.workouts[index],
+              indexCurrentWorkoutVideo: state.currentWorkoutVideoIndex,
+              nextButtonFunction: index + 1 == _workoutlength ? null : cubit.nextWorkout,
+              previousButtonFunction: index > 0 ? cubit.previousWorkout : null,
+              subTitle: _workoutsheet.workouts[index].subtitle,
+              description: _workoutsheet.workouts[index].description,
+              videoPlayerController: state.allWorkoutVideoModel[index].controllers,
+              isCurrentVideoPlaying: state.currentVideoIsPlaying,
+            ),
           );
         }
 

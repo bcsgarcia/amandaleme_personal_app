@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:notification_repository/notification_repository.dart';
 
+import '../app/theme/light_theme.dart';
+
 class NotificationPage extends StatefulWidget {
   const NotificationPage({
     super.key,
@@ -28,6 +30,12 @@ class _NotificationPageState extends State<NotificationPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        toolbarHeight: 0,
+        automaticallyImplyLeading: true,
+        backgroundColor: blackColor,
+        elevation: 0,
+      ),
       body: NotificationScreen(notifications: _notifications),
     );
   }

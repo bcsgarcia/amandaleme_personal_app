@@ -11,22 +11,18 @@ class AllMyWorkoutSheets extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: ListView.builder(
-        padding: EdgeInsets.zero,
-        itemCount: myWorkousheets.length,
-        itemBuilder: (context, i) {
-          var item = myWorkousheets[i];
-          return GestureDetector(
-            onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => WorkoutsheetPage(workoutSheet: item),
-              ),
+    return Column(
+      children: List<Widget>.generate(
+        myWorkousheets.length,
+        (index) => GestureDetector(
+          onTap: () => Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => WorkoutsheetPage(workoutSheet: myWorkousheets[index]),
             ),
-            child: OptionWorkoutSheet(workoutSheet: item),
-          );
-        },
+          ),
+          child: OptionWorkoutSheet(workoutSheet: myWorkousheets[index]),
+        ),
       ),
     );
   }

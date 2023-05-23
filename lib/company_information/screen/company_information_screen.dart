@@ -13,8 +13,7 @@ class CompanyInformationScreen extends StatefulWidget {
   final List<InformationModel> informations;
 
   @override
-  State<CompanyInformationScreen> createState() =>
-      _CompanyInformationScreenState();
+  State<CompanyInformationScreen> createState() => _CompanyInformationScreenState();
 }
 
 class _CompanyInformationScreenState extends State<CompanyInformationScreen> {
@@ -39,7 +38,7 @@ class _CompanyInformationScreenState extends State<CompanyInformationScreen> {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
           child: Text(
-            'Informções importantes a serem consideradas',
+            'Informações importantes a serem consideradas',
             textAlign: TextAlign.justify,
             style: Theme.of(context).textTheme.headlineLarge!.copyWith(
                   fontSize: 23,

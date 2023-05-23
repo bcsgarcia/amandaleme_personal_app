@@ -31,6 +31,11 @@ class _LoginPageState extends State<LoginPage> {
       appBar: AppBar(
         backgroundColor: blackColor,
         automaticallyImplyLeading: false,
+        toolbarHeight: 0,
+        // backgroundColor: Colors.transparent,
+        elevation: 0,
+        // systemOverlayStyle: SystemUiOverlayStyle.dark,
+        // automaticallyImplyLeading: false,
       ),
       body: SizedBox(
         height: MediaQuery.of(context).size.height,

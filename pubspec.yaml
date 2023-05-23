@@ -20,6 +20,7 @@ dependencies:
   video_player: ^2.6.1
   intl: ^0.18.1
   social_share: ^2.3.1
+  lottie: ^2.3.2
 
 
 
@@ -40,6 +41,12 @@ dependencies:
     path: packages/form_inputs
   notification_repository:
     path: packages/notification_repository
+  video_preparation_service:
+    path: packages/video_preparation
+  sync_repository:
+    path: packages/sync_repository
+  workoutsheet_repository:
+    path: packages/workoutsheet_repository
 
 dev_dependencies:
   flutter_test:

@@ -4,6 +4,7 @@ import 'package:amandaleme_personal_app/login/view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:home_repository/home_repository.dart';
+import 'package:sync_repository/sync_repository.dart';
 
 import 'bloc/app_bloc.dart';
 
@@ -24,7 +25,8 @@ class AppRouter {
         return MaterialPageRoute(
           builder: (context) => BlocProvider(
             create: (context) => HomeCubit(
-              RepositoryProvider.of<IHomeRepository>(context),
+              homeRepository: RepositoryProvider.of<IHomeRepository>(context),
+              syncRepository: RepositoryProvider.of<SyncRepository>(context),
             ),
             child: HomePage(),
           ),

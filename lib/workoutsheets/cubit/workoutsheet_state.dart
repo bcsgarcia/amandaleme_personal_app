@@ -4,6 +4,9 @@ enum WorkoutsheetPageStatus {
   initial,
   complete,
   incomplete,
+  loadInProgress,
+  loadFailure,
+  loadSuccess,
 }
 
 class WorkoutsheetPageState extends Equatable {

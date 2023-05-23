@@ -1,5 +1,4 @@
 import 'package:amandaleme_personal_app/app/common_widgets/common_widgets.dart';
-import 'package:amandaleme_personal_app/app/theme/light_theme.dart';
 import 'package:company_repository/company_repository.dart';
 import 'package:flutter/material.dart';
 
@@ -28,7 +27,7 @@ class PosturalPatternItemWidget extends StatelessWidget {
             "${index + 1}. ${posturalPattern.title}",
             style: Theme.of(context).textTheme.headlineMedium!.copyWith(
                   fontSize: 19,
-                  color: primaryColor,
+                  color: Colors.black,
                   fontWeight: FontWeight.bold,
                 ),
           ),
@@ -51,31 +50,21 @@ class PosturalPatternItemWidget extends StatelessWidget {
                   ),
                 Expanded(
                   child: Padding(
-                    padding: EdgeInsets.only(
-                        left: imageSide == EnumImageSide.left ? 14 : 0.0,
-                        right: imageSide == EnumImageSide.rigth ? 14 : 0.0),
+                    padding: EdgeInsets.only(left: imageSide == EnumImageSide.left ? 14 : 0.0, right: imageSide == EnumImageSide.rigth ? 14 : 0.0),
                     child: LayoutBuilder(builder: (context, constraints) {
                       double descriptionHeight = calculateHeight(
                         posturalPattern.description,
-                        Theme.of(context)
-                            .textTheme
-                            .bodyLarge!
-                            .copyWith(fontSize: 16, height: 1.5),
+                        Theme.of(context).textTheme.bodyLarge!.copyWith(fontSize: 16, height: 1.5),
                         constraints.maxWidth,
                       );
 
                       return ListView(
                         padding: EdgeInsets.zero,
-                        physics: descriptionHeight > 200
-                            ? null
-                            : const NeverScrollableScrollPhysics(),
+                        physics: descriptionHeight > 200 ? null : const NeverScrollableScrollPhysics(),
                         children: [
                           Text(
                             posturalPattern.description,
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodyLarge!
-                                .copyWith(fontSize: 16, height: 1.5),
+                            style: Theme.of(context).textTheme.bodyLarge!.copyWith(fontSize: 16, height: 1.5),
                             textAlign: TextAlign.justify,
                           ),
                         ],

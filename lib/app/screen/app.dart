@@ -6,26 +6,37 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:home_repository/home_repository.dart';
 import 'package:notification_repository/notification_repository.dart';
+import 'package:sync_repository/sync_repository.dart';
+import 'package:video_preparation_service/video_preparation_service.dart';
+import 'package:workoutsheet_repository/workoutsheet_repository.dart';
 
 import '../app_route.dart';
 import '../bloc/app_bloc.dart';
 
 class App extends StatelessWidget {
-  const App({
+  App({
     super.key,
     required Authentication authenticationRepository,
     required CompanyRepository companyRepository,
     required IHomeRepository homeRepository,
     required NotificationRepository notificationRepository,
+    required SyncRepository syncRepository,
+    required WorkoutsheetRepository workoutsheetRepository,
   })  : _authenticationRepository = authenticationRepository,
         _companyRepository = companyRepository,
         _iHomeRepository = homeRepository,
-        _notificationRepository = notificationRepository;
+        _notificationRepository = notificationRepository,
+        _syncRepository = syncRepository,
+        _workoutsheetRepository = workoutsheetRepository;
 
   final Authentication _authenticationRepository;
   final CompanyRepository _companyRepository;
   final IHomeRepository _iHomeRepository;
   final NotificationRepository _notificationRepository;
+  final SyncRepository _syncRepository;
+  final WorkoutsheetRepository _workoutsheetRepository;
+
+  final VideoPreparationService _videoPreparationService = VideoPreparationService();
 
   @override
   Widget build(BuildContext context) {
@@ -43,6 +54,15 @@ class App extends StatelessWidget {
         RepositoryProvider.value(
           value: _notificationRepository,
         ),
+        RepositoryProvider.value(
+          value: _videoPreparationService,
+        ),
+        RepositoryProvider.value(
+          value: _syncRepository,
+        ),
+        RepositoryProvider.value(
+          value: _workoutsheetRepository,
+        )
       ],
       child: BlocProvider(
         create: (_) => AppBloc(
@@ -56,14 +76,6 @@ class App extends StatelessWidget {
 
 class AppView extends StatelessWidget {
   const AppView({super.key});
-
-  String? initialRoute(BuildContext context) {
-    if (context.read<AppBloc>().state.status == AppStatus.authenticated) {
-      return '/login';
-    } else {
-      return '/login';
-    }
-  }
 
   @override
   Widget build(BuildContext context) {

@@ -1,30 +1,36 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:home_repository/home_repository.dart';
 import 'package:video_player/video_player.dart';
 
+import '../../app/theme/light_theme.dart';
+import '../cubit/workoutsheet_video_cubit.dart';
 import '../utils/utils.dart';
 
 class WorkoutsheetVideoScreen extends StatefulWidget {
   const WorkoutsheetVideoScreen({
     super.key,
     required this.workout,
-    required this.nextButtonFunction,
-    required this.previousButtonFunction,
-    required this.isShowPlay,
     required this.subTitle,
     required this.description,
     required this.videoPlayerController,
+    required this.isCurrentVideoPlaying,
+    required this.indexCurrentWorkoutVideo,
+    required this.nextButtonFunction,
+    required this.previousButtonFunction,
   });
 
   final WorkoutModel workout;
-  final void Function()? nextButtonFunction;
-  final void Function()? previousButtonFunction;
-  final bool isShowPlay;
   final String subTitle;
   final String description;
-  final VideoPlayerController videoPlayerController;
+  final List<VideoPlayerController> videoPlayerController;
+  final bool isCurrentVideoPlaying;
+  final int indexCurrentWorkoutVideo;
+
+  final void Function()? nextButtonFunction;
+  final void Function()? previousButtonFunction;
 
   @override
   State<WorkoutsheetVideoScreen> createState() => _WorkoutsheetVideoScreenState();
@@ -33,22 +39,62 @@ class WorkoutsheetVideoScreen extends StatefulWidget {
 class _WorkoutsheetVideoScreenState extends State<WorkoutsheetVideoScreen> {
   WorkoutModel get _workout => widget.workout;
 
-  void Function()? get _nextButtonFunction => widget.nextButtonFunction;
-  void Function()? get _previousButtonFunction => widget.previousButtonFunction;
-  bool get _isShowPlay => widget.isShowPlay;
-
   String get _subTitle => widget.subTitle;
   String get _description => widget.description;
 
-  VideoPlayerController get _videoPlayerController => widget.videoPlayerController;
+  void Function()? get _nextButtonFunction => widget.nextButtonFunction;
+  void Function()? get _previousButtonFunction => widget.previousButtonFunction;
+
+  List<VideoPlayerController> get _videoPlayerController => widget.videoPlayerController;
+
+  bool get _isCurrentVideoPlaying => widget.isCurrentVideoPlaying;
+
+  int get _currentVideoIndex => widget.indexCurrentWorkoutVideo;
+
+  late WorkoutsheetVideoCubit cubit;
 
   @override
   void initState() {
     super.initState();
+    cubit = context.read<WorkoutsheetVideoCubit>();
+  }
+
+  void addListener() {
+    for (var controller in _videoPlayerController) {
+      controller.addListener(checkIfVideoHasEnded);
+      setState(() {});
+    }
+  }
+
+  void checkIfVideoHasEnded() {
+    final currentVideo = _videoPlayerController[cubit.state.currentWorkoutVideoIndex];
+    final currentVideoIndex = cubit.state.currentWorkoutVideoIndex;
+
+    final nextVideoIndex = currentVideoIndex + 1;
+
+    final videoHasEnded = currentVideo.value.position == currentVideo.value.duration;
+    final allVideosOfWorkout = _videoPlayerController;
+
+    if (videoHasEnded) {
+      if (currentVideoIndex < allVideosOfWorkout.length - 1) {
+        currentVideo.pause;
+        allVideosOfWorkout[nextVideoIndex].play();
+
+        cubit.playNextVideoOfTheCurrentWorkout();
+      } else {
+        cubit.resetAllVideosOfWorkout();
+        cubit.pauseAllVideosOfWorkout();
+        cubit.updatePageState(0, false);
+      }
+    }
+
+    setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
+    addListener();
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -68,66 +114,119 @@ class _WorkoutsheetVideoScreenState extends State<WorkoutsheetVideoScreen> {
             Icons.close,
             color: Colors.black,
           ),
-          onPressed: () => Navigator.popUntil(context, (route) => route.isFirst),
+          onPressed: () => Navigator.of(context).pop(),
         ),
       ),
-      body: Builder(builder: (context) {
-        return Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Text('Serie: ${_workout.serie}'),
-              Row(
-                children: [
-                  Text('Descanso: ${_workout.breaktime}'),
-                  const Spacer(),
-                  Row(
-                    children: [
-                      Image.asset(
-                        'assets/images/icons/comment.png',
-                        height: 18,
-                      ),
-                      const SizedBox(width: 8),
-                      const Text('Comentar'),
-                    ],
-                  ),
-                ],
-              ),
-              Expanded(
-                child: Container(
-                  margin: const EdgeInsets.symmetric(vertical: 15),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(40),
-                    border: Border.all(width: 1.5),
-                  ),
-                  child: Stack(
-                    children: [
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(40),
-                        child: VideoPlayer(_videoPlayerController),
-                      ),
-                      Positioned(
-                        bottom: 0,
-                        left: 0,
-                        right: 0,
-                        child: BottomWorkoutBar(
-                          nextButtonFunction: _nextButtonFunction,
-                          previousButtonFunction: _previousButtonFunction,
-                          isShowPlay: _isShowPlay,
-                          subTitle: _subTitle,
-                          description: _description,
-                          controller: _videoPlayerController,
+      body: Builder(
+        builder: (context) {
+          return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Text('Serie: ${_workout.serie}'),
+                Row(
+                  children: [
+                    Text('Descanso: ${_workout.breaktime}'),
+                    const Spacer(),
+                    Row(
+                      children: [
+                        Image.asset(
+                          'assets/images/icons/comment.png',
+                          height: 18,
                         ),
-                      ),
-                    ],
-                  ),
+                        const SizedBox(width: 8),
+                        const Text('Comentar'),
+                      ],
+                    ),
+                  ],
                 ),
-              )
-            ],
-          ),
-        );
-      }),
+                Expanded(
+                  child: Container(
+                    margin: const EdgeInsets.symmetric(vertical: 15),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(40),
+                      border: Border.all(width: 1.5),
+                    ),
+                    child: Stack(
+                      children: [
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(40),
+                          child: VideoPlayer(_videoPlayerController[_currentVideoIndex]),
+                        ),
+                        Container(
+                          margin: const EdgeInsets.only(left: 15, right: 15, top: 10),
+                          height: 14,
+                          width: double.infinity,
+                          child: Row(
+                            children: List<Widget>.generate(
+                              _videoPlayerController.length,
+                              (index) => Expanded(
+                                child: Padding(
+                                  padding: _videoPlayerController.length > 1 ? const EdgeInsets.only(left: 9) : EdgeInsets.zero,
+                                  child: VideoProgressIndicator(
+                                    _videoPlayerController[index],
+                                    allowScrubbing: false,
+                                    colors: const VideoProgressColors(
+                                      playedColor: primaryColor,
+                                      bufferedColor: Colors.grey,
+                                      backgroundColor: Colors.grey,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        Positioned(
+                          left: 0,
+                          child: GestureDetector(
+                            onTap: cubit.playPreviousVideoOfTheCurrentWOrkout,
+                            child: Container(
+                              height: MediaQuery.of(context).size.height,
+                              width: MediaQuery.of(context).size.width / 4,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(100),
+                              ),
+                            ),
+                          ),
+                        ),
+                        Positioned(
+                          right: 0,
+                          child: GestureDetector(
+                            onTap: cubit.playNextVideoOfTheCurrentWorkout,
+                            child: Container(
+                              height: MediaQuery.of(context).size.height,
+                              width: MediaQuery.of(context).size.width / 4,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(100),
+                              ),
+                            ),
+                          ),
+                        ),
+                        Positioned(
+                          bottom: 0,
+                          left: 0,
+                          right: 0,
+                          child: BottomWorkoutBar(
+                            nextButtonFunction: _nextButtonFunction,
+                            previousButtonFunction: _previousButtonFunction,
+                            subTitle: _subTitle,
+                            description: _description,
+                            isVideoPlaying: _isCurrentVideoPlaying,
+                            playVideoFunction: cubit.playCurrentVideo,
+                            pauseVideoFunction: cubit.pauseCurrentVideo,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                )
+              ],
+            ),
+          );
+        },
+      ),
     );
   }
 }
@@ -137,18 +236,20 @@ class BottomWorkoutBar extends StatefulWidget {
     super.key,
     required this.nextButtonFunction,
     required this.previousButtonFunction,
-    required this.isShowPlay,
+    required this.playVideoFunction,
+    required this.pauseVideoFunction,
+    required this.isVideoPlaying,
     required this.subTitle,
     required this.description,
-    required this.controller,
   });
 
   final void Function()? nextButtonFunction;
   final void Function()? previousButtonFunction;
-  final bool isShowPlay;
+  final void Function()? playVideoFunction;
+  final void Function()? pauseVideoFunction;
+  final bool isVideoPlaying;
   final String subTitle;
   final String description;
-  final VideoPlayerController controller;
 
   @override
   State<BottomWorkoutBar> createState() => _BottomWorkoutBarState();
@@ -158,37 +259,22 @@ class _BottomWorkoutBarState extends State<BottomWorkoutBar> {
   void Function()? get _nextButtonFunction => widget.nextButtonFunction;
   void Function()? get _previousButtonFunction => widget.previousButtonFunction;
 
-  bool get _isShowPlay => widget.isShowPlay;
+  void Function()? get _playVideoFunction => widget.playVideoFunction;
+  void Function()? get _pauseVideoFunction => widget.pauseVideoFunction;
 
   String get _subTitle => widget.subTitle;
   String get _description => widget.description;
 
-  VideoPlayerController get _controller => widget.controller;
-
-  void _playVideo() {
-    _controller.play();
-    setState(() {});
-  }
-
-  void _pauseVideo() {
-    _controller.pause();
-    setState(() {});
-  }
-
-  void _resetVideo() {
-    _controller.seekTo(const Duration(milliseconds: 200));
-  }
+  bool get _isVideoPlaying => widget.isVideoPlaying;
 
   @override
   Widget build(BuildContext context) {
-    bool isPlaying = _controller.value.isPlaying;
-
     return GestureDetector(
       onVerticalDragUpdate: (details) {
-        if (isPlaying && details.delta.dy < 0) {
-          _pauseVideo();
-        } else if (!isPlaying && details.delta.dy > 0) {
-          _playVideo();
+        if (_isVideoPlaying && details.delta.dy < 0) {
+          _pauseVideoFunction!();
+        } else if (!_isVideoPlaying && details.delta.dy > 0) {
+          _playVideoFunction!();
         }
       },
       child: ClipRRect(
@@ -198,11 +284,10 @@ class _BottomWorkoutBarState extends State<BottomWorkoutBar> {
         ),
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 400),
-          height: isPlaying ? 105 : calculateSubtitleAndDescHeight(_subTitle, _description, context),
-          // height: isPlaying ? 105 : 300,
+          height: _isVideoPlaying ? 105 : calculateSubtitleAndDescHeight(_subTitle, _description, context),
           width: MediaQuery.of(context).size.width,
           decoration: BoxDecoration(
-            color: isPlaying ? Colors.white.withOpacity(0.3) : Colors.white,
+            color: _isVideoPlaying ? Colors.white.withOpacity(0.3) : Colors.white,
             border: Border.all(),
             borderRadius: const BorderRadius.only(
               bottomLeft: Radius.circular(40),
@@ -214,12 +299,12 @@ class _BottomWorkoutBarState extends State<BottomWorkoutBar> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                if (isPlaying == false)
+                if (_isVideoPlaying == false)
                   SubTitleAndDescription(
                     subTitle: _subTitle,
                     description: _description,
                   ),
-                if (isPlaying)
+                if (_isVideoPlaying)
                   Center(
                     child: Container(
                       width: 100,
@@ -239,27 +324,23 @@ class _BottomWorkoutBarState extends State<BottomWorkoutBar> {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       Expanded(
-                        child: _previousButtonFunction == null || isPlaying
+                        child: _previousButtonFunction == null || _isVideoPlaying
                             ? Container()
                             : PreviousVideoButton(
                                 function: () {
                                   _previousButtonFunction!();
-                                  _resetVideo();
                                 },
                               ),
                       ),
                       PlayerButton(
-                        controller: _controller,
-                        play: _playVideo,
-                        pause: _pauseVideo,
+                        isPlaying: _isVideoPlaying,
                       ),
                       Expanded(
-                        child: _nextButtonFunction == null || isPlaying
+                        child: _nextButtonFunction == null || _isVideoPlaying
                             ? Container()
                             : NextVideoButton(
                                 function: () {
                                   _nextButtonFunction!();
-                                  _resetVideo();
                                 },
                               ),
                       ),
@@ -335,21 +416,15 @@ class SubTitleAndDescription extends StatelessWidget {
 class PlayerButton extends StatelessWidget {
   const PlayerButton({
     super.key,
-    required this.controller,
-    required this.play,
-    required this.pause,
+    required this.isPlaying,
   });
 
-  final VideoPlayerController controller;
-  final void Function() play;
-  final void Function() pause;
-
-  bool get isPlaying => controller.value.isPlaying;
+  final bool isPlaying;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: isPlaying ? pause : play,
+      onTap: isPlaying ? context.read<WorkoutsheetVideoCubit>().pauseCurrentVideo : context.read<WorkoutsheetVideoCubit>().playCurrentVideo,
       child: Container(
         height: 70,
         width: 70,

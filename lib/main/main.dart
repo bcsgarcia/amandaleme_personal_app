@@ -1,5 +1,6 @@
 import 'package:amandaleme_personal_app/app/bloc_observer.dart';
 import 'package:amandaleme_personal_app/main/factories/notification_repository/notification_repository_factory.dart';
+import 'package:amandaleme_personal_app/main/factories/sync_repository/sync_repository_factory.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/date_symbol_data_local.dart';
@@ -13,18 +14,19 @@ Future<void> main() async {
 
   initializeDateFormatting('pt_BR', null);
 
-  final localStorageAdapter =
-      await CacheStorageFactory.makeLocalStorageAdapter();
+  final localStorageAdapter = await CacheStorageFactory.makeLocalStorageAdapter();
 
-  final authenticationRepository =
-      makeAuthenticationRepositoryFactory(localStorageAdapter);
+  final authenticationRepository = makeAuthenticationRepositoryFactory(localStorageAdapter);
   authenticationRepository.user.first;
 
-  runApp(App(
-    authenticationRepository: authenticationRepository,
-    companyRepository: makeCompanyRepositoryFactory(),
-    homeRepository: makeHomeRepositoryFactory(localStorageAdapter),
-    notificationRepository:
-        makeNotificationRepositoryFactory(localStorageAdapter),
-  ));
+  runApp(
+    App(
+      authenticationRepository: authenticationRepository,
+      companyRepository: makeCompanyRepositoryFactory(),
+      homeRepository: makeHomeRepositoryFactory(localStorageAdapter),
+      notificationRepository: makeNotificationRepositoryFactory(localStorageAdapter),
+      syncRepository: makeSyncRepositoryFactory(localStorageAdapter),
+      workoutsheetRepository: makeWorkoutsheetRepositoryFactory(localStorageAdapter),
+    ),
+  );
 }
