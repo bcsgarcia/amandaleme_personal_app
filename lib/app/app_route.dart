@@ -1,4 +1,3 @@
-import 'package:amandaleme_personal_app/home/cubit/home_cubit.dart';
 import 'package:amandaleme_personal_app/home/home.page.dart';
 import 'package:amandaleme_personal_app/login/view.dart';
 import 'package:flutter/material.dart';
@@ -6,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:home_repository/home_repository.dart';
 import 'package:sync_repository/sync_repository.dart';
 
+import '../home/cubit/home_cubit/home_cubit.dart';
 import 'bloc/app_bloc.dart';
 
 class RouteNames {

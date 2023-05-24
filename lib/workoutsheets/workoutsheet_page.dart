@@ -1,4 +1,3 @@
-import 'package:amandaleme_personal_app/app/common_widgets/success_dialog_widget.dart';
 import 'package:amandaleme_personal_app/home/home.page.dart';
 import 'package:amandaleme_personal_app/workoutsheet_video/cubit/workoutsheet_video_cubit.dart';
 import 'package:amandaleme_personal_app/workoutsheets/screen/screen.dart';
@@ -9,7 +8,9 @@ import 'package:sync_repository/sync_repository.dart';
 import 'package:video_preparation_service/video_preparation_service.dart';
 import 'package:workoutsheet_repository/workoutsheet_repository.dart';
 
-import '../home/cubit/home_cubit.dart';
+import '../app/app_route.dart';
+import '../app/common_widgets/common_widgets.dart';
+import '../home/cubit/home_cubit/home_cubit.dart';
 import '../workoutsheet_video/workoutsheet_video_page.dart';
 import 'cubit/workoutsheet_cubit.dart';
 
@@ -56,91 +57,116 @@ class _WorkoutsheetPageState extends State<WorkoutsheetPage> {
     cubit.workoutsheetDone(_workoutSheet.id);
   }
 
+  void _showSuccessDialog() {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return SuccessDialogWidget(
+          title: 'Parabéns!',
+          description: 'Estamos um passo mais perto de alcançar nossos objetivos. Nos vemos no próximo treino!',
+          buttonLabel: 'Voltar à página inicial',
+          onPressed: () {
+            Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(
+                builder: (context) => BlocProvider(
+                  create: (context) => HomeCubit(
+                    homeRepository: RepositoryProvider.of<IHomeRepository>(context),
+                    syncRepository: RepositoryProvider.of<SyncRepository>(context),
+                  ),
+                  child: HomePage(
+                    isShowFeedback: true,
+                  ),
+                ),
+              ),
+              ModalRoute.withName(RouteNames.home),
+            );
+          },
+        );
+      },
+    );
+  }
+
+  void _showFailureDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return ErrorDialog(
+          buttonPressed: () {
+            Navigator.of(context).pop();
+            onCompleteWorkoutsheetTap();
+          },
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Builder(builder: (context) {
-      return Scaffold(
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-        floatingActionButton: BlocBuilder<WorkoutsheetCubit, WorkoutsheetPageState>(
-          bloc: cubit,
-          builder: (context, state) {
-            if (showFloatingButton && state.status != WorkoutsheetPageStatus.loadInProgress) {
-              if (state.status == WorkoutsheetPageStatus.complete) {
-                return WorkoutFloatingButton(
-                  title: 'Finalizar treino',
-                  function: onCompleteWorkoutsheetTap,
-                );
-              } else {
-                return WorkoutFloatingButton(
-                  title: 'Iniciar treino',
-                  function: () {
-                    final nextUncheckedWorkout = _workoutSheet.workouts.indexWhere((element) => element.done == false);
-
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => BlocProvider(
-                          create: (_) => WorkoutsheetVideoCubit(VideoPreparationService()),
-                          child: WorkoutsheetVideoPage(workoutsheet: _workoutSheet, startWorkoutIndex: nextUncheckedWorkout),
-                        ),
-                      ),
-                    );
-                  },
-                );
-              }
+    return Scaffold(
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButton: BlocBuilder<WorkoutsheetCubit, WorkoutsheetPageState>(
+        bloc: cubit,
+        builder: (context, state) {
+          if (showFloatingButton && state.status != WorkoutsheetPageStatus.loadInProgress) {
+            if (state.status == WorkoutsheetPageStatus.complete) {
+              return WorkoutFloatingButton(
+                title: 'Finalizar treino',
+                function: onCompleteWorkoutsheetTap,
+              );
             } else {
-              return Container();
+              return WorkoutFloatingButton(
+                title: 'Iniciar treino',
+                function: () {
+                  final nextUncheckedWorkout = _workoutSheet.workouts.indexWhere((element) => element.done == false);
+
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => BlocProvider(
+                        create: (_) => WorkoutsheetVideoCubit(
+                          videoPreparationService: context.read<VideoPreparationService>(),
+                          workoutsheetRepository: context.read<WorkoutsheetRepository>(),
+                        ),
+                        child: WorkoutsheetVideoPage(workoutsheet: _workoutSheet, startWorkoutIndex: nextUncheckedWorkout),
+                      ),
+                    ),
+                  );
+                },
+              );
+            }
+          } else {
+            return Container();
+          }
+        },
+      ),
+      body: BlocProvider<WorkoutsheetCubit>(
+        create: (_) => cubit,
+        child: BlocListener<WorkoutsheetCubit, WorkoutsheetPageState>(
+          listener: (context, state) {
+            if (state.status == WorkoutsheetPageStatus.loadSuccess) {
+              _showSuccessDialog();
+            }
+            if (state.status == WorkoutsheetPageStatus.loadFailure) {
+              _showFailureDialog();
             }
           },
-        ),
-        body: BlocProvider<WorkoutsheetCubit>(
-          create: (_) => cubit,
-          child: BlocListener<WorkoutsheetCubit, WorkoutsheetPageState>(
-            listener: (context, state) {
-              if (state.status == WorkoutsheetPageStatus.loadSuccess) {
-                showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return SuccessDialogWidget(
-                      title: 'Parabéns!',
-                      description: 'Estamos um passo mais perto de alcançar nossos objetivos. Nos vemos no próximo treino!',
-                      buttonLabel: 'Voltar à página inicial',
-                      onPressed: () {
-                        Navigator.of(context).pushAndRemoveUntil(
-                          MaterialPageRoute(
-                            builder: (context) => BlocProvider(
-                              create: (context) => HomeCubit(
-                                homeRepository: RepositoryProvider.of<IHomeRepository>(context),
-                                syncRepository: RepositoryProvider.of<SyncRepository>(context),
-                              ),
-                              child: HomePage(),
-                            ),
-                          ),
-                          ModalRoute.withName('/'),
-                        );
-                      },
-                    );
-                  },
+          child: BlocBuilder<WorkoutsheetCubit, WorkoutsheetPageState>(
+            builder: (context, state) {
+              if (state.status == WorkoutsheetPageStatus.loadInProgress) {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              } else {
+                return WorkoutsheetScreen(
+                  workoutsheet: _workoutSheet,
                 );
               }
             },
-            child: BlocBuilder<WorkoutsheetCubit, WorkoutsheetPageState>(
-              builder: (context, state) {
-                if (state.status == WorkoutsheetPageStatus.loadInProgress) {
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
-                } else {
-                  return WorkoutsheetScreen(
-                    workoutsheet: _workoutSheet,
-                  );
-                }
-              },
-            ),
           ),
         ),
-      );
-    });
+      ),
+    );
   }
 }
 

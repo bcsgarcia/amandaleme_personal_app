@@ -1,11 +1,6 @@
 part of 'workoutsheet_video_cubit.dart';
 
-enum WorkoutsheetVideoPageStatus {
-  initial,
-  loadInProgress,
-  loadSuccess,
-  loadFailure,
-}
+enum WorkoutsheetVideoPageStatus { initial, loadInProgress, loadSuccess, loadFailure, allVideosPrepared }
 
 // ignore: must_be_immutable
 class WorkoutsheetVideoPageState extends Equatable {

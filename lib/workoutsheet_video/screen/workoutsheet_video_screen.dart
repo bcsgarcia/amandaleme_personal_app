@@ -20,6 +20,7 @@ class WorkoutsheetVideoScreen extends StatefulWidget {
     required this.indexCurrentWorkoutVideo,
     required this.nextButtonFunction,
     required this.previousButtonFunction,
+    required this.concludeWorkoutsheetFunction,
   });
 
   final WorkoutModel workout;
@@ -31,6 +32,7 @@ class WorkoutsheetVideoScreen extends StatefulWidget {
 
   final void Function()? nextButtonFunction;
   final void Function()? previousButtonFunction;
+  final void Function()? concludeWorkoutsheetFunction;
 
   @override
   State<WorkoutsheetVideoScreen> createState() => _WorkoutsheetVideoScreenState();
@@ -44,6 +46,7 @@ class _WorkoutsheetVideoScreenState extends State<WorkoutsheetVideoScreen> {
 
   void Function()? get _nextButtonFunction => widget.nextButtonFunction;
   void Function()? get _previousButtonFunction => widget.previousButtonFunction;
+  void Function()? get _concludeWorkoutsheetFunction => widget.concludeWorkoutsheetFunction;
 
   List<VideoPlayerController> get _videoPlayerController => widget.videoPlayerController;
 
@@ -120,7 +123,7 @@ class _WorkoutsheetVideoScreenState extends State<WorkoutsheetVideoScreen> {
       body: Builder(
         builder: (context) {
           return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
@@ -216,6 +219,7 @@ class _WorkoutsheetVideoScreenState extends State<WorkoutsheetVideoScreen> {
                             isVideoPlaying: _isCurrentVideoPlaying,
                             playVideoFunction: cubit.playCurrentVideo,
                             pauseVideoFunction: cubit.pauseCurrentVideo,
+                            concludeWorkoutsheetFunction: _concludeWorkoutsheetFunction,
                           ),
                         ),
                       ],
@@ -241,12 +245,15 @@ class BottomWorkoutBar extends StatefulWidget {
     required this.isVideoPlaying,
     required this.subTitle,
     required this.description,
+    required this.concludeWorkoutsheetFunction,
   });
 
   final void Function()? nextButtonFunction;
   final void Function()? previousButtonFunction;
   final void Function()? playVideoFunction;
   final void Function()? pauseVideoFunction;
+  final void Function()? concludeWorkoutsheetFunction;
+
   final bool isVideoPlaying;
   final String subTitle;
   final String description;
@@ -258,6 +265,7 @@ class BottomWorkoutBar extends StatefulWidget {
 class _BottomWorkoutBarState extends State<BottomWorkoutBar> {
   void Function()? get _nextButtonFunction => widget.nextButtonFunction;
   void Function()? get _previousButtonFunction => widget.previousButtonFunction;
+  void Function()? get _concludeWorkoutsheetFunction => widget.concludeWorkoutsheetFunction;
 
   void Function()? get _playVideoFunction => widget.playVideoFunction;
   void Function()? get _pauseVideoFunction => widget.pauseVideoFunction;
@@ -294,64 +302,62 @@ class _BottomWorkoutBarState extends State<BottomWorkoutBar> {
               bottomRight: Radius.circular(40),
             ),
           ),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                if (_isVideoPlaying == false)
-                  SubTitleAndDescription(
-                    subTitle: _subTitle,
-                    description: _description,
-                  ),
-                if (_isVideoPlaying)
-                  Center(
-                    child: Container(
-                      width: 100,
-                      height: 3,
-                      decoration: BoxDecoration(
-                        color: Colors.grey,
-                        borderRadius: BorderRadius.circular(10),
-                      ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              if (_isVideoPlaying == false)
+                SubTitleAndDescription(
+                  subTitle: _subTitle,
+                  description: _description,
+                ),
+              if (_isVideoPlaying)
+                Center(
+                  child: Container(
+                    width: 100,
+                    height: 3,
+                    decoration: BoxDecoration(
+                      color: Colors.grey,
+                      borderRadius: BorderRadius.circular(10),
                     ),
                   ),
-                const SizedBox(
-                  height: 10,
                 ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      Expanded(
-                        child: _previousButtonFunction == null || _isVideoPlaying
-                            ? Container()
-                            : PreviousVideoButton(
-                                function: () {
-                                  _previousButtonFunction!();
-                                },
-                              ),
-                      ),
-                      PlayerButton(
-                        isPlaying: _isVideoPlaying,
-                      ),
-                      Expanded(
-                        child: _nextButtonFunction == null || _isVideoPlaying
-                            ? Container()
-                            : NextVideoButton(
-                                function: () {
-                                  _nextButtonFunction!();
-                                },
-                              ),
-                      ),
-                    ],
+              const SizedBox(
+                height: 10,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Expanded(
+                    child: _previousButtonFunction == null || _isVideoPlaying
+                        ? Container()
+                        : PreviousVideoButton(
+                            function: () {
+                              _previousButtonFunction!();
+                            },
+                          ),
                   ),
-                ),
-                const SizedBox(
-                  height: 15,
-                ),
-              ],
-            ),
+                  PlayerButton(
+                    isPlaying: _isVideoPlaying,
+                  ),
+                  if (_concludeWorkoutsheetFunction == null && _nextButtonFunction != null && !_isVideoPlaying)
+                    Expanded(
+                      child: NextVideoButton(
+                        function: () {
+                          _nextButtonFunction!();
+                        },
+                      ),
+                    ),
+                  if (_concludeWorkoutsheetFunction != null && !_isVideoPlaying)
+                    ConcludeWorkoutButton(
+                      concludeWorkoutsheetFunction: _concludeWorkoutsheetFunction,
+                    ),
+                  if (_isVideoPlaying) Expanded(child: Container())
+                ],
+              ),
+              const SizedBox(
+                height: 15,
+              ),
+            ],
           ),
         ),
       ),
@@ -373,7 +379,7 @@ class SubTitleAndDescription extends StatelessWidget {
   Widget build(BuildContext context) {
     return Expanded(
       child: Padding(
-        padding: EdgeInsets.zero,
+        padding: const EdgeInsets.symmetric(horizontal: 10),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
@@ -480,6 +486,38 @@ class PreviousVideoButton extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [Transform.rotate(angle: pi, child: Image.asset('assets/images/icons/next-right.png', height: 30)), const Text('Voltar')],
+      ),
+    );
+  }
+}
+
+class ConcludeWorkoutButton extends StatelessWidget {
+  const ConcludeWorkoutButton({super.key, required this.concludeWorkoutsheetFunction});
+
+  final void Function()? concludeWorkoutsheetFunction;
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 15),
+        child: ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: successColor,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+          ),
+          onPressed: concludeWorkoutsheetFunction,
+          child: Text(
+            'Concluir',
+            style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                  fontSize: 16,
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                ),
+          ),
+        ),
       ),
     );
   }

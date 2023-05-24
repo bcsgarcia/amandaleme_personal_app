@@ -61,7 +61,7 @@ class _SuccessDialogWidgetState extends State<SuccessDialogWidget> {
         Container(
           width: double.infinity,
           height: 43,
-          margin: const EdgeInsets.symmetric(horizontal: 60, vertical: 20),
+          margin: const EdgeInsets.symmetric(horizontal: 50, vertical: 20),
           child: ElevatedButton(
             key: const Key('loginForm_continue_raisedButton'),
             style: ElevatedButton.styleFrom(
@@ -81,20 +81,6 @@ class _SuccessDialogWidgetState extends State<SuccessDialogWidget> {
           ),
         ),
       ],
-      // content: Text(widget.description),
-
-      // actions: [
-      //   if (widget.button1Label != null && widget.button1OnPressed != null)
-      //     TextButton(
-      //       onPressed: widget.button1OnPressed!,
-      //       child: Text(widget.button1Label!),
-      //     ),
-      //   if (widget.button2Label != null && widget.button2OnPressed != null)
-      //     TextButton(
-      //       onPressed: widget.button2OnPressed!,
-      //       child: Text(widget.button2Label!),
-      //     ),
-      // ],
     );
   }
 }

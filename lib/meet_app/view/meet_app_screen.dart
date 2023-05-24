@@ -37,14 +37,7 @@ class _MeetAppScreenState extends State<MeetAppScreen> {
               context: context,
               builder: (BuildContext context) {
                 return ErrorDialog(
-                  title: 'Error Title',
-                  description: 'Error description.',
-                  button1Label: 'Cancel',
-                  button1OnPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  button2Label: 'Retry',
-                  button2OnPressed: () {
+                  buttonPressed: () {
                     Navigator.of(context).pop();
                     _meetAppCubit.retrieveMeetAppScreen();
                   },

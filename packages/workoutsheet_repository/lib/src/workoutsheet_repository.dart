@@ -2,6 +2,7 @@ import 'package:http_adapter/http_adapter.dart';
 
 abstract class WorkoutsheetRepository {
   Future<void> done(String idWorkoutSheet);
+  Future<void> createFeedback(String idWorkoutSheet, String feedback);
 }
 
 class RemoteWorkoutsheetRepository implements WorkoutsheetRepository {
@@ -20,6 +21,20 @@ class RemoteWorkoutsheetRepository implements WorkoutsheetRepository {
 
       return await httpClient.request(url: '$url/done', method: 'post', body: body);
     } catch (_) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<void> createFeedback(String idWorkoutSheet, String feedback) async {
+    try {
+      final body = {
+        "idworkoutsheet": idWorkoutSheet,
+        "feedback": feedback,
+      };
+
+      return await httpClient.request(url: '$url/feedback', method: 'post', body: body);
+    } catch (e) {
       rethrow;
     }
   }

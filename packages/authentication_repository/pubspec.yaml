@@ -10,6 +10,7 @@ dependencies:
   equatable: ^2.0.5
   flutter:
     sdk: flutter
+  local_auth: ^2.1.6
   http_adapter:
     path: ../http
   cache_adapter:

@@ -1,16 +1,21 @@
-import 'package:amandaleme_personal_app/home/cubit/home_cubit.dart';
+import 'package:amandaleme_personal_app/home/cubit/feedback/feedback_cubit.dart';
 import 'package:amandaleme_personal_app/home/screen/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:home_repository/home_repository.dart';
 import 'package:sync_repository/sync_repository.dart';
+import 'package:workoutsheet_repository/workoutsheet_repository.dart';
 
 import '../app/common_widgets/common_widgets.dart';
+import 'cubit/home_cubit/home_cubit.dart';
 import 'screen/sync_page.dart';
 
 // ignore: must_be_immutable
 class HomePage extends StatelessWidget {
-  HomePage({super.key});
+  HomePage({
+    super.key,
+    this.isShowFeedback = false,
+  });
 
   static Page<void> page() => MaterialPage<void>(
         child: BlocProvider(
@@ -23,6 +28,8 @@ class HomePage extends StatelessWidget {
       );
 
   late HomeCubit _homeCubit;
+
+  final bool isShowFeedback;
 
   @override
   Widget build(BuildContext context) {
@@ -38,14 +45,7 @@ class HomePage extends StatelessWidget {
                 context: context,
                 builder: (BuildContext context) {
                   return ErrorDialog(
-                    title: 'Error Title',
-                    description: 'Error description.',
-                    button1Label: 'Cancel',
-                    button1OnPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                    button2Label: 'Retry',
-                    button2OnPressed: () {
+                    buttonPressed: () {
                       Navigator.of(context).pop();
                       _homeCubit.getHomePage();
                     },
@@ -57,7 +57,13 @@ class HomePage extends StatelessWidget {
           child: BlocBuilder<HomeCubit, HomePageState>(
             builder: (context, state) {
               if (state.status == HomePageStatus.loadSuccess) {
-                return HomeScreen(homeScreenModel: state.screenModel!);
+                return BlocProvider(
+                  create: (_) => FeedbackCubit(context.read<WorkoutsheetRepository>()),
+                  child: HomeScreen(
+                    homeScreenModel: state.screenModel!,
+                    showFeedbackWidget: isShowFeedback,
+                  ),
+                );
               }
 
               if (state.status == HomePageStatus.sync) {

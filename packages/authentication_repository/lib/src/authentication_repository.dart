@@ -8,8 +8,11 @@ import 'models/models.dart';
 
 abstract class Authentication {
   Future<UserAuthenticationModel> authWithEmailAndPassword(
-    AuthenticationParam param,
-  );
+    AuthenticationParam param, {
+    required bool keepConnected,
+  });
+
+  Future<void> refreshToken();
 
   Stream<UserAuthenticationModel> get user;
   UserAuthenticationModel get currentUser;
@@ -31,8 +34,7 @@ class RemoteAuthentication implements Authentication {
     required CacheStorage cacheStorage,
     required String url,
   }) {
-    final userStreamController =
-        StreamController<UserAuthenticationModel>.broadcast();
+    final userStreamController = StreamController<UserAuthenticationModel>.broadcast();
     return RemoteAuthentication._(
       httpClient: httpClient,
       cacheStorage: cacheStorage,
@@ -63,17 +65,19 @@ class RemoteAuthentication implements Authentication {
   }
 
   @override
-  Future<UserAuthenticationModel> authWithEmailAndPassword(
-      AuthenticationParam param) async {
+  Future<UserAuthenticationModel> authWithEmailAndPassword(AuthenticationParam param, {required bool keepConnected}) async {
     final body = RemoteAuthenticationParams.fromDomain(param).toJson();
     try {
-      final httpResponse =
-          await httpClient.request(url: url, method: 'post', body: body);
-      await cacheStorage.save(key: 'token', value: httpResponse['accessToken']);
+      final httpResponse = await httpClient.request(url: url, method: 'post', body: body);
+      await saveTokenLocally(httpResponse['accessToken']);
       final user = UserAuthenticationModel.fromJson(httpResponse);
 
       // Notify listeners that the user has changed
       _userStreamController.add(user);
+
+      if (keepConnected) {
+        await cacheStorage.save(key: 'keepConnected', value: true);
+      }
 
       return user;
     } catch (error) {
@@ -88,7 +92,27 @@ class RemoteAuthentication implements Authentication {
     _userStreamController.add(UserAuthenticationModel(token: ''));
   }
 
+  @override
+  Future<void> refreshToken() async {
+    try {
+      //   final httpResponse = await httpClient.request(url: '$url/refresh', method: 'post');
+      //   await saveTokenLocally(httpResponse['accessToken']);
+
+      //   final user = UserAuthenticationModel.fromJson(httpResponse);
+
+      //   _userStreamController.add(user);
+
+      await Future.delayed(Duration(seconds: 10));
+    } catch (e) {
+      rethrow;
+    }
+  }
+
   void dispose() {
     _userStreamController.close();
+  }
+
+  Future<void> saveTokenLocally(String token) async {
+    await cacheStorage.save(key: 'token', value: token);
   }
 }

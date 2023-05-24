@@ -15,25 +15,25 @@ class LoginCubit extends Cubit<LoginState> {
 
   void emailChanged(String value) {
     final email = EmailInput.dirty(value);
-    emit(state.copyWith(
-        emailInput: email, status: FormzSubmissionStatus.initial));
+    emit(state.copyWith(emailInput: email, status: FormzSubmissionStatus.initial));
   }
 
   void passwordChanged(String value) {
     final pass = PasswordInput.dirty(value);
-    emit(
-        state.copyWith(passInput: pass, status: FormzSubmissionStatus.initial));
+    emit(state.copyWith(passInput: pass, status: FormzSubmissionStatus.initial));
   }
 
   Future<void> authWithEmailAndPassword() async {
     debugPrint(state.status.name);
     emit(state.copyWith(status: FormzSubmissionStatus.inProgress));
     try {
-      await _authenticationRepository
-          .authWithEmailAndPassword(AuthenticationParam(
-        email: state.emailInput.value,
-        pass: state.passInput.value,
-      ));
+      await _authenticationRepository.authWithEmailAndPassword(
+        AuthenticationParam(
+          email: state.emailInput.value,
+          pass: state.passInput.value,
+        ),
+        keepConnected: true,
+      );
 
       emit(state.copyWith(status: FormzSubmissionStatus.success));
     } catch (e) {

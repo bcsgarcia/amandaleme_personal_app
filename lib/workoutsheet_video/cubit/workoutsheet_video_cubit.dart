@@ -2,13 +2,15 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:home_repository/home_repository.dart';
 import 'package:video_preparation_service/video_preparation_service.dart';
+import 'package:workoutsheet_repository/workoutsheet_repository.dart';
 
 part 'workoutsheet_video_state.dart';
 
 class WorkoutsheetVideoCubit extends Cubit<WorkoutsheetVideoPageState> {
-  WorkoutsheetVideoCubit(
-    this.videoPreparationService,
-  ) : super(
+  WorkoutsheetVideoCubit({
+    required this.videoPreparationService,
+    required this.workoutsheetRepository,
+  }) : super(
           WorkoutsheetVideoPageState(
             status: WorkoutsheetVideoPageStatus.initial,
             allWorkoutVideoModel: const [],
@@ -18,6 +20,7 @@ class WorkoutsheetVideoCubit extends Cubit<WorkoutsheetVideoPageState> {
         );
 
   final VideoPreparationService videoPreparationService;
+  final WorkoutsheetRepository workoutsheetRepository;
 
   List<String> filesPaths = [];
 
@@ -28,7 +31,7 @@ class WorkoutsheetVideoCubit extends Cubit<WorkoutsheetVideoPageState> {
 
     emit(
       state.copyWith(
-        status: WorkoutsheetVideoPageStatus.loadSuccess,
+        status: WorkoutsheetVideoPageStatus.allVideosPrepared,
         allWorkoutVideoModel: allWorkoutVideoModel,
         currentWorkoutIndex: startIndex,
         currentWorkoutVideoIndex: 0,
@@ -176,14 +179,14 @@ class WorkoutsheetVideoCubit extends Cubit<WorkoutsheetVideoPageState> {
     ));
   }
 
-  @override
-  Future<void> close() async {
-    for (var model in state.allWorkoutVideoModel) {
-      for (var controller in model.controllers) {
-        await controller.dispose();
-      }
+  void workoutsheetDone(String idWorkoutsheet) async {
+    try {
+      emit(state.copyWith(status: WorkoutsheetVideoPageStatus.loadInProgress));
+      await workoutsheetRepository.done(idWorkoutsheet);
+      await Future.delayed(const Duration(seconds: 3)); // REMOVE
+      emit(state.copyWith(status: WorkoutsheetVideoPageStatus.loadSuccess));
+    } catch (e) {
+      emit(state.copyWith(status: WorkoutsheetVideoPageStatus.loadFailure));
     }
-
-    await super.close();
   }
 }

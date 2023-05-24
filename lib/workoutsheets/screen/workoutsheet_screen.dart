@@ -1,10 +1,14 @@
+import 'package:amandaleme_personal_app/workoutsheet_video/workoutsheet_video_page.dart';
 import 'package:amandaleme_personal_app/workoutsheets/cubit/workoutsheet_cubit.dart';
 import 'package:amandaleme_personal_app/workoutsheets/screen/widgets/workout_item_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:home_repository/home_repository.dart';
+import 'package:video_preparation_service/video_preparation_service.dart';
+import 'package:workoutsheet_repository/workoutsheet_repository.dart';
 
 import '../../app/common_widgets/common_widgets.dart';
+import '../../workoutsheet_video/cubit/workoutsheet_video_cubit.dart';
 
 class WorkoutsheetScreen extends StatefulWidget {
   const WorkoutsheetScreen({
@@ -24,6 +28,23 @@ class _WorkoutsheetScreenState extends State<WorkoutsheetScreen> {
   @override
   void initState() {
     super.initState();
+  }
+
+  _goToWorkoutSheetVideo(int index) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => BlocProvider(
+          create: (_) => WorkoutsheetVideoCubit(
+            videoPreparationService: context.read<VideoPreparationService>(),
+            workoutsheetRepository: context.read<WorkoutsheetRepository>(),
+          ),
+          child: WorkoutsheetVideoPage(
+            workoutsheet: _workoutSheet,
+            startWorkoutIndex: index,
+          ),
+        ),
+      ),
+    );
   }
 
   @override
@@ -49,17 +70,20 @@ class _WorkoutsheetScreenState extends State<WorkoutsheetScreen> {
             itemCount: _workoutSheet.workouts.length,
             itemBuilder: (context, i) {
               final item = _workoutSheet.workouts[i];
-              return WorkoutItem(
-                workout: item,
-                funcDone: () {
-                  item.done = !item.done;
-                  if (_workoutSheet.workouts.every((element) => element.done)) {
-                    context.read<WorkoutsheetCubit>().workoutsheetComplete();
-                  } else {
-                    context.read<WorkoutsheetCubit>().workoutsheetIncomplete();
-                  }
-                  setState(() {});
-                },
+              return GestureDetector(
+                onTap: () => _goToWorkoutSheetVideo(i),
+                child: WorkoutItem(
+                  workout: item,
+                  funcDone: () {
+                    item.done = !item.done;
+                    if (_workoutSheet.workouts.every((element) => element.done)) {
+                      context.read<WorkoutsheetCubit>().workoutsheetComplete();
+                    } else {
+                      context.read<WorkoutsheetCubit>().workoutsheetIncomplete();
+                    }
+                    setState(() {});
+                  },
+                ),
               );
             },
           ),

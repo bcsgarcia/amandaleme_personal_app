@@ -1,10 +1,10 @@
-import 'package:amandaleme_personal_app/home/cubit/home_cubit.dart';
 import 'package:amandaleme_personal_app/notifications/cubit/notification_cubit.dart';
 import 'package:amandaleme_personal_app/notifications/notification_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:notification_repository/notification_repository.dart';
 
+import '../../home/cubit/home_cubit/home_cubit.dart';
 import '../theme/light_theme.dart';
 import 'box_shadow_default.dart';
 
@@ -43,8 +43,7 @@ class _AppHeaderState extends State<AppHeader> {
       context,
       MaterialPageRoute(
         builder: (context) => BlocProvider(
-          create: (_) =>
-              NotificationCubit(context.read<NotificationRepository>()),
+          create: (_) => NotificationCubit(context.read<NotificationRepository>()),
           child: NotificationPage(
             notifications: _notifications,
           ),

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../cubit/home_cubit.dart';
+import '../cubit/home_cubit/home_cubit.dart';
 
 class DownloadProgressPage extends StatelessWidget {
   const DownloadProgressPage({super.key});
@@ -10,7 +10,7 @@ class DownloadProgressPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Download Progress'),
+        title: const Text('Download Progress'),
       ),
       body: Center(
         child: Padding(
@@ -18,7 +18,7 @@ class DownloadProgressPage extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text('Download Progress:'),
+              const Text('Download Progress:'),
               StreamBuilder<double>(
                 stream: context.read<HomeCubit>().syncRepository.downloadProgressStream,
                 builder: (BuildContext context, AsyncSnapshot<double> snapshot) {
@@ -28,7 +28,7 @@ class DownloadProgressPage extends StatelessWidget {
 
                   switch (snapshot.connectionState) {
                     case ConnectionState.waiting:
-                      return CircularProgressIndicator();
+                      return const CircularProgressIndicator();
                     default:
                       return LinearProgressIndicator(
                         value: snapshot.data,
