@@ -13,10 +13,12 @@ class AppBloc extends Bloc<AppEvent, AppState> {
     required Authentication authenticationRepository,
   })  : _authenticationRepository = authenticationRepository,
         super(
-          authenticationRepository.currentUser.isNotEmpty ? AppState.authenticated(authenticationRepository.currentUser) : const AppState.unauthenticated(),
+          // authenticationRepository.currentUser.isNotEmpty ? AppState.authenticated(authenticationRepository.currentUser) : const AppState.unauthenticated(),
+          const AppState.initial(),
         ) {
     on<AppUserChanged>(_onUserChanged);
     on<AppLogoutRequested>(_onLogoutRequested);
+    on<AppVerifyUser>(verifyUser);
     _userSubscription = _authenticationRepository.user.listen((user) {
       add(AppUserChanged(user));
     });
@@ -38,6 +40,32 @@ class AppBloc extends Bloc<AppEvent, AppState> {
     AppLogoutRequested event,
     Emitter<AppState> emit,
   ) {
+    _logout();
+  }
+
+  void verifyUser(
+    AppVerifyUser event,
+    Emitter<AppState> emit,
+  ) async {
+    try {
+      final currentUser = _authenticationRepository.currentUser;
+
+      final userHasLoggedBefore = currentUser.token.isNotEmpty;
+
+      if (userHasLoggedBefore) {
+        final result = await _authenticationRepository.requestLocalAuth();
+        if (result == LocalAuthStatusEnum.failure || result == LocalAuthStatusEnum.errorDefault || result == LocalAuthStatusEnum.lockedOut) {
+          _logout();
+        }
+      } else {
+        emit(const AppState.unauthenticated());
+      }
+    } catch (_) {
+      _logout();
+    }
+  }
+
+  void _logout() {
     _authenticationRepository.logout();
   }
 

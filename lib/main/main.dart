@@ -27,6 +27,7 @@ Future<void> main() async {
       notificationRepository: makeNotificationRepositoryFactory(localStorageAdapter),
       syncRepository: makeSyncRepositoryFactory(localStorageAdapter),
       workoutsheetRepository: makeWorkoutsheetRepositoryFactory(localStorageAdapter),
+      userRepository: makeUserRepositoryFactory(localStorageAdapter),
     ),
   );
 }

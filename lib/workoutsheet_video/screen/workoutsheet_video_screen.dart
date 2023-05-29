@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:home_repository/home_repository.dart';
 import 'package:video_player/video_player.dart';
@@ -100,6 +101,7 @@ class _WorkoutsheetVideoScreenState extends State<WorkoutsheetVideoScreen> {
 
     return Scaffold(
       appBar: AppBar(
+        systemOverlayStyle: SystemUiOverlayStyle.dark,
         title: Text(
           widget.workout.title,
           maxLines: 2,

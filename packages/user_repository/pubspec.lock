@@ -139,6 +139,21 @@ packages:
       url: "https://mobile20unpubfrontdoor.azurefd.net"
     source: hosted
     version: "2.1.1"
+  http:
+    dependency: transitive
+    description:
+      name: http
+      sha256: "5895291c13fa8a3bd82e76d5627f69e0d85ca6a30dcac95c4ea19a5d555879c2"
+      url: "https://mobile20unpubfrontdoor.azurefd.net"
+    source: hosted
+    version: "0.13.6"
+  http_adapter:
+    dependency: "direct main"
+    description:
+      path: "../http"
+      relative: true
+    source: path
+    version: "1.0.0"
   http_multi_server:
     dependency: transitive
     description:

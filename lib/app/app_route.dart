@@ -1,3 +1,4 @@
+import 'package:amandaleme_personal_app/app/screen/splash_screen.dart';
 import 'package:amandaleme_personal_app/home/home.page.dart';
 import 'package:amandaleme_personal_app/login/view.dart';
 import 'package:flutter/material.dart';
@@ -52,5 +53,7 @@ List<Page<dynamic>> onGenerateAppViewPages(
       return [HomePage.page()];
     case AppStatus.unauthenticated:
       return [LoginPage.page()];
+    case AppStatus.initial:
+      return [SplashScreen.page()];
   }
 }

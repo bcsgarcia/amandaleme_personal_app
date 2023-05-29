@@ -11,7 +11,7 @@ import 'cubit/home_cubit/home_cubit.dart';
 import 'screen/sync_page.dart';
 
 // ignore: must_be_immutable
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   HomePage({
     super.key,
     this.isShowFeedback = false,
@@ -27,16 +27,25 @@ class HomePage extends StatelessWidget {
         ),
       );
 
+  final bool isShowFeedback;
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
   late HomeCubit _homeCubit;
 
-  final bool isShowFeedback;
+  @override
+  void initState() {
+    _homeCubit = context.read<HomeCubit>();
+    _homeCubit.getHomePage();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Builder(builder: (context) {
-      _homeCubit = context.read<HomeCubit>();
-      context.read<HomeCubit>().getHomePage();
-
       return Scaffold(
         body: BlocListener<HomeCubit, HomePageState>(
           listener: (context, state) {
@@ -61,7 +70,7 @@ class HomePage extends StatelessWidget {
                   create: (_) => FeedbackCubit(context.read<WorkoutsheetRepository>()),
                   child: HomeScreen(
                     homeScreenModel: state.screenModel!,
-                    showFeedbackWidget: isShowFeedback,
+                    showFeedbackWidget: widget.isShowFeedback,
                   ),
                 );
               }

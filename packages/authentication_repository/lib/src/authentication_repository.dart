@@ -2,9 +2,22 @@ import 'dart:async'; // Import needed for StreamController
 
 import 'package:cache_adapter/cache_adapter.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
 import 'package:http_adapter/http_adapter.dart';
+import 'package:local_auth/error_codes.dart' as auth_error;
+import 'package:local_auth/local_auth.dart';
+import 'package:local_auth_android/local_auth_android.dart';
+import 'package:local_auth_ios/local_auth_ios.dart';
 
 import 'models/models.dart';
+
+enum LocalAuthStatusEnum {
+  success,
+  failure,
+  notEnrolled,
+  lockedOut,
+  errorDefault,
+}
 
 abstract class Authentication {
   Future<UserAuthenticationModel> authWithEmailAndPassword(
@@ -13,6 +26,8 @@ abstract class Authentication {
   });
 
   Future<void> refreshToken();
+
+  Future<LocalAuthStatusEnum> requestLocalAuth();
 
   Stream<UserAuthenticationModel> get user;
   UserAuthenticationModel get currentUser;
@@ -75,10 +90,6 @@ class RemoteAuthentication implements Authentication {
       // Notify listeners that the user has changed
       _userStreamController.add(user);
 
-      if (keepConnected) {
-        await cacheStorage.save(key: 'keepConnected', value: true);
-      }
-
       return user;
     } catch (error) {
       rethrow;
@@ -88,23 +99,70 @@ class RemoteAuthentication implements Authentication {
   @override
   Future<void> logout() async {
     cacheStorage.clear();
-    // Notify listeners that the user has logged out
     _userStreamController.add(UserAuthenticationModel(token: ''));
   }
 
   @override
   Future<void> refreshToken() async {
     try {
-      //   final httpResponse = await httpClient.request(url: '$url/refresh', method: 'post');
-      //   await saveTokenLocally(httpResponse['accessToken']);
+      final _token = cacheStorage.fetch('token');
 
-      //   final user = UserAuthenticationModel.fromJson(httpResponse);
+      final _body = {
+        "token": _token,
+      };
+      final httpResponse = await httpClient.request(url: '$url/refresh', method: 'post', body: _body);
+      await saveTokenLocally(httpResponse['accessToken']);
 
-      //   _userStreamController.add(user);
+      final user = UserAuthenticationModel.fromJson(httpResponse);
 
-      await Future.delayed(Duration(seconds: 10));
+      _userStreamController.add(user);
     } catch (e) {
       rethrow;
+    }
+  }
+
+  @override
+  Future<LocalAuthStatusEnum> requestLocalAuth() async {
+    final LocalAuthentication auth = LocalAuthentication();
+
+    final bool canAuthenticateWithBiometrics = await auth.canCheckBiometrics;
+    final bool canAuthenticate = canAuthenticateWithBiometrics || await auth.isDeviceSupported();
+
+    if (canAuthenticate) {
+      try {
+        final bool didAuthenticate = await auth.authenticate(
+          localizedReason: 'Por favor, autentique-se para entrar no app',
+          authMessages: <AuthMessages>[
+            AndroidAuthMessages(
+              signInTitle: 'Autenticação requerida',
+              biometricHint: '',
+              cancelButton: 'Não, obrigado',
+            ),
+            IOSAuthMessages(
+              cancelButton: 'Não, obrigado',
+            ),
+          ],
+        );
+
+        if (didAuthenticate) {
+          await refreshToken();
+          return LocalAuthStatusEnum.success;
+        } else {
+          print('false');
+          return LocalAuthStatusEnum.failure;
+        }
+      } on PlatformException catch (e) {
+        if (e.code == auth_error.notEnrolled) {
+          await refreshToken();
+          return LocalAuthStatusEnum.notEnrolled;
+        } else if (e.code == auth_error.lockedOut || e.code == auth_error.permanentlyLockedOut) {
+          return LocalAuthStatusEnum.lockedOut;
+        } else {
+          return LocalAuthStatusEnum.errorDefault;
+        }
+      }
+    } else {
+      return LocalAuthStatusEnum.failure;
     }
   }
 

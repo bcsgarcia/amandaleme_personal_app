@@ -14,3 +14,5 @@ class AppUserChanged extends AppEvent {
 
   final UserAuthenticationModel user;
 }
+
+class AppVerifyUser extends AppEvent {}

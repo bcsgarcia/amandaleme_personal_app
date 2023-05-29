@@ -68,7 +68,7 @@ class FeedbackBuilder extends StatelessWidget {
           }
 
           if (state.status == FeedbackStatus.loadInProgress) {
-            return FeedbackWidget(text: 'Enviando feedback...', isLoading: true, height: 56);
+            return const FeedbackWidget(text: 'Enviando feedback...', isLoading: true, height: 56);
           }
 
           return const SizedBox(height: 20);

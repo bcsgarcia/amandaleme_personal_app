@@ -63,6 +63,8 @@
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Required for saving images to the photo library</string>
 
+	<key>NSFaceIDUsageDescription</key>
+	<string>To allow user keep their autentication valid in order to facilitate the login?</string>
 
 
 </dict>

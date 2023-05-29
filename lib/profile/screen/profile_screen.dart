@@ -1,4 +1,5 @@
 import 'package:amandaleme_personal_app/app/theme/light_theme.dart';
+import 'package:amandaleme_personal_app/profile/change_pass_page.dart';
 import 'package:amandaleme_personal_app/profile/screen/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:user_repository/user_repository.dart';
@@ -60,8 +61,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         const SizedBox(height: 13),
         Text(
           '$firstName $lastName',
-          style: textTheme.bodyLarge!
-              .copyWith(fontWeight: FontWeight.bold, fontSize: 23),
+          style: textTheme.bodyLarge!.copyWith(fontWeight: FontWeight.bold, fontSize: 23),
         ),
         const SizedBox(height: 22),
         const Divider(),
@@ -84,7 +84,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   EdgeInsets.zero,
                 ),
               ),
-              onPressed: () {},
+              onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const ChangePasswordPage())),
               child: Text(
                 'Alterar senha',
                 style: textTheme.bodyLarge!.copyWith(
