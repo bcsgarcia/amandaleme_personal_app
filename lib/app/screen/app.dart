@@ -9,6 +9,7 @@ import 'package:notification_repository/notification_repository.dart';
 import 'package:sync_repository/sync_repository.dart';
 import 'package:user_repository/user_repository.dart';
 import 'package:video_preparation_service/video_preparation_service.dart';
+import 'package:workout_repository/workout_repository.dart';
 import 'package:workoutsheet_repository/workoutsheet_repository.dart';
 
 import '../app_route.dart';
@@ -24,13 +25,15 @@ class App extends StatelessWidget {
     required SyncRepository syncRepository,
     required WorkoutsheetRepository workoutsheetRepository,
     required UserRepository userRepository,
+    required WorkoutRepository workoutRepository,
   })  : _authenticationRepository = authenticationRepository,
         _companyRepository = companyRepository,
         _iHomeRepository = homeRepository,
         _notificationRepository = notificationRepository,
         _syncRepository = syncRepository,
         _workoutsheetRepository = workoutsheetRepository,
-        _userRepository = userRepository;
+        _userRepository = userRepository,
+        _workoutRepository = workoutRepository;
 
   final Authentication _authenticationRepository;
   final CompanyRepository _companyRepository;
@@ -39,6 +42,7 @@ class App extends StatelessWidget {
   final SyncRepository _syncRepository;
   final WorkoutsheetRepository _workoutsheetRepository;
   final UserRepository _userRepository;
+  final WorkoutRepository _workoutRepository;
 
   final VideoPreparationService _videoPreparationService = VideoPreparationService();
 
@@ -69,6 +73,9 @@ class App extends StatelessWidget {
         ),
         RepositoryProvider.value(
           value: _userRepository,
+        ),
+        RepositoryProvider.value(
+          value: _workoutRepository,
         )
       ],
       child: BlocProvider(

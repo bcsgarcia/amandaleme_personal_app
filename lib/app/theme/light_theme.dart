@@ -8,11 +8,13 @@ const Color lightGrayColor = Color(0xFFD9D9D9);
 const Color whiteColor = Color(0xFFFFFFFF);
 const Color accentColor = Color(0xFF362F2C);
 const Color successColor = Color(0xFF32C71A);
+const Color errorColor = Color(0xFFDE3730);
 
 final theme = ThemeData(
   textTheme: GoogleFonts.robotoTextTheme(),
   textSelectionTheme: const TextSelectionThemeData(
     cursorColor: Colors.blue,
+    selectionColor: Color(0xffbbd6fb),
   ),
   primaryColor: primaryColor,
   colorScheme: const ColorScheme.light(

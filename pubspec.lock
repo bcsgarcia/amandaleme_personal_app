@@ -659,6 +659,13 @@ packages:
       url: "https://mobile20unpubfrontdoor.azurefd.net"
     source: hosted
     version: "3.1.4"
+  workout_repository:
+    dependency: "direct main"
+    description:
+      path: "packages/workout_repository"
+      relative: true
+    source: path
+    version: "1.0.0"
   workoutsheet_repository:
     dependency: "direct main"
     description:

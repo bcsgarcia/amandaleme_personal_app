@@ -47,6 +47,8 @@ dependencies:
     path: packages/sync_repository
   workoutsheet_repository:
     path: packages/workoutsheet_repository
+  workout_repository:
+    path: packages/workout_repository
 
 dev_dependencies:
   flutter_test:

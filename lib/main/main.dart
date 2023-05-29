@@ -1,6 +1,7 @@
 import 'package:amandaleme_personal_app/app/bloc_observer.dart';
 import 'package:amandaleme_personal_app/main/factories/notification_repository/notification_repository_factory.dart';
 import 'package:amandaleme_personal_app/main/factories/sync_repository/sync_repository_factory.dart';
+import 'package:amandaleme_personal_app/main/factories/workout_repository/workout_repository_factory.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/date_symbol_data_local.dart';
@@ -28,6 +29,7 @@ Future<void> main() async {
       syncRepository: makeSyncRepositoryFactory(localStorageAdapter),
       workoutsheetRepository: makeWorkoutsheetRepositoryFactory(localStorageAdapter),
       userRepository: makeUserRepositoryFactory(localStorageAdapter),
+      workoutRepository: makeWorkoutRepositoryFactory(localStorageAdapter),
     ),
   );
 }

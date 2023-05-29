@@ -1,12 +1,15 @@
 import 'dart:math';
 
+import 'package:amandaleme_personal_app/workoutsheet_video/screen/widgets/workout_feedback_builder_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:home_repository/home_repository.dart';
 import 'package:video_player/video_player.dart';
+import 'package:workout_repository/workout_repository.dart';
 
 import '../../app/theme/light_theme.dart';
+import '../cubit/workout_feedback_cubit.dart';
 import '../cubit/workoutsheet_video_cubit.dart';
 import '../utils/utils.dart';
 
@@ -95,6 +98,21 @@ class _WorkoutsheetVideoScreenState extends State<WorkoutsheetVideoScreen> {
     setState(() {});
   }
 
+  void openFeedbackDialog() {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (_) {
+        return BlocProvider.value(
+          value: WorkoutFeedbackCubit(context.read<WorkoutRepository>()),
+          child: WorkoutFeedbackDialogWidget(
+            workout: _workout,
+          ),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     addListener();
@@ -134,15 +152,18 @@ class _WorkoutsheetVideoScreenState extends State<WorkoutsheetVideoScreen> {
                   children: [
                     Text('Descanso: ${_workout.breaktime}'),
                     const Spacer(),
-                    Row(
-                      children: [
-                        Image.asset(
-                          'assets/images/icons/comment.png',
-                          height: 18,
-                        ),
-                        const SizedBox(width: 8),
-                        const Text('Comentar'),
-                      ],
+                    GestureDetector(
+                      onTap: openFeedbackDialog,
+                      child: Row(
+                        children: [
+                          Image.asset(
+                            'assets/images/icons/comment.png',
+                            height: 18,
+                          ),
+                          const SizedBox(width: 8),
+                          const Text('Comentar'),
+                        ],
+                      ),
                     ),
                   ],
                 ),
