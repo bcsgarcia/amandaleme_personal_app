@@ -58,7 +58,7 @@ class AppBloc extends Bloc<AppEvent, AppState> {
           _logout();
         }
       } else {
-        emit(const AppState.unauthenticated());
+        _logout();
       }
     } catch (_) {
       _logout();

@@ -1,3 +1,4 @@
+import 'package:amandaleme_personal_app/meet_app/view/widgets/video_progress_bar_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 
@@ -58,25 +59,32 @@ class CompanyVideoState extends State<CompanyVideo> {
 
                 setState(() {});
               },
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(10),
-                child: SizedBox.expand(
-                  child: FittedBox(
-                    fit: BoxFit.cover,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        boxShadow: !isLoading
-                            ? [
-                                defaultBoxShadow(),
-                              ]
-                            : null,
+              child: Stack(
+                children: [
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(10),
+                    child: SizedBox.expand(
+                      child: FittedBox(
+                        fit: BoxFit.cover,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            boxShadow: !isLoading
+                                ? [
+                                    defaultBoxShadow(),
+                                  ]
+                                : null,
+                          ),
+                          width: _controller.value.size.width,
+                          height: _controller.value.size.height,
+                          child: VideoPlayer(
+                            _controller,
+                          ),
+                        ),
                       ),
-                      width: _controller.value.size.width,
-                      height: _controller.value.size.height,
-                      child: VideoPlayer(_controller),
                     ),
                   ),
-                ),
+                  VideoProgressBarIndicator(controller: _controller),
+                ],
               ),
             ),
           ),

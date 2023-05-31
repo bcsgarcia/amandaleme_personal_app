@@ -17,16 +17,37 @@ class ResultsBeforeAndAfter extends StatefulWidget {
 
 class _ResultsBeforeAndAfterState extends State<ResultsBeforeAndAfter> {
   List<String> get _images => widget.images;
+  final PageController _pageController = PageController();
 
   int index = 0;
 
+  @override
+  void initState() {
+    super.initState();
+    _pageController.addListener(() {
+      if (_pageController.page!.round() != index) {
+        setState(() {
+          index = _pageController.page!.round();
+        });
+      }
+    });
+  }
+
   void nextImage() {
     index++;
+    _pageController.nextPage(
+      duration: Duration(milliseconds: 300),
+      curve: Curves.easeOut,
+    );
     setState(() {});
   }
 
   void previusImage() {
     index--;
+    _pageController.previousPage(
+      duration: Duration(milliseconds: 300),
+      curve: Curves.easeOut,
+    );
     setState(() {});
   }
 
@@ -50,26 +71,43 @@ class _ResultsBeforeAndAfterState extends State<ResultsBeforeAndAfter> {
         ),
         SizedBox(
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              IconButton(
-                onPressed: index == 0 ? null : previusImage,
-                icon: const Icon(Icons.arrow_back_ios_new),
-                color: primaryColor,
-              ),
-              ClipRRect(
-                borderRadius: BorderRadius.circular(10),
-                child: SizedBox(
-                  height: 300,
-                  child: Image.network(
-                    widget.images[index],
-                  ),
+              Expanded(
+                flex: 1,
+                child: IconButton(
+                  onPressed: index == 0 ? null : previusImage,
+                  icon: const Icon(Icons.arrow_back_ios_new),
+                  color: primaryColor,
                 ),
               ),
-              IconButton(
-                onPressed: index + 1 == _images.length ? null : nextImage,
-                icon: const Icon(Icons.arrow_forward_ios_rounded),
-                color: primaryColor,
+              SizedBox(
+                width: 255,
+                height: 206,
+                child: PageView.builder(
+                  controller: _pageController,
+                  itemCount: widget.images.length,
+                  itemBuilder: (context, index) {
+                    return AnimatedOpacity(
+                      duration: const Duration(milliseconds: 300),
+                      opacity: index == index ? 1.0 : 0.0,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(10),
+                        child: Image.network(
+                          widget.images[index],
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ),
+              Expanded(
+                flex: 1,
+                child: IconButton(
+                  onPressed: index + 1 == _images.length ? null : nextImage,
+                  icon: const Icon(Icons.arrow_forward_ios_rounded),
+                  color: primaryColor,
+                ),
               ),
             ],
           ),
