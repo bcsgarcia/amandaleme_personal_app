@@ -1,8 +1,9 @@
 import 'package:company_repository/company_repository.dart';
+import 'package:http_adapter/http_adapter.dart';
 
 import '../factories.dart';
 
-CompanyRepository makeCompanyRepositoryFactory() => RemoteCompanyRepository(
+CompanyRepository makeCompanyRepositoryFactory(String id) => RemoteCompanyRepository(
       client: makeHttpAdapter(),
-      url: makeApiUrlDEV('company/screen/get-meet-app'),
+      url: makeApiUrlDEV('${Environment.getMeetAppPath}/$id'),
     );

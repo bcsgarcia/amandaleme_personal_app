@@ -1,4 +1,5 @@
 import 'package:amandaleme_personal_app/app/theme/light_theme.dart';
+import 'package:amandaleme_personal_app/home/cubit/home_cubit/sync_cubit.dart';
 import 'package:authentication_repository/authentication_repository.dart';
 import 'package:company_repository/company_repository.dart';
 import 'package:flow_builder/flow_builder.dart';
@@ -49,42 +50,55 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiRepositoryProvider(
-      providers: [
-        RepositoryProvider.value(
-          value: _authenticationRepository,
-        ),
-        RepositoryProvider.value(
-          value: _companyRepository,
-        ),
-        RepositoryProvider.value(
-          value: _iHomeRepository,
-        ),
-        RepositoryProvider.value(
-          value: _notificationRepository,
-        ),
-        RepositoryProvider.value(
-          value: _videoPreparationService,
-        ),
-        RepositoryProvider.value(
-          value: _syncRepository,
-        ),
-        RepositoryProvider.value(
-          value: _workoutsheetRepository,
-        ),
-        RepositoryProvider.value(
-          value: _userRepository,
-        ),
-        RepositoryProvider.value(
-          value: _workoutRepository,
-        )
-      ],
-      child: BlocProvider(
-        create: (_) => AppBloc(
-          authenticationRepository: _authenticationRepository,
-        ),
-        child: const AppView(),
-      ),
-    );
+        providers: [
+          RepositoryProvider.value(
+            value: _authenticationRepository,
+          ),
+          RepositoryProvider.value(
+            value: _companyRepository,
+          ),
+          RepositoryProvider.value(
+            value: _iHomeRepository,
+          ),
+          RepositoryProvider.value(
+            value: _notificationRepository,
+          ),
+          RepositoryProvider.value(
+            value: _videoPreparationService,
+          ),
+          RepositoryProvider.value(
+            value: _syncRepository,
+          ),
+          RepositoryProvider.value(
+            value: _workoutsheetRepository,
+          ),
+          RepositoryProvider.value(
+            value: _userRepository,
+          ),
+          RepositoryProvider.value(
+            value: _workoutRepository,
+          )
+        ],
+        child: MultiBlocProvider(
+          providers: [
+            BlocProvider(
+              create: (_) => AppBloc(
+                authenticationRepository: _authenticationRepository,
+                syncRepository: _syncRepository,
+              ),
+            ),
+            BlocProvider(
+              create: (_) => SyncCubit(_syncRepository),
+            )
+            // BlocProvider(
+            //   create: (_) => AppBloc(
+            //     authenticationRepository: _authenticationRepository,
+            //     syncRepository: _syncRepository,
+            //   ),
+            // ),
+          ],
+          child: const AppView(),
+        ));
   }
 }
 

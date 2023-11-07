@@ -1,6 +1,6 @@
 part of 'workoutsheet_video_cubit.dart';
 
-enum WorkoutsheetVideoPageStatus { initial, loadInProgress, loadSuccess, loadFailure, allVideosPrepared }
+enum WorkoutsheetVideoPageStatus { initial, loadInProgress, loadSuccess, loadFailure, allVideosPrepared, notSync }
 
 // ignore: must_be_immutable
 class WorkoutsheetVideoPageState extends Equatable {
@@ -9,6 +9,7 @@ class WorkoutsheetVideoPageState extends Equatable {
     required this.allWorkoutVideoModel,
     required this.currentWorkoutIndex,
     required this.currentWorkoutVideoIndex,
+    this.videoDuration = Duration.zero,
     this.currentVideoIsPlaying = false,
   });
 
@@ -17,6 +18,7 @@ class WorkoutsheetVideoPageState extends Equatable {
   int currentWorkoutIndex;
   int currentWorkoutVideoIndex;
   bool currentVideoIsPlaying;
+  Duration videoDuration;
 
   WorkoutsheetVideoPageState copyWith({
     WorkoutsheetVideoPageStatus? status,
@@ -24,6 +26,7 @@ class WorkoutsheetVideoPageState extends Equatable {
     int? currentWorkoutIndex,
     int? currentWorkoutVideoIndex,
     bool? currentVideoIsPlaying,
+    Duration? videoDuration,
   }) {
     return WorkoutsheetVideoPageState(
       status: status ?? this.status,
@@ -31,9 +34,16 @@ class WorkoutsheetVideoPageState extends Equatable {
       currentWorkoutIndex: currentWorkoutIndex ?? this.currentWorkoutIndex,
       currentWorkoutVideoIndex: currentWorkoutVideoIndex ?? this.currentWorkoutVideoIndex,
       currentVideoIsPlaying: currentVideoIsPlaying ?? this.currentVideoIsPlaying,
+      videoDuration: videoDuration ?? this.videoDuration,
     );
   }
 
   @override
-  List<Object?> get props => [status, allWorkoutVideoModel, currentWorkoutIndex, currentVideoIsPlaying, currentWorkoutVideoIndex];
+  List<Object?> get props => [
+        status,
+        allWorkoutVideoModel,
+        currentWorkoutIndex,
+        currentVideoIsPlaying,
+        currentWorkoutVideoIndex,
+      ];
 }

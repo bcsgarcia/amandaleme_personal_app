@@ -1,5 +1,6 @@
 import 'package:company_repository/company_repository.dart';
 import 'package:flutter/material.dart';
+import 'package:launcher_adapter/launcher_adapter.dart';
 
 class PartnershipItem extends StatelessWidget {
   final PartnershipModel partnership;
@@ -59,43 +60,52 @@ class PartnershipItem extends StatelessWidget {
                         ),
                   ),
                   const SizedBox(height: 10),
-                  Row(
-                    children: [
-                      Image.asset(
-                        'assets/images/icons/map-pin.png',
-                        height: 20,
-                      ),
-                      const SizedBox(width: 8),
-                      Expanded(
-                        child: Text(
-                          partnership.address,
-                          style:
-                              Theme.of(context).textTheme.bodyMedium!.copyWith(
-                                    color: Colors.black,
-                                    fontSize: 14,
-                                  ),
+                  GestureDetector(
+                    onTap: () {
+                      LauncherAdapter.map(partnership.address);
+                    },
+                    child: Row(
+                      children: [
+                        Image.asset(
+                          'assets/images/icons/map-pin.png',
+                          height: 20,
                         ),
-                      ),
-                      const SizedBox(width: 16),
-                    ],
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: Text(
+                            partnership.address,
+                            style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                                  color: Colors.black,
+                                  fontSize: 14,
+                                ),
+                          ),
+                        ),
+                        const SizedBox(width: 16),
+                      ],
+                    ),
                   ),
                   const SizedBox(height: 13),
-                  Row(
-                    children: [
-                      Image.asset(
-                        'assets/images/icons/phone.png',
-                        height: 20,
-                      ),
-                      const SizedBox(width: 8),
-                      Expanded(
-                          child: Text(
-                        partnership.phone,
-                        style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                              color: Colors.black,
-                              fontSize: 14,
-                            ),
-                      ))
-                    ],
+                  GestureDetector(
+                    onTap: () async {
+                      await LauncherAdapter.phone(partnership.phone);
+                    },
+                    child: Row(
+                      children: [
+                        Image.asset(
+                          'assets/images/icons/phone.png',
+                          height: 20,
+                        ),
+                        const SizedBox(width: 8),
+                        Expanded(
+                            child: Text(
+                          partnership.phone,
+                          style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                                color: Colors.black,
+                                fontSize: 14,
+                              ),
+                        ))
+                      ],
+                    ),
                   ),
                 ],
               ),

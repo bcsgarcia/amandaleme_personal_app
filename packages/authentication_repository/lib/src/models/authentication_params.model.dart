@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:equatable/equatable.dart';
 
 class AuthenticationParam extends Equatable {
@@ -18,5 +20,5 @@ class RemoteAuthenticationParams {
   factory RemoteAuthenticationParams.fromDomain(AuthenticationParam params) =>
       RemoteAuthenticationParams(email: params.email, password: params.pass);
 
-  Map toJson() => {'email': email, 'password': password};
+  Map toJson() => {'email': email, 'password': base64Encode(utf8.encode(password))};
 }

@@ -9,7 +9,6 @@ class ChangePasswordState extends Equatable with FormzMixin {
     this.confirmedNewPass = const ConfirmedPassword.pure(),
     this.viewConfirmedNewPass = true,
     this.status = FormzSubmissionStatus.initial,
-    this.isValid = false,
     this.errorMessage,
   });
 
@@ -20,7 +19,6 @@ class ChangePasswordState extends Equatable with FormzMixin {
   final ConfirmedPassword confirmedNewPass;
   final bool viewConfirmedNewPass;
   final FormzSubmissionStatus status;
-  final bool isValid;
   final String? errorMessage;
 
   ChangePasswordState copyWith({
@@ -42,7 +40,6 @@ class ChangePasswordState extends Equatable with FormzMixin {
       confirmedNewPass: confirmedNewPass ?? this.confirmedNewPass,
       viewConfirmedNewPass: viewConfirmedNewPass ?? this.viewConfirmedNewPass,
       status: status ?? this.status,
-      isValid: isValid ?? this.isValid,
       errorMessage: errorMessage ?? this.errorMessage,
     );
   }

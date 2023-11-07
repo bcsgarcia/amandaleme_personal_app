@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:home_repository/home_repository.dart';
-import 'package:sync_repository/sync_repository.dart';
+import 'package:video_preparation_service/video_preparation_service.dart';
+import 'package:workoutsheet_repository/workoutsheet_repository.dart';
 
 import '../app/app_route.dart';
 import '../app/common_widgets/common_widgets.dart';
 import '../home/cubit/home_cubit/home_cubit.dart';
 import '../home/home.page.dart';
+import '../sync_medias/sync_medias_page.dart';
+import 'cubit/workoutsheet_detail_cubit.dart';
 import 'cubit/workoutsheet_video_cubit.dart';
-import 'screen/workoutsheet_video_screen.dart';
+import 'screen/screen.dart';
 
 class WorkoutsheetVideoPage extends StatefulWidget {
   const WorkoutsheetVideoPage({
@@ -29,19 +32,19 @@ class _WorkoutsheetVideoPageState extends State<WorkoutsheetVideoPage> {
   int get _startWorkoutIndex => widget.startWorkoutIndex;
 
   late int _workoutlength;
-  late WorkoutsheetVideoCubit cubit;
+  // late WorkoutsheetVideoCubit cubit;
 
   @override
   void initState() {
     super.initState();
     _workoutlength = _workoutsheet.workouts.length;
-    cubit = context.read<WorkoutsheetVideoCubit>();
-    cubit.initWorkoutVideoControllers(_workoutsheet, _startWorkoutIndex);
+    // cubit = context.read<WorkoutsheetVideoCubit>();
+    context.read<WorkoutsheetVideoCubit>().initWorkoutVideoControllers(_workoutsheet, _startWorkoutIndex);
   }
 
   @override
   void dispose() {
-    cubit.close();
+    context.read<WorkoutsheetVideoCubit>().close();
     super.dispose();
   }
 
@@ -57,12 +60,15 @@ class _WorkoutsheetVideoPageState extends State<WorkoutsheetVideoPage> {
           onPressed: () {
             Navigator.of(context).pushAndRemoveUntil(
               MaterialPageRoute(
-                builder: (context) => BlocProvider(
-                  create: (context) => HomeCubit(
-                    homeRepository: RepositoryProvider.of<IHomeRepository>(context),
-                    syncRepository: RepositoryProvider.of<SyncRepository>(context),
-                  ),
-                  child: HomePage(),
+                builder: (context) => MultiBlocProvider(
+                  providers: [
+                    BlocProvider(
+                      create: (context) => HomeCubit(
+                        homeRepository: RepositoryProvider.of<IHomeRepository>(context),
+                      ),
+                    ),
+                  ],
+                  child: const HomePage(),
                 ),
               ),
               ModalRoute.withName(RouteNames.home),
@@ -87,8 +93,16 @@ class _WorkoutsheetVideoPageState extends State<WorkoutsheetVideoPage> {
     );
   }
 
+  void _goToSyncPage() {
+    Navigator.pop(context);
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const SyncMediasPage(), fullscreenDialog: true),
+    );
+  }
+
   onCompleteWorkoutsheetTap() {
-    cubit.workoutsheetDone(_workoutsheet.id);
+    context.read<WorkoutsheetVideoCubit>().workoutsheetDone(_workoutsheet.id);
   }
 
   @override
@@ -101,6 +115,9 @@ class _WorkoutsheetVideoPageState extends State<WorkoutsheetVideoPage> {
         if (state.status == WorkoutsheetVideoPageStatus.loadFailure) {
           _showFailureDialog();
         }
+        if (state.status == WorkoutsheetVideoPageStatus.notSync) {
+          _goToSyncPage();
+        }
       },
       child: BlocBuilder<WorkoutsheetVideoCubit, WorkoutsheetVideoPageState>(
         builder: (context, state) {
@@ -110,23 +127,45 @@ class _WorkoutsheetVideoPageState extends State<WorkoutsheetVideoPage> {
             );
           }
 
-          if (state.status == WorkoutsheetVideoPageStatus.allVideosPrepared || state.status == WorkoutsheetVideoPageStatus.loadSuccess) {
+          if (state.status == WorkoutsheetVideoPageStatus.allVideosPrepared ||
+              state.status == WorkoutsheetVideoPageStatus.loadSuccess) {
             final index = state.currentWorkoutIndex;
 
-            return BlocProvider.value(
-              value: context.read<WorkoutsheetVideoCubit>(),
-              child: WorkoutsheetVideoScreen(
+            if (state.allWorkoutVideoModel.isEmpty) {
+              return Expanded(
+                  child: Container(
+                color: Colors.orange,
+              ));
+            }
+
+            return BlocProvider(
+              create: (_) => WorkoutsheetDetailCubit(
+                videoPreparationService: context.read<VideoPreparationService>(),
+                workoutsheetRepository: context.read<WorkoutsheetRepository>(),
+                allWorkoutVideoModel: state.allWorkoutVideoModel,
+                currentVideoFile: state.allWorkoutVideoModel[index].mediaFileList.first,
                 workout: _workoutsheet.workouts[index],
-                indexCurrentWorkoutVideo: state.currentWorkoutVideoIndex,
-                nextButtonFunction: index + 1 == _workoutlength ? null : cubit.nextWorkout,
-                previousButtonFunction: index > 0 ? cubit.previousWorkout : null,
-                concludeWorkoutsheetFunction: index == _workoutlength - 1 ? onCompleteWorkoutsheetTap : null,
-                subTitle: _workoutsheet.workouts[index].subtitle,
-                description: _workoutsheet.workouts[index].description,
-                videoPlayerController: state.allWorkoutVideoModel[index].controllers,
-                isCurrentVideoPlaying: state.currentVideoIsPlaying,
-              ),
+                workoutsheet: _workoutsheet,
+                // currentWorkoutIndex: index,
+              )..initialize(),
+              child: const WorkoutsheetDetail(),
             );
+
+            // return BlocProvider.value(
+            //   value: context.read<WorkoutsheetVideoCubit>(),
+            //   child: WorkoutsheetVideoScreen(
+            //     workout: _workoutsheet.workouts[index],
+            //     indexCurrentWorkoutVideo: state.currentWorkoutVideoIndex,
+            //     nextButtonFunction:
+            //         index + 1 == _workoutlength ? null : context.read<WorkoutsheetVideoCubit>().nextWorkout,
+            //     previousButtonFunction: index > 0 ? context.read<WorkoutsheetVideoCubit>().previousWorkout : null,
+            //     concludeWorkoutsheetFunction: index == _workoutlength - 1 ? onCompleteWorkoutsheetTap : null,
+            //     subTitle: _workoutsheet.workouts[index].subtitle,
+            //     description: _workoutsheet.workouts[index].description,
+            //     videoPlayerControllerFiles: state.allWorkoutVideoModel[index].mediaFileList,
+            //     isCurrentVideoPlaying: state.currentVideoIsPlaying,
+            //   ),
+            // );
           }
 
           return Container();

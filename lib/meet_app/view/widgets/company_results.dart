@@ -36,7 +36,7 @@ class _ResultsBeforeAndAfterState extends State<ResultsBeforeAndAfter> {
   void nextImage() {
     index++;
     _pageController.nextPage(
-      duration: Duration(milliseconds: 300),
+      duration: const Duration(milliseconds: 300),
       curve: Curves.easeOut,
     );
     setState(() {});
@@ -45,7 +45,7 @@ class _ResultsBeforeAndAfterState extends State<ResultsBeforeAndAfter> {
   void previusImage() {
     index--;
     _pageController.previousPage(
-      duration: Duration(milliseconds: 300),
+      duration: const Duration(milliseconds: 300),
       curve: Curves.easeOut,
     );
     setState(() {});

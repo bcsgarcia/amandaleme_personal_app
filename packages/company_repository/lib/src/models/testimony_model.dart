@@ -10,7 +10,7 @@ class TestimonyModel {
   });
 
   factory TestimonyModel.fromJson(Map json) => TestimonyModel(
-        imageUrl: json['imageUrl'],
+        imageUrl: json['imageUrl'] ?? '',
         name: json['name'],
         description: json['description'],
       );

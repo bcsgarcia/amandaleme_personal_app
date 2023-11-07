@@ -9,9 +9,11 @@ class WorkoutItem extends StatefulWidget {
     super.key,
     required this.workout,
     required this.funcDone,
+    required this.isAlreadyDone,
   });
 
   final WorkoutModel workout;
+  final bool isAlreadyDone;
   final void Function() funcDone;
 
   @override
@@ -21,6 +23,7 @@ class WorkoutItem extends StatefulWidget {
 class _WorkoutItemState extends State<WorkoutItem> {
   WorkoutModel get _workout => widget.workout;
   Function() get _funcDone => widget.funcDone;
+  bool get _isAlreadyDone => widget.isAlreadyDone;
 
   @override
   Widget build(BuildContext context) {
@@ -33,9 +36,11 @@ class _WorkoutItemState extends State<WorkoutItem> {
             width: 100,
             child: ClipRRect(
               borderRadius: BorderRadius.circular(10),
-              child: Image.network(
-                _workout.medias.firstWhere((element) => element.type == 'image').url,
-                fit: BoxFit.fill,
+              child:
+              _workout.medias.isEmpty ? SizedBox.shrink() :
+              Image.network(
+                _workout.medias.first.type == 'image' ?  _workout.medias.first.url : _workout.medias.first.thumbnailUrl ?? '',
+                fit: BoxFit.cover,
               ),
             ),
           ),
@@ -64,7 +69,7 @@ class _WorkoutItemState extends State<WorkoutItem> {
                         ),
                   ),
                   Text(
-                    'Descanso: ${_workout.breaktime.toString()}',
+                    'Descanso: ${_workout.breaktime}',
                     style: Theme.of(context).textTheme.titleMedium!.copyWith(
                           fontSize: 14,
                           decoration: _workout.done ? TextDecoration.lineThrough : null,
@@ -74,41 +79,42 @@ class _WorkoutItemState extends State<WorkoutItem> {
               ),
             ),
           ),
-          Container(
-            child: _workout.done
-                ? GestureDetector(
-                    onTap: _funcDone,
-                    child: Container(
-                      width: 25,
-                      height: 25,
-                      decoration: BoxDecoration(
-                        color: secondaryColor,
-                        borderRadius: BorderRadius.circular(5),
-                        boxShadow: [
-                          defaultBoxShadow(),
-                        ],
+          if (!_isAlreadyDone)
+            Container(
+              child: _workout.done
+                  ? GestureDetector(
+                      onTap: _funcDone,
+                      child: Container(
+                        width: 25,
+                        height: 25,
+                        decoration: BoxDecoration(
+                          color: secondaryColor,
+                          borderRadius: BorderRadius.circular(5),
+                          boxShadow: [
+                            defaultBoxShadow(),
+                          ],
+                        ),
+                        child: const Icon(
+                          Icons.check,
+                          color: Colors.white,
+                        ),
                       ),
-                      child: const Icon(
-                        Icons.check,
-                        color: Colors.white,
+                    )
+                  : GestureDetector(
+                      onTap: _funcDone,
+                      child: Container(
+                        width: 25,
+                        height: 25,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(5),
+                          boxShadow: [
+                            defaultBoxShadow(),
+                          ],
+                        ),
                       ),
                     ),
-                  )
-                : GestureDetector(
-                    onTap: _funcDone,
-                    child: Container(
-                      width: 25,
-                      height: 25,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(5),
-                        boxShadow: [
-                          defaultBoxShadow(),
-                        ],
-                      ),
-                    ),
-                  ),
-          ),
+            ),
         ],
       ),
     );

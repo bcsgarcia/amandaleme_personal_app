@@ -5,18 +5,20 @@ import '../../../app/theme/light_theme.dart';
 class CicleImageWithIconCan extends StatelessWidget {
   const CicleImageWithIconCan({
     super.key,
-    required String photoUrl,
-  }) : _photoUrl = photoUrl;
+    this.photoUrl,
+  });
 
-  final String _photoUrl;
+  final String? photoUrl;
 
   @override
   Widget build(BuildContext context) {
+    var photoImage = photoUrl != null ? Image.network(photoUrl!) : Image.asset('assets/images/icons/user.png');
+
     return Stack(
       children: [
         CircleAvatar(
           radius: 55,
-          backgroundImage: NetworkImage(_photoUrl),
+          backgroundImage: photoImage.image,
           backgroundColor: Colors.white,
         ),
         Positioned(

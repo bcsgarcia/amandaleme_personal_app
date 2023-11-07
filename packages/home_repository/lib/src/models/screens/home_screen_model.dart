@@ -16,15 +16,19 @@ class HomeScreenModel extends Equatable {
   final List<NotificationModel> notifications;
   final DrawerScreenModel drawerMenu;
 
-  factory HomeScreenModel.fromJson(Map json) => HomeScreenModel(
-        myTrainingPlan: List<WorkoutSheetModel>.from(json['myTrainingPlan']
-            .map((item) => WorkoutSheetModel.fromJson(item))),
-        myWorkousheets: List<WorkoutSheetModel>.from(json['myWorksheets']
-            .map((item) => WorkoutSheetModel.fromJson(item))),
-        drawerMenu: DrawerScreenModel.fromJson(json['drawerMenu']),
-        notifications: List<NotificationModel>.from(json['notifications']
-            .map((item) => NotificationModel.fromJson(item))),
-      );
+  factory HomeScreenModel.fromJson(Map json) {
+    print(json['myTrainingPlan']);
+    return HomeScreenModel(
+      myTrainingPlan: (json['myTrainingPlan'] as List).first == null
+          ? []
+          : List<WorkoutSheetModel>.from(json['myTrainingPlan'].map((item) => WorkoutSheetModel.fromJson(item))),
+      myWorkousheets:
+          List<WorkoutSheetModel>.from(json['myWorksheets'].map((item) => WorkoutSheetModel.fromJson(item))),
+      drawerMenu: DrawerScreenModel.fromJson(json['drawerMenu']),
+      notifications:
+          List<NotificationModel>.from(json['notifications'].map((item) => NotificationModel.fromJson(item))),
+    );
+  }
 
   @override
   List<Object?> get props => [myTrainingPlan, myWorkousheets];

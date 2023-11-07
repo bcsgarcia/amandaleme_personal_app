@@ -64,6 +64,10 @@ class _MeetAppScreenState extends State<MeetAppScreen> {
                     aboutCompanyModel: state.screenModel!.aboutCompany,
                   ),
                   const SizedBox(height: 20),
+                  // if (state.screenModel?.aboutCompany.videoUrl == null ||
+                  //     state.screenModel!.aboutCompany.videoUrl == '')
+                  //   const SizedBox.shrink()
+                  // else
                   Center(
                     child: CompanyVideo(
                       videoUrl: state.screenModel!.aboutCompany.videoUrl,
@@ -75,7 +79,7 @@ class _MeetAppScreenState extends State<MeetAppScreen> {
                   ),
                   const SizedBox(height: 20),
                   MyClassVideo(
-                    videoUrl: state.screenModel!.aboutCompany.videoUrl,
+                    videoUrl: state.screenModel!.aboutCompany.secondVideoUrl,
                   ),
                   const SizedBox(height: 20),
                   Testimonies(

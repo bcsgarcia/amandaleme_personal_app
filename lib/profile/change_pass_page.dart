@@ -22,19 +22,6 @@ class ChangePasswordPage extends StatelessWidget {
             description: 'Sua senha foi alterada com sucesso.',
             buttonLabel: 'Voltar à página inicial',
             onPressed: () {
-              // Navigator.of(context).pushAndRemoveUntil(
-              //   MaterialPageRoute(
-              //     builder: (context) => BlocProvider(
-              //       create: (_) => HomeCubit(
-              //         homeRepository: RepositoryProvider.of<IHomeRepository>(context),
-              //         syncRepository: RepositoryProvider.of<SyncRepository>(context),
-              //       ),
-              //       child: HomePage(),
-              //     ),
-              //   ),
-              //   ModalRoute.withName(RouteNames.home),
-              // );
-
               Navigator.of(context, rootNavigator: true).pop();
             },
           );

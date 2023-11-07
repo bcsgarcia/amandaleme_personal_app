@@ -43,7 +43,7 @@ class PosturalPatternItemWidget extends StatelessWidget {
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(10),
                       child: Image.network(
-                        posturalPattern.imageUrl,
+                        posturalPattern.media?.url ?? 'https://dev-personal-media.bcsgarcia.com.br/images/no-image.jpeg',
                         fit: BoxFit.cover,
                       ),
                     ),
@@ -79,7 +79,7 @@ class PosturalPatternItemWidget extends StatelessWidget {
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(10),
                       child: Image.network(
-                        posturalPattern.imageUrl,
+                        posturalPattern.media?.url ?? 'https://dev-personal-media.bcsgarcia.com.br/images/no-image.jpeg',
                         fit: BoxFit.cover,
                       ),
                     ),

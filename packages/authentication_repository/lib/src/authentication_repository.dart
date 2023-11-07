@@ -84,10 +84,12 @@ class RemoteAuthentication implements Authentication {
     final body = RemoteAuthenticationParams.fromDomain(param).toJson();
     try {
       final httpResponse = await httpClient.request(url: url, method: 'post', body: body);
+
       await saveTokenLocally(httpResponse['accessToken']);
+      await saveOptionKeepConnectedLocally(keepConnected);
+
       final user = UserAuthenticationModel.fromJson(httpResponse);
 
-      // Notify listeners that the user has changed
       _userStreamController.add(user);
 
       return user;
@@ -110,7 +112,7 @@ class RemoteAuthentication implements Authentication {
       final _body = {
         "token": _token,
       };
-      final httpResponse = await httpClient.request(url: '$url/refresh', method: 'post', body: _body);
+      final httpResponse = await httpClient.request(url: '$url/${Environment.refreshTokenPath}', method: 'post', body: _body);
       await saveTokenLocally(httpResponse['accessToken']);
 
       final user = UserAuthenticationModel.fromJson(httpResponse);
@@ -123,6 +125,10 @@ class RemoteAuthentication implements Authentication {
 
   @override
   Future<LocalAuthStatusEnum> requestLocalAuth() async {
+    if (await getOptionKeepConnectedLocally() == false) {
+      throw LocalAuthStatusEnum.failure;
+    }
+
     final LocalAuthentication auth = LocalAuthentication();
 
     final bool canAuthenticateWithBiometrics = await auth.canCheckBiometrics;
@@ -148,7 +154,6 @@ class RemoteAuthentication implements Authentication {
           await refreshToken();
           return LocalAuthStatusEnum.success;
         } else {
-          print('false');
           return LocalAuthStatusEnum.failure;
         }
       } on PlatformException catch (e) {
@@ -172,5 +177,14 @@ class RemoteAuthentication implements Authentication {
 
   Future<void> saveTokenLocally(String token) async {
     await cacheStorage.save(key: 'token', value: token);
+  }
+
+  Future<void> saveOptionKeepConnectedLocally(bool option) async {
+    await cacheStorage.save(key: 'keepConnected', value: option.toString());
+  }
+
+  Future<bool> getOptionKeepConnectedLocally() async {
+    final option = await cacheStorage.fetch('keepConnected') as String?;
+    return option?.toLowerCase() == 'true';
   }
 }

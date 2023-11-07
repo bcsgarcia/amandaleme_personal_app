@@ -18,9 +18,9 @@ class RemoteCompanyRepository implements CompanyRepository {
   Future<MeetAppScreenModel> getMeetAppScreen() async {
     try {
       final response = await this.client.request(url: url, method: 'get');
-      print(response);
 
-      return MeetAppScreenModel.fromJson(response);
+      final teste = MeetAppScreenModel.fromJson(response);
+      return teste;
     } catch (e) {
       throw e;
     }

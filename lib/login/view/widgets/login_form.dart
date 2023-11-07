@@ -39,21 +39,70 @@ class LoginForm extends StatelessWidget {
                 _EmailInput(scrollController: _scrollController),
                 const SizedBox(height: 10),
                 _PasswordInput(),
-                const SizedBox(height: 10),
-                Align(
-                  alignment: Alignment.centerRight,
-                  child: Text(
-                    'Recuperar senha',
-                    style: Theme.of(context).textTheme.bodyLarge,
-                  ),
-                ),
-                const SizedBox(height: 34),
+                const KeepConnectedCheckbox(),
+                const SizedBox(height: 20),
                 _LoginButton(_formKey),
               ],
             ),
           ),
         ),
       ),
+    );
+  }
+}
+
+class KeepConnectedCheckbox extends StatelessWidget {
+  const KeepConnectedCheckbox({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<LoginCubit, LoginState>(
+      builder: (context, state) {
+        return Padding(
+          padding: const EdgeInsets.only(top: 8.0),
+          child: Row(
+            children: [
+              InkWell(
+                onTap: context.read<LoginCubit>().keepConnectedTap,
+                child: AnimatedContainer(
+                  height: 23,
+                  width: 23,
+                  duration: const Duration(milliseconds: 400),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(5),
+                    color: state.keepConnected ? primaryColor : Colors.white,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.5),
+                        spreadRadius: 0,
+                        blurRadius: 8,
+                        offset: const Offset(0, 3),
+                      ),
+                    ],
+                  ),
+                  child: state.keepConnected
+                      ? const Icon(
+                          Icons.check,
+                          color: Colors.white,
+                          size: 18,
+                        )
+                      : Container(),
+                ),
+              ),
+              const SizedBox(width: 10),
+              Text(
+                'Manter-me conectado',
+                style: Theme.of(context).textTheme.bodyLarge,
+              ),
+              const Spacer(),
+              Text(
+                'Recuperar senha',
+                style: Theme.of(context).textTheme.bodyLarge,
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 }
@@ -79,14 +128,12 @@ class _EmailInput extends StatelessWidget {
         ),
         const SizedBox(height: 3),
         BlocBuilder<LoginCubit, LoginState>(
-          buildWhen: (previous, current) =>
-              previous.emailInput != current.emailInput,
+          buildWhen: (previous, current) => previous.emailInput != current.emailInput,
           builder: (context, state) {
             return TextFormField(
               key: const Key('loginForm_emailInput_textField'),
               scrollPadding: EdgeInsets.all(MediaQuery.of(context).size.height),
-              onChanged: (email) =>
-                  context.read<LoginCubit>().emailChanged(email),
+              onChanged: (email) => context.read<LoginCubit>().emailChanged(email),
               keyboardType: TextInputType.emailAddress,
               validator: (_) => state.emailInput.displayError?.text(),
               decoration: const InputDecoration(
@@ -130,24 +177,24 @@ class _PasswordInputState extends State<_PasswordInput> {
         ),
         const SizedBox(height: 3),
         BlocBuilder<LoginCubit, LoginState>(
-          buildWhen: (previous, current) =>
-              previous.passInput != current.passInput,
+          buildWhen: (previous, current) => previous.passInput != current.passInput,
           builder: (context, state) {
             return TextField(
               key: const Key('loginForm_passwordInput_textField'),
-              onChanged: (password) =>
-                  context.read<LoginCubit>().passwordChanged(password),
+              onChanged: (password) => context.read<LoginCubit>().passwordChanged(password),
               obscureText: showPass,
               decoration: InputDecoration(
-                hintText: 'Inisra sua senha',
+                hintText: 'Insira sua senha',
                 suffixIcon: showPass
                     ? IconButton(
+                        splashRadius: 20,
                         onPressed: viewPassword,
-                        icon: const Icon(Icons.remove_red_eye_outlined),
+                        icon: Image.asset('assets/images/icons/eye.png', height: 22),
                       )
                     : IconButton(
+                        splashRadius: 20,
                         onPressed: viewPassword,
-                        icon: const Icon(Icons.remove_red_eye_rounded),
+                        icon: Image.asset('assets/images/icons/eye-off.png', height: 22),
                       ),
               ),
             );
@@ -171,7 +218,7 @@ class _LoginButton extends StatelessWidget {
             ? const CircularProgressIndicator()
             : SizedBox(
                 width: double.infinity,
-                height: 52,
+                height: 48,
                 child: ElevatedButton(
                   key: const Key('loginForm_continue_raisedButton'),
                   style: ElevatedButton.styleFrom(
@@ -179,14 +226,13 @@ class _LoginButton extends StatelessWidget {
                       borderRadius: BorderRadius.circular(10),
                     ),
                   ),
-                  onPressed: state.emailInput.isValid &&
-                          state.passInput.value.isNotEmpty
+                  onPressed: state.emailInput.isValid && state.passInput.value.isNotEmpty
                       ? () {
                           if (!formKey.currentState!.validate()) return;
                           context.read<LoginCubit>().authWithEmailAndPassword();
                         }
                       : null,
-                  child: const Text('LOGIN'),
+                  child: const Text('Entrar'),
                 ),
               );
       },

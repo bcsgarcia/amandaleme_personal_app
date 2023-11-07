@@ -33,7 +33,6 @@ class HttpAdapter implements HttpClient {
         response = await futureResponse.timeout(Duration(seconds: 10));
       }
     } catch (error) {
-      print(error);
       throw HttpError.serverError;
     }
 

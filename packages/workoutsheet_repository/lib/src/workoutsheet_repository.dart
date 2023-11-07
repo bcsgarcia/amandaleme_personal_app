@@ -19,7 +19,7 @@ class RemoteWorkoutsheetRepository implements WorkoutsheetRepository {
     try {
       final body = {"idworkoutsheet": idWorkoutSheet};
 
-      return await httpClient.request(url: '$url/done', method: 'post', body: body);
+      return await httpClient.request(url: '$url/${Environment.workoutsheetDonePath}', method: 'post', body: body);
     } catch (_) {
       rethrow;
     }
@@ -33,7 +33,7 @@ class RemoteWorkoutsheetRepository implements WorkoutsheetRepository {
         "feedback": feedback,
       };
 
-      return await httpClient.request(url: '$url/feedback', method: 'post', body: body);
+      return await httpClient.request(url: '$url/${Environment.feedbackPath}', method: 'post', body: body);
     } catch (e) {
       rethrow;
     }

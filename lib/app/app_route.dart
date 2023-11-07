@@ -4,9 +4,8 @@ import 'package:amandaleme_personal_app/login/view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:home_repository/home_repository.dart';
-import 'package:sync_repository/sync_repository.dart';
 
-import '../home/cubit/home_cubit/home_cubit.dart';
+import '../home/cubit/home_cubit/cubit.dart';
 import 'bloc/app_bloc.dart';
 
 class RouteNames {
@@ -24,12 +23,15 @@ class AppRouter {
         );
       case RouteNames.home:
         return MaterialPageRoute(
-          builder: (context) => BlocProvider(
-            create: (context) => HomeCubit(
-              homeRepository: RepositoryProvider.of<IHomeRepository>(context),
-              syncRepository: RepositoryProvider.of<SyncRepository>(context),
-            ),
-            child: HomePage(),
+          builder: (context) => MultiBlocProvider(
+            providers: [
+              BlocProvider(
+                create: (context) => HomeCubit(
+                  homeRepository: RepositoryProvider.of<IHomeRepository>(context),
+                ),
+              ),
+            ],
+            child: const HomePage(),
           ),
         );
       default:

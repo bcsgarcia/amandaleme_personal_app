@@ -18,7 +18,7 @@ class CompanyVideo extends StatefulWidget {
 }
 
 class CompanyVideoState extends State<CompanyVideo> {
-  late VideoPlayerController _controller;
+  VideoPlayerController? _controller;
 
   String get _videoUrl => widget.videoUrl;
 
@@ -36,8 +36,15 @@ class CompanyVideoState extends State<CompanyVideo> {
   }
 
   void startCompanyVideo() {
-    _controller.play();
+    _controller?.play();
     setState(() {});
+  }
+
+  @override
+  void dispose() {
+    if (_controller?.value.isPlaying ?? false) _controller?.pause();
+    _controller = null;
+    super.dispose();
   }
 
   @override
@@ -51,10 +58,10 @@ class CompanyVideoState extends State<CompanyVideo> {
           Positioned(
             child: GestureDetector(
               onTap: () {
-                if (_controller.value.isPlaying) {
-                  _controller.pause();
+                if (_controller?.value.isPlaying ?? false) {
+                  _controller?.pause();
                 } else {
-                  _controller.play();
+                  _controller?.play();
                 }
 
                 setState(() {});
@@ -65,7 +72,7 @@ class CompanyVideoState extends State<CompanyVideo> {
                     borderRadius: BorderRadius.circular(10),
                     child: SizedBox.expand(
                       child: FittedBox(
-                        fit: BoxFit.cover,
+                        fit: BoxFit.fitWidth,
                         child: Container(
                           decoration: BoxDecoration(
                             boxShadow: !isLoading
@@ -74,21 +81,24 @@ class CompanyVideoState extends State<CompanyVideo> {
                                   ]
                                 : null,
                           ),
-                          width: _controller.value.size.width,
-                          height: _controller.value.size.height,
-                          child: VideoPlayer(
-                            _controller,
-                          ),
+                          width: _controller?.value.size.width,
+                          height: _controller?.value.size.height,
+                          child:
+                          _controller != null ?
+                          VideoPlayer(
+                            _controller!,
+                          ) : const SizedBox.shrink(),
                         ),
                       ),
                     ),
                   ),
-                  VideoProgressBarIndicator(controller: _controller),
+                  if (_controller != null)
+                    VideoProgressBarIndicator(controller: _controller!),
                 ],
               ),
             ),
           ),
-          if (!_controller.value.isPlaying)
+          if (!(_controller?.value.isPlaying ?? false))
             Positioned(
               top: 65, // Adjust the position of the CircleAvatar widget
               left: 160,

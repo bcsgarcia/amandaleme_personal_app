@@ -29,11 +29,11 @@ class ChangePasswordScreen extends StatelessWidget {
         ),
         backgroundColor: Colors.white,
       ),
-      body: Column(
+      body: ListView(
         children: [
           ListTile(
             title: Padding(
-              padding: EdgeInsets.only(bottom: 10.0),
+              padding: const EdgeInsets.only(bottom: 10.0),
               child: Text(
                 'Criar nova senha',
                 style: Theme.of(context).textTheme.titleLarge!.copyWith(

@@ -4,13 +4,12 @@ import 'package:amandaleme_personal_app/workoutsheets/screen/screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:home_repository/home_repository.dart';
-import 'package:sync_repository/sync_repository.dart';
 import 'package:video_preparation_service/video_preparation_service.dart';
 import 'package:workoutsheet_repository/workoutsheet_repository.dart';
 
 import '../app/app_route.dart';
 import '../app/common_widgets/common_widgets.dart';
-import '../home/cubit/home_cubit/home_cubit.dart';
+import '../home/cubit/home_cubit/cubit.dart';
 import '../workoutsheet_video/workoutsheet_video_page.dart';
 import 'cubit/workoutsheet_cubit.dart';
 
@@ -30,12 +29,14 @@ class _WorkoutsheetPageState extends State<WorkoutsheetPage> {
   WorkoutSheetModel get _workoutSheet => widget.workoutSheet;
 
   bool showFloatingButton = true;
+  bool isAlreadyDone = false;
 
   late WorkoutsheetCubit cubit;
 
   verifyIfWorkoutHasBeenDone() {
     if (_workoutSheet.date != null) {
       showFloatingButton = false;
+      isAlreadyDone = true;
       for (var element in _workoutSheet.workouts) {
         element.done = true;
       }
@@ -69,12 +70,15 @@ class _WorkoutsheetPageState extends State<WorkoutsheetPage> {
           onPressed: () {
             Navigator.of(context).pushAndRemoveUntil(
               MaterialPageRoute(
-                builder: (context) => BlocProvider(
-                  create: (context) => HomeCubit(
-                    homeRepository: RepositoryProvider.of<IHomeRepository>(context),
-                    syncRepository: RepositoryProvider.of<SyncRepository>(context),
-                  ),
-                  child: HomePage(
+                builder: (context) => MultiBlocProvider(
+                  providers: [
+                    BlocProvider(
+                      create: (context) => HomeCubit(
+                        homeRepository: RepositoryProvider.of<IHomeRepository>(context),
+                      ),
+                    ),
+                  ],
+                  child: const HomePage(
                     isShowFeedback: true,
                   ),
                 ),
@@ -118,6 +122,14 @@ class _WorkoutsheetPageState extends State<WorkoutsheetPage> {
               return WorkoutFloatingButton(
                 title: 'Iniciar treino',
                 function: () {
+                  if (context.read<SyncCubit>().state.status == SyncStatus.loadInProgress) {
+                    const snackBar = SnackBar(
+                      content: Text('Aguarde o download dos treinos terminar!'),
+                    );
+                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                    return;
+                  }
+
                   final nextUncheckedWorkout = _workoutSheet.workouts.indexWhere((element) => element.done == false);
 
                   Navigator.push(
@@ -128,7 +140,8 @@ class _WorkoutsheetPageState extends State<WorkoutsheetPage> {
                           videoPreparationService: context.read<VideoPreparationService>(),
                           workoutsheetRepository: context.read<WorkoutsheetRepository>(),
                         ),
-                        child: WorkoutsheetVideoPage(workoutsheet: _workoutSheet, startWorkoutIndex: nextUncheckedWorkout),
+                        child:
+                            WorkoutsheetVideoPage(workoutsheet: _workoutSheet, startWorkoutIndex: nextUncheckedWorkout),
                       ),
                     ),
                   );
@@ -160,6 +173,7 @@ class _WorkoutsheetPageState extends State<WorkoutsheetPage> {
               } else {
                 return WorkoutsheetScreen(
                   workoutsheet: _workoutSheet,
+                  isAlreadyDone: isAlreadyDone,
                 );
               }
             },

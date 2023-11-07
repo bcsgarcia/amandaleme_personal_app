@@ -23,7 +23,7 @@ class RemoteUserRepository implements UserRepository {
         "oldpass": oldPass,
         "newpass": newPass,
       };
-      await httpClient.request(url: '$url/app/change-pass', method: 'post', body: body);
+      await httpClient.request(url: '$url/${Environment.changePassPath}', method: 'post', body: body);
     } catch (error) {
       rethrow;
     }

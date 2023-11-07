@@ -31,11 +31,11 @@ class OldPasswordInput extends StatelessWidget {
               onChanged: (password) => context.read<ChangePasswordCubit>().oldPassChanged(password),
               obscureText: state.viewOldPass,
               decoration: InputDecoration(
-                hintText: 'Inisra sua senha atual',
+                hintText: 'Insira sua senha atual',
                 errorText: state.status == FormzSubmissionStatus.failure ? "Senha atual inválida" : null,
                 suffixIcon: IconButton(
                   onPressed: context.read<ChangePasswordCubit>().viewOldPass,
-                  icon: state.viewOldPass ? const Icon(Icons.remove_red_eye_outlined) : const Icon(Icons.remove_red_eye_rounded),
+                  icon: Image.asset(state.viewOldPass ? 'assets/images/icons/eye.png' : 'assets/images/icons/eye-off.png', height: 22),
                 ),
               ),
             );

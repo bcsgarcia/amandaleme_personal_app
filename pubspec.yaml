@@ -21,8 +21,7 @@ dependencies:
   intl: ^0.18.1
   social_share: ^2.3.1
   lottie: ^2.3.2
-
-
+  flutter_dotenv: ^5.1.0
 
 # Ours Packages
   user_repository:
@@ -33,7 +32,7 @@ dependencies:
     path: packages/authentication_repository
   company_repository:
     path: packages/company_repository
-  http_adapter: 
+  http_adapter:
     path: packages/http
   cache_adapter:
     path: packages/cache
@@ -49,11 +48,21 @@ dependencies:
     path: packages/workoutsheet_repository
   workout_repository:
     path: packages/workout_repository
+  launcher_adapter:
+    path: packages/launcher
+
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^2.0.0
+  flutter_launcher_icons: ^0.13.1
+
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/images/logos/logo-icon.png"
+  min_sdk_android: 21 # android min sdk min:16, default 21
 
 flutter:
   uses-material-design: true
@@ -64,6 +73,8 @@ flutter:
     - assets/images/logos/
     - assets/images/gyms/
     - assets/images/icons/
+    - .env-prod
+    - .env-dev
 
   fonts:
     - family: Roboto

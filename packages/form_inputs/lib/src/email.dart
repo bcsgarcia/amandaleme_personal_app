@@ -9,8 +9,7 @@ enum EmailValidationError {
 /// {@template email}
 /// Form input for an email input
 /// {@endtemplate}
-class EmailInput extends FormzInput<String, EmailValidationError>
-    with FormzInputErrorCacheMixin {
+class EmailInput extends FormzInput<String, EmailValidationError> with FormzInputErrorCacheMixin {
   /// {@macro email}
   EmailInput.pure([super.value = '']) : super.pure();
 
@@ -23,8 +22,6 @@ class EmailInput extends FormzInput<String, EmailValidationError>
 
   @override
   EmailValidationError? validator(String? value) {
-    return _emailRegExp.hasMatch(value ?? '')
-        ? null
-        : EmailValidationError.invalid;
+    return _emailRegExp.hasMatch(value ?? '') ? null : EmailValidationError.invalid;
   }
 }

@@ -30,10 +30,10 @@ class NewPasswordInput extends StatelessWidget {
               onChanged: (password) => context.read<ChangePasswordCubit>().newPassChanged(password),
               obscureText: state.viewNewPass,
               decoration: InputDecoration(
-                hintText: 'Inisra sua nova senha',
+                hintText: 'Insira sua nova senha',
                 suffixIcon: IconButton(
                   onPressed: context.read<ChangePasswordCubit>().viewNewPass,
-                  icon: state.viewNewPass ? const Icon(Icons.remove_red_eye_outlined) : const Icon(Icons.remove_red_eye_rounded),
+                  icon: Image.asset(state.viewNewPass ? 'assets/images/icons/eye.png' : 'assets/images/icons/eye-off.png', height: 22),
                 ),
               ),
             );

@@ -14,8 +14,17 @@ class NotificationScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return Stack(
       children: [
+        ListView.builder(
+          padding: const EdgeInsets.only(top: 130),
+          itemCount: notifications.length,
+          itemBuilder: (context, i) {
+            final item = notifications[i];
+
+            return NotificationItem(notification: item);
+          },
+        ),
         AppHeaderWithTitleLeadinAndAction(
           title: 'Notificações',
           leadingButton: IconButton(
@@ -25,17 +34,6 @@ class NotificationScreen extends StatelessWidget {
               size: 35,
             ),
             onPressed: () => Navigator.pop(context),
-          ),
-        ),
-        Expanded(
-          child: ListView.builder(
-            padding: EdgeInsets.zero,
-            itemCount: notifications.length,
-            itemBuilder: (context, i) {
-              final item = notifications[i];
-
-              return NotificationItem(notification: item);
-            },
           ),
         ),
       ],

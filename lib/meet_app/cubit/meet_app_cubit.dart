@@ -19,8 +19,7 @@ class MeetAppCubit extends Cubit<MeetAppState> {
     try {
       emit(state.copyWith(status: MeetAppStatus.inProgress));
       final meetAppScreen = await _companyRepository.getMeetAppScreen();
-      emit(state.copyWith(
-          status: MeetAppStatus.success, screenModel: meetAppScreen));
+      emit(state.copyWith(status: MeetAppStatus.success, screenModel: meetAppScreen));
     } catch (e) {
       emit(state.copyWith(status: MeetAppStatus.failure));
     }

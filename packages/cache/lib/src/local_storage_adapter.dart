@@ -1,3 +1,4 @@
+import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'cache/cache.dart';
@@ -20,8 +21,26 @@ class LocalStorageAdapter implements CacheStorage {
     return localStorage.get(key);
   }
 
-  @override
   Future<void> clear() async {
-    await localStorage.clear();
+    try {
+      await localStorage.clear();
+    } catch (error) {
+      print(error);
+    }
+  }
+
+  Future<void> firstTimeLogin() async {
+    String today = DateFormat('yyyy-MM-dd').format(DateTime.now());
+    await save(key: 'first_time_login', value: today);
+  }
+
+  Future<void> removeFirstTimeLogin() async {
+    await delete('first_time_login');
+  }
+
+  Future<bool> isFirsTimeLoginSet() async {
+    String? isFirstTimeLoginSet = localStorage.getString('first_time_login');
+
+    return isFirstTimeLoginSet != null;
   }
 }

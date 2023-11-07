@@ -34,7 +34,7 @@ class ConfirmedNewPasswordInput extends StatelessWidget {
                 errorText: state.confirmedNewPass.displayError != null ? 'As senhas não correspondem' : null,
                 suffixIcon: IconButton(
                   onPressed: context.read<ChangePasswordCubit>().viewConfirmedNewPass,
-                  icon: state.viewConfirmedNewPass ? const Icon(Icons.remove_red_eye_outlined) : const Icon(Icons.remove_red_eye_rounded),
+                  icon: Image.asset(state.viewConfirmedNewPass ? 'assets/images/icons/eye.png' : 'assets/images/icons/eye-off.png', height: 22),
                 ),
               ),
             );

@@ -174,11 +174,14 @@ class PhotoAndNameDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var photoImage =
+        userModel.photoUrl != null ? Image.network(userModel.photoUrl!) : Image.asset('assets/images/icons/user.png');
+
     return Column(
       children: [
         CircleAvatar(
           radius: 55,
-          backgroundImage: NetworkImage(userModel.photoUrl!),
+          backgroundImage: photoImage.image,
           backgroundColor: Colors.white,
         ),
         const SizedBox(

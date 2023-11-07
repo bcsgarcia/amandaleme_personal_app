@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:home_repository/home_repository.dart';
 
 class WorkoutModel {
@@ -6,8 +7,8 @@ class WorkoutModel {
   final String subtitle;
   final String description;
   final List<WorkoutMedia> medias;
-  final int order;
-  final int breaktime;
+  final int workoutOrder;
+  final String breaktime;
   final String serie;
   bool done;
 
@@ -17,23 +18,31 @@ class WorkoutModel {
     required this.subtitle,
     required this.description,
     required this.medias,
-    required this.order,
+    required this.workoutOrder,
     required this.breaktime,
     required this.serie,
     this.done = false,
   });
 
   factory WorkoutModel.fromJson(Map json) {
-    return WorkoutModel(
-      id: json['id'],
-      title: json['title'],
-      subtitle: json['subtitle'],
-      description: json['description'],
-      order: json['order'],
-      breaktime: json['breaktime'],
-      serie: json['serie'],
-      medias: List<WorkoutMedia>.from(json['media'].map((item) => WorkoutMedia.fromJson(item))),
-    );
+    try {
+      return WorkoutModel(
+        id: json['id'],
+        title: json['title'],
+        subtitle: json['subtitle'],
+        description: json['description'],
+        workoutOrder: json['workoutOrder'],
+        breaktime: json['breaktime'],
+        serie: json['serie'],
+        medias: (json['media'] as List).isEmpty ? [] :
+        ((json['media'] as List).first as Map).length < 6 ? [] :
+        List<WorkoutMedia>.from(json['media'].map((item) => WorkoutMedia.fromJson(item))),
+      );
+    } catch (error) {
+      debugPrint('WorkoutModel: $error');
+      debugPrint(json.toString());
+      rethrow;
+    }
   }
 
   Map toJson() {
@@ -43,9 +52,14 @@ class WorkoutModel {
       'subtitle': subtitle,
       'description': description,
       'medias': medias,
-      'order': order,
+      'workoutOrder': workoutOrder,
       'breaktime': breaktime,
       'serie': serie,
     };
+  }
+
+  @override
+  String toString() {
+    return 'WorkoutModel{id: $id, title: $title, subtitle: $subtitle, description: $description, medias: $medias, workoutOrder: $workoutOrder, breaktime: $breaktime, serie: $serie, done: $done}';
   }
 }

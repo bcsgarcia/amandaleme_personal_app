@@ -21,7 +21,7 @@ class RemoteWorkoutRepository implements WorkoutRepository {
     try {
       final body = {"idworkout": idWorkout, "feedback": feedback};
 
-      await httpClient.request(url: '$url/feedback', method: 'post', body: body);
+      await httpClient.request(url: '$url/${Environment.feedbackPath}', method: 'post', body: body);
     } catch (e) {
       rethrow;
     }

@@ -4,6 +4,7 @@ import 'package:authentication_repository/authentication_repository.dart';
 // ignore: depend_on_referenced_packages
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sync_repository/sync_repository.dart';
 
 part 'app_event.dart';
 part 'app_state.dart';
@@ -11,9 +12,9 @@ part 'app_state.dart';
 class AppBloc extends Bloc<AppEvent, AppState> {
   AppBloc({
     required Authentication authenticationRepository,
+    required this.syncRepository,
   })  : _authenticationRepository = authenticationRepository,
         super(
-          // authenticationRepository.currentUser.isNotEmpty ? AppState.authenticated(authenticationRepository.currentUser) : const AppState.unauthenticated(),
           const AppState.initial(),
         ) {
     on<AppUserChanged>(_onUserChanged);
@@ -26,6 +27,7 @@ class AppBloc extends Bloc<AppEvent, AppState> {
 
   final Authentication _authenticationRepository;
   late final StreamSubscription<UserAuthenticationModel> _userSubscription;
+  final SyncRepository syncRepository;
 
   void _onUserChanged(
     AppUserChanged event,
@@ -54,8 +56,12 @@ class AppBloc extends Bloc<AppEvent, AppState> {
 
       if (userHasLoggedBefore) {
         final result = await _authenticationRepository.requestLocalAuth();
-        if (result == LocalAuthStatusEnum.failure || result == LocalAuthStatusEnum.errorDefault || result == LocalAuthStatusEnum.lockedOut) {
+        if (result == LocalAuthStatusEnum.failure ||
+            result == LocalAuthStatusEnum.errorDefault ||
+            result == LocalAuthStatusEnum.lockedOut) {
           _logout();
+        } else {
+          emit(AppState.authenticated(currentUser));
         }
       } else {
         _logout();
@@ -66,6 +72,7 @@ class AppBloc extends Bloc<AppEvent, AppState> {
   }
 
   void _logout() {
+    syncRepository.removeAllData();
     _authenticationRepository.logout();
   }
 

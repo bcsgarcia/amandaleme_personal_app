@@ -57,7 +57,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 size: 95,
                 initialLetters: '$firstLetter$fristLetterLastName',
               )
-            : CicleImageWithIconCan(photoUrl: _userModel.photoUrl!),
+            : CicleImageWithIconCan(photoUrl: _userModel.photoUrl),
         const SizedBox(height: 13),
         Text(
           '$firstName $lastName',
@@ -84,7 +84,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   EdgeInsets.zero,
                 ),
               ),
-              onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const ChangePasswordPage())),
+              onPressed: () =>
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => const ChangePasswordPage())),
               child: Text(
                 'Alterar senha',
                 style: textTheme.bodyLarge!.copyWith(

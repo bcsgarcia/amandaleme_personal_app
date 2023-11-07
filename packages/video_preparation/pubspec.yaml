@@ -12,6 +12,8 @@ dependencies:
     sdk: flutter
   home_repository:
     path: ../home_repository
+  http_adapter:
+    path: ../http
   path_provider: ^2.0.15
   
     

@@ -3,27 +3,28 @@ import 'package:amandaleme_personal_app/home/screen/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:home_repository/home_repository.dart';
-import 'package:sync_repository/sync_repository.dart';
 import 'package:workoutsheet_repository/workoutsheet_repository.dart';
 
 import '../app/common_widgets/common_widgets.dart';
-import 'cubit/home_cubit/home_cubit.dart';
-import 'screen/sync_page.dart';
+import 'cubit/home_cubit/cubit.dart';
 
 // ignore: must_be_immutable
 class HomePage extends StatefulWidget {
-  HomePage({
+  const HomePage({
     super.key,
     this.isShowFeedback = false,
   });
 
   static Page<void> page() => MaterialPage<void>(
-        child: BlocProvider(
-          create: (context) => HomeCubit(
-            homeRepository: RepositoryProvider.of<IHomeRepository>(context),
-            syncRepository: RepositoryProvider.of<SyncRepository>(context),
-          ),
-          child: HomePage(),
+        child: MultiBlocProvider(
+          providers: [
+            BlocProvider(
+              create: (context) => HomeCubit(
+                homeRepository: RepositoryProvider.of<IHomeRepository>(context),
+              ),
+            ),
+          ],
+          child: const HomePage(),
         ),
       );
 
@@ -34,12 +35,10 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  late HomeCubit _homeCubit;
-
   @override
   void initState() {
-    _homeCubit = context.read<HomeCubit>();
-    _homeCubit.getHomePage();
+    context.read<HomeCubit>().getHomePage();
+    context.read<SyncCubit>().shouldSync();
     super.initState();
   }
 
@@ -56,33 +55,34 @@ class _HomePageState extends State<HomePage> {
                   return ErrorDialog(
                     buttonPressed: () {
                       Navigator.of(context).pop();
-                      _homeCubit.getHomePage();
+                      context.read<HomeCubit>().getHomePage();
                     },
                   );
                 },
               );
             }
+
+            // if (state.status == HomePageStatus.sync) {
+            //   _goToSyncPage();
+            // }
           },
           child: BlocBuilder<HomeCubit, HomePageState>(
             builder: (context, state) {
-              if (state.status == HomePageStatus.loadSuccess) {
-                return BlocProvider(
-                  create: (_) => FeedbackCubit(context.read<WorkoutsheetRepository>()),
-                  child: HomeScreen(
-                    homeScreenModel: state.screenModel!,
-                    showFeedbackWidget: widget.isShowFeedback,
-                  ),
-                );
-              }
+              // if (state.status == HomePageStatus.loadSuccess) {
+              return BlocProvider(
+                create: (_) => FeedbackCubit(context.read<WorkoutsheetRepository>()),
+                child: HomeScreen(
+                  // homeScreenModel: state.screenModel!,
+                  showFeedbackWidget: widget.isShowFeedback,
+                ),
+              );
+              // }
 
-              if (state.status == HomePageStatus.sync) {
-                return BlocProvider(
-                  create: (_) => context.read<HomeCubit>(),
-                  child: const DownloadProgressPage(),
-                );
-              }
+              // if (state.status == HomePageStatus.sync) {
+              //   return const DownloadProgressPage();
+              // }
 
-              return const Center(child: CircularProgressIndicator());
+              // return const Center(child: CircularProgressIndicator());
             },
           ),
         ),

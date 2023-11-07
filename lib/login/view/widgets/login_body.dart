@@ -16,7 +16,7 @@ class LoginBody extends StatelessWidget {
         children: [
           const LoginHeader(),
           const SizedBox(
-            height: 30,
+            height: 25,
           ),
           Center(
             child: Text(
@@ -24,23 +24,12 @@ class LoginBody extends StatelessWidget {
               style: Theme.of(context).textTheme.headlineMedium!.copyWith(
                     color: blackColor,
                     fontWeight: FontWeight.bold,
+                    fontSize: 25,
                   ),
             ),
           ),
-          // const SizedBox(
-          //   height: 10,
-          // ),
-          // Center(
-          //   child: Text(
-          //     'Vamos treinar?',
-          //     style: Theme.of(context).textTheme.headlineMedium!.copyWith(
-          //           color: blackColor,
-          //           fontWeight: FontWeight.bold,
-          //         ),
-          //   ),
-          // ),
           const SizedBox(
-            height: 30,
+            height: 20,
           ),
           BlocProvider(
             create: (_) => LoginCubit(context.read<Authentication>()),

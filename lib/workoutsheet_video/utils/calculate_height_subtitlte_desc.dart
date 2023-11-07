@@ -22,5 +22,7 @@ double calculateSubtitleAndDescHeight(String title, String description, BuildCon
   titlePainter.layout(maxWidth: MediaQuery.of(context).size.width - 250);
   descriptionPainter.layout(maxWidth: MediaQuery.of(context).size.width - 260);
 
-  return titlePainter.size.height + descriptionPainter.size.height;
+  final height = titlePainter.size.height + descriptionPainter.size.height < 150 ? 250 : titlePainter.size.height + descriptionPainter.size.height;
+
+  return height + 15;
 }

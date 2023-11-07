@@ -17,7 +17,7 @@ class RemoteNotificationRepository implements NotificationRepository {
   Future<void> updateReadDateNotification() async {
     try {
       await this.httpClient.request(
-            url: '$url/update-unread-notification',
+            url: '$url/${Environment.updateUnreadNotificationPath}',
             method: 'put',
           );
     } catch (_) {
