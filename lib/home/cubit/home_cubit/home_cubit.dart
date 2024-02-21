@@ -10,11 +10,9 @@ part 'home_state.dart';
 class HomeCubit extends Cubit<HomePageState> {
   HomeCubit({
     required this.homeRepository,
-    // required this.syncRepository,
   }) : super(const HomePageState(status: HomePageStatus.initial));
 
   final IHomeRepository homeRepository;
-  // final SyncRepository syncRepository;
 
   Future<void> getHomePage() async {
     try {
