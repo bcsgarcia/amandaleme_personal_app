@@ -20,20 +20,6 @@ class HomeCubit extends Cubit<HomePageState> {
     try {
       emit(state.copyWith(status: HomePageStatus.loadInProgress));
 
-      // final mustSync = await syncRepository.mustSync();
-      // final isFirstTimeLogin = await syncRepository.isFirstTimeLogin();
-
-      // if (mustSync || forceSync || isFirstTimeLogin) {
-      //   if (isFirstTimeLogin) syncRepository.setFirstTimeLogin();
-
-      //   emit(state.copyWith(status: HomePageStatus.sync));
-      //   await syncRepository.call();
-      // }
-
-      // if (mustSync) {
-      //   emit(state.copyWith(status: HomePageStatus.sync));
-      // }
-
       final getHomeScreen = await homeRepository.getHomeScreen();
 
       emit(state.copyWith(
