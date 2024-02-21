@@ -1,15 +1,10 @@
-import 'package:amandaleme_personal_app/workoutsheet_video/workoutsheet_video_page.dart';
-import 'package:amandaleme_personal_app/workoutsheets/cubit/workoutsheet_cubit.dart';
-import 'package:amandaleme_personal_app/workoutsheets/screen/widgets/workout_item_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:home_repository/home_repository.dart';
 import 'package:video_preparation_service/video_preparation_service.dart';
 import 'package:workoutsheet_repository/workoutsheet_repository.dart';
 
-import '../../app/common_widgets/common_widgets.dart';
-import '../../home/cubit/home_cubit/cubit.dart';
-import '../../workoutsheet_video/cubit/workoutsheet_video_cubit.dart';
+import '../../lib.dart';
 
 class WorkoutsheetScreen extends StatefulWidget {
   const WorkoutsheetScreen({
@@ -35,7 +30,7 @@ class _WorkoutsheetScreenState extends State<WorkoutsheetScreen> {
   }
 
   _goToWorkoutSheetVideo(int index) {
-    if (context.read<SyncCubit>().state.status == SyncStatus.loadInProgress) {
+    if (context.read<HomeSyncCubit>().state.status == SyncStatus.loadInProgress) {
       const snackBar = SnackBar(
         content: Text('Aguarde o download dos treinos terminar!'),
       );

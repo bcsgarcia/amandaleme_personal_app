@@ -1,8 +1,7 @@
-import 'package:amandaleme_personal_app/app/theme/light_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../bloc/app_bloc.dart';
+import '../../lib.dart';
 
 class SplashScreen extends StatelessWidget {
   const SplashScreen({super.key});

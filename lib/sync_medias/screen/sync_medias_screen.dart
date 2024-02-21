@@ -1,9 +1,9 @@
-import 'package:amandaleme_personal_app/app/theme/light_theme.dart';
-import 'package:amandaleme_personal_app/sync_medias/cubit/sync_media/sync_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lottie/lottie.dart';
+
+import '../../lib.dart';
 
 class SyncMediaScreen extends StatelessWidget {
   const SyncMediaScreen({super.key});
@@ -24,7 +24,7 @@ class SyncMediaScreen extends StatelessWidget {
           onPressed: () => Navigator.pop(context),
         ),
       ),
-      body: BlocBuilder<SyncCubit, SyncPageState>(
+      body: BlocBuilder<SyncMediaPageCubit, SyncMadiaPageState>(
         builder: (context, state) {
           final isStateLoading = state.status == SyncPageStatus.loadInProgress;
 
@@ -62,7 +62,7 @@ class SyncMediaScreen extends StatelessWidget {
                             borderRadius: BorderRadius.circular(10),
                           ),
                         ),
-                        onPressed: context.read<SyncCubit>().sync,
+                        onPressed: context.read<SyncMediaPageCubit>().sync,
                         child: const Text('Fazer download'),
                       ),
                     ),
@@ -85,7 +85,7 @@ class DownloadProgressWidget extends StatelessWidget {
     return Column(
       children: [
         StreamBuilder<double>(
-          stream: context.read<SyncCubit>().syncRepository.downloadProgressStream,
+          stream: context.read<SyncMediaPageCubit>().syncRepository.downloadProgressStream,
           builder: (BuildContext context, AsyncSnapshot<double> snapshot) {
             if (snapshot.hasError) {
               return Text('Error: ${snapshot.error}');

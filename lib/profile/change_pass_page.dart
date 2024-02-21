@@ -3,9 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
 import 'package:user_repository/user_repository.dart';
 
-import '../app/common_widgets/success_dialog_widget.dart';
-import 'cubits/change-password/change_password_cubit.dart';
-import 'screen/change_pass_screen.dart';
+import '../app/app.dart';
+import 'profile.dart';
 
 class ChangePasswordPage extends StatelessWidget {
   const ChangePasswordPage({super.key});

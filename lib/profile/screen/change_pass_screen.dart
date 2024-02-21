@@ -1,6 +1,7 @@
-import 'package:amandaleme_personal_app/app/theme/light_theme.dart';
-import 'package:amandaleme_personal_app/profile/screen/widgets/change_password_form.dart';
 import 'package:flutter/material.dart';
+
+import '../../app/app.dart';
+import '../profile.dart';
 
 class ChangePasswordScreen extends StatelessWidget {
   const ChangePasswordScreen({super.key});
@@ -48,7 +49,7 @@ class ChangePasswordScreen extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 38),
-          ChangePasswordForm(),
+          ChangePasswordFormWidget(),
         ],
       ),
     );

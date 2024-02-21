@@ -1,10 +1,8 @@
-import 'package:amandaleme_personal_app/app/theme/light_theme.dart';
-import 'package:amandaleme_personal_app/profile/change_pass_page.dart';
-import 'package:amandaleme_personal_app/profile/screen/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:user_repository/user_repository.dart';
 
-import '../../app/common_widgets/common_widgets.dart';
+import '../../app/app.dart';
+import '../profile.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({
@@ -53,11 +51,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ),
         const SizedBox(height: 48),
         _userModel.photoUrl?.isEmpty == true
-            ? CircleWithInitialLetters(
+            ? CircleWithInitialLettersWidget(
                 size: 95,
                 initialLetters: '$firstLetter$fristLetterLastName',
               )
-            : CicleImageWithIconCan(photoUrl: _userModel.photoUrl),
+            : CicleImageWithIconCanWidget(photoUrl: _userModel.photoUrl),
         const SizedBox(height: 13),
         Text(
           '$firstName $lastName',

@@ -1,17 +1,10 @@
-import 'package:amandaleme_personal_app/home/home.page.dart';
-import 'package:amandaleme_personal_app/workoutsheet_video/cubit/workoutsheet_video_cubit.dart';
-import 'package:amandaleme_personal_app/workoutsheets/screen/screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:home_repository/home_repository.dart';
 import 'package:video_preparation_service/video_preparation_service.dart';
 import 'package:workoutsheet_repository/workoutsheet_repository.dart';
 
-import '../app/app_route.dart';
-import '../app/common_widgets/common_widgets.dart';
-import '../home/cubit/home_cubit/cubit.dart';
-import '../workoutsheet_video/workoutsheet_video_page.dart';
-import 'cubit/workoutsheet_cubit.dart';
+import '../lib.dart';
 
 class WorkoutsheetPage extends StatefulWidget {
   const WorkoutsheetPage({
@@ -122,7 +115,7 @@ class _WorkoutsheetPageState extends State<WorkoutsheetPage> {
               return WorkoutFloatingButton(
                 title: 'Iniciar treino',
                 function: () {
-                  if (context.read<SyncCubit>().state.status == SyncStatus.loadInProgress) {
+                  if (context.read<HomeSyncCubit>().state.status == SyncStatus.loadInProgress) {
                     const snackBar = SnackBar(
                       content: Text('Aguarde o download dos treinos terminar!'),
                     );

@@ -1,8 +1,7 @@
-import 'package:amandaleme_personal_app/app/common_widgets/common_widgets.dart';
 import 'package:company_repository/company_repository.dart';
 import 'package:flutter/material.dart';
 
-import 'widgets/widgets.dart';
+import '../../lib.dart';
 
 class PosturalPatternScreen extends StatelessWidget {
   const PosturalPatternScreen({
@@ -28,12 +27,11 @@ class PosturalPatternScreen extends StatelessWidget {
                     child: Text(
                       'Fotos bem feitas são de extrema importância na avaliação correta do padrão postural global',
                       textAlign: TextAlign.justify,
-                      style:
-                          Theme.of(context).textTheme.headlineLarge!.copyWith(
-                                fontSize: 23,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black,
-                              ),
+                      style: Theme.of(context).textTheme.headlineLarge!.copyWith(
+                            fontSize: 23,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                          ),
                     ),
                   ),
                   const SizedBox(height: 30),
@@ -45,9 +43,7 @@ class PosturalPatternScreen extends StatelessWidget {
                       children: List.generate(
                         posturalPatterns.length,
                         (index) => PosturalPatternItemWidget(
-                          imageSide: index % 2 != 0
-                              ? EnumImageSide.rigth
-                              : EnumImageSide.left,
+                          imageSide: index % 2 != 0 ? EnumImageSide.rigth : EnumImageSide.left,
                           index: index,
                           posturalPattern: posturalPatterns[index],
                         ),

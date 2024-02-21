@@ -1,7 +1,6 @@
-import 'package:amandaleme_personal_app/app/theme/light_theme.dart';
 import 'package:flutter/material.dart';
 
-import 'box_shadow_default.dart';
+import '../../lib.dart';
 
 class AppHeaderWithTitleLeadinAndAction extends StatelessWidget {
   const AppHeaderWithTitleLeadinAndAction({

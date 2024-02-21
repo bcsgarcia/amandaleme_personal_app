@@ -1,5 +1,3 @@
-import 'package:amandaleme_personal_app/app/theme/light_theme.dart';
-import 'package:amandaleme_personal_app/home/cubit/home_cubit/sync_cubit.dart';
 import 'package:authentication_repository/authentication_repository.dart';
 import 'package:company_repository/company_repository.dart';
 import 'package:flow_builder/flow_builder.dart';
@@ -13,8 +11,7 @@ import 'package:video_preparation_service/video_preparation_service.dart';
 import 'package:workout_repository/workout_repository.dart';
 import 'package:workoutsheet_repository/workoutsheet_repository.dart';
 
-import '../app_route.dart';
-import '../bloc/app_bloc.dart';
+import '../../lib.dart';
 
 class App extends StatelessWidget {
   App({
@@ -88,14 +85,13 @@ class App extends StatelessWidget {
               ),
             ),
             BlocProvider(
-              create: (_) => SyncCubit(_syncRepository),
-            )
-            // BlocProvider(
-            //   create: (_) => AppBloc(
-            //     authenticationRepository: _authenticationRepository,
-            //     syncRepository: _syncRepository,
-            //   ),
-            // ),
+              create: (_) => HomeSyncCubit(_syncRepository),
+            ),
+            BlocProvider(
+              create: (_) => MeetAppCubit(
+                _companyRepository,
+              ),
+            ),
           ],
           child: const AppView(),
         ));

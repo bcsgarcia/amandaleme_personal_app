@@ -1,32 +1,25 @@
-import 'package:amandaleme_personal_app/app/common_widgets/common_widgets.dart';
-import 'package:amandaleme_personal_app/home/screen/widgets/feedback_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../app/app.dart';
 import '../cubit/home_cubit/cubit.dart';
-import 'widgets/widgets.dart';
+import '../widgets/widgets.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({
     super.key,
-    // required this.homeScreenModel,
     this.showFeedbackWidget = false,
   });
 
-  // final HomeScreenModel homeScreenModel;
   final bool showFeedbackWidget;
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<HomeCubit, HomePageState>(
       builder: (context, state) {
-        // if (state.status == HomePageStatus.loadInProgress || state.status == HomePageStatus.initial) {
-        //   return const Center(child: CircularProgressIndicator());
-        // }
-
         final homeScreenModel = state.screenModel;
 
-        return BlocBuilder<SyncCubit, SyncState>(
+        return BlocBuilder<HomeSyncCubit, HomeSyncState>(
           builder: (context, state) {
             return Scaffold(
               floatingActionButton: state.status == SyncStatus.loadSuccess
@@ -45,7 +38,7 @@ class HomeScreen extends StatelessWidget {
                             ),
                           ),
                           StreamBuilder<double>(
-                            stream: context.read<SyncCubit>().syncRepository.downloadProgressStream,
+                            stream: context.read<HomeSyncCubit>().syncRepository.downloadProgressStream,
                             builder: (BuildContext context, AsyncSnapshot<double> snapshot) {
                               if (snapshot.hasError) {
                                 return const Text('!!!');
@@ -93,8 +86,8 @@ class HomeScreen extends StatelessWidget {
                       child: RefreshIndicator(
                           onRefresh: () async {
                             context.read<HomeCubit>().getHomePage();
-                            if (context.read<SyncCubit>().state.status != SyncStatus.loadInProgress) {
-                              context.read<SyncCubit>().shouldSync();
+                            if (context.read<HomeSyncCubit>().state.status != SyncStatus.loadInProgress) {
+                              context.read<HomeSyncCubit>().shouldSync();
                             }
                           },
                           child: ListView(
@@ -103,7 +96,7 @@ class HomeScreen extends StatelessWidget {
                               const HomeTitle(title: 'Meu programa de treinamento'),
                               MyTrainingPlanWidget(workoutSheets: homeScreenModel.myTrainingPlan),
                               if (showFeedbackWidget == false) const SizedBox(height: 45),
-                              if (showFeedbackWidget) FeedbackBuilder(workout: homeScreenModel.myTrainingPlan.last),
+                              if (showFeedbackWidget) HomeFeedbackWidget(workout: homeScreenModel.myTrainingPlan.last),
                               const HomeTitle(title: 'Todos os meus treinos'),
                               const SizedBox(height: 15),
                               AllMyWorkoutSheets(myWorkousheets: homeScreenModel.myWorkousheets),

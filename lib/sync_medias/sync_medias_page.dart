@@ -1,12 +1,8 @@
-import 'package:amandaleme_personal_app/app/bloc/app_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sync_repository/sync_repository.dart';
 
-import '../app/common_widgets/error_dialog_widget.dart';
-import '../app/theme/light_theme.dart';
-import 'cubit/sync_media/sync_cubit.dart';
-import 'screen/screen.dart';
+import '../lib.dart';
 
 class SyncMediasPage extends StatelessWidget {
   const SyncMediasPage({super.key});
@@ -14,8 +10,8 @@ class SyncMediasPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => SyncCubit(context.read<SyncRepository>()),
-      child: BlocListener<SyncCubit, SyncPageState>(
+      create: (_) => SyncMediaPageCubit(context.read<SyncRepository>()),
+      child: BlocListener<SyncMediaPageCubit, SyncMadiaPageState>(
         listener: (context, state) {
           if (state.status == SyncPageStatus.loadFailure) {
             showDialog(
@@ -24,7 +20,7 @@ class SyncMediasPage extends StatelessWidget {
                 return ErrorDialog(
                   buttonPressed: () {
                     Navigator.of(context).pop();
-                    context.read<SyncCubit>().sync();
+                    context.read<SyncMediaPageCubit>().sync();
                   },
                 );
               },

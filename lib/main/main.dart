@@ -1,19 +1,15 @@
-import 'package:amandaleme_personal_app/app/bloc_observer.dart';
-import 'package:amandaleme_personal_app/main/factories/notification_repository/notification_repository_factory.dart';
-import 'package:amandaleme_personal_app/main/factories/sync_repository/sync_repository_factory.dart';
-import 'package:amandaleme_personal_app/main/factories/workout_repository/workout_repository_factory.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:http_adapter/http_adapter.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
-import '../app/screen/app.dart';
+import '../app/app.dart';
 import 'factories/factories.dart';
 
 Future<void> main() async {
-  const environmentType = !kDebugMode ? EnvironmentType.dev : EnvironmentType.prod;
-  await Environment.loadDotEnv(EnvironmentType.prod);
+  const environmentType = kDebugMode ? EnvironmentType.dev : EnvironmentType.prod;
+  await Environment.loadDotEnv(environmentType);
 
   WidgetsFlutterBinding.ensureInitialized();
   Bloc.observer = const AppBlocObserver();

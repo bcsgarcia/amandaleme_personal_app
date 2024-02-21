@@ -2,7 +2,7 @@ import 'package:company_repository/company_repository.dart';
 import 'package:flutter/material.dart';
 
 import '../../app/common_widgets/common_widgets.dart';
-import 'widgets/widgets.dart';
+import '../widgets/widgets.dart';
 
 class PartnershipScreen extends StatefulWidget {
   const PartnershipScreen({
@@ -27,14 +27,11 @@ class _PartnershipScreenState extends State<PartnershipScreen> {
     super.initState();
   }
 
-  Map<String, List<PartnershipModel>> groupByCategory(
-      List<PartnershipModel> partnerships) {
+  Map<String, List<PartnershipModel>> groupByCategory(List<PartnershipModel> partnerships) {
     Map<String, List<PartnershipModel>> groupedPartnerships = {};
 
     for (var partnership in partnerships) {
-      groupedPartnerships
-          .putIfAbsent(partnership.category, () => [])
-          .add(partnership);
+      groupedPartnerships.putIfAbsent(partnership.category, () => []).add(partnership);
     }
 
     return groupedPartnerships;
@@ -68,10 +65,7 @@ class _PartnershipScreenState extends State<PartnershipScreen> {
                       children: [
                         Text(
                           category,
-                          style: Theme.of(context)
-                              .textTheme
-                              .headlineLarge!
-                              .copyWith(
+                          style: Theme.of(context).textTheme.headlineLarge!.copyWith(
                                 fontSize: 19,
                                 color: Colors.black,
                                 fontWeight: FontWeight.bold,
@@ -82,8 +76,7 @@ class _PartnershipScreenState extends State<PartnershipScreen> {
                         ),
                         ...categoryPartnerships
                             .map(
-                              (partnership) =>
-                                  PartnershipItem(partnership: partnership),
+                              (partnership) => PartnershipItem(partnership: partnership),
                             )
                             .toList(),
                         const SizedBox(

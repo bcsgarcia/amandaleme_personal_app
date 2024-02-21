@@ -1,5 +1,6 @@
-import 'package:amandaleme_personal_app/app/theme/light_theme.dart';
 import 'package:flutter/material.dart';
+
+import '../../lib.dart';
 
 class HowToTakePictureScreen extends StatelessWidget {
   const HowToTakePictureScreen({super.key});
@@ -52,8 +53,7 @@ class HowToTakePictureScreen extends StatelessWidget {
         ),
         const HowTakePictureItem(
           index: '3',
-          description:
-              'Enquadre todo o corpo para que nenhuma parte seja cortada;',
+          description: 'Enquadre todo o corpo para que nenhuma parte seja cortada;',
         ),
         const HowTakePictureItem(
           height: 168,
@@ -67,8 +67,7 @@ class HowToTakePictureScreen extends StatelessWidget {
         ),
         const HowTakePictureItem(
           index: '6',
-          description:
-              'Em casos de cabelos longos, fazer um coque para não atrapalhar a visualização das costas.',
+          description: 'Em casos de cabelos longos, fazer um coque para não atrapalhar a visualização das costas.',
         ),
         const SizedBox(height: 20),
         const Divider(),
@@ -163,10 +162,7 @@ class HowTakePictureItem extends StatelessWidget {
             child: Text(
               description,
               textAlign: TextAlign.justify,
-              style: Theme.of(context)
-                  .textTheme
-                  .bodyMedium!
-                  .copyWith(fontSize: 16, color: Colors.black, height: 1.5),
+              style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 16, color: Colors.black, height: 1.5),
             ),
           )
         ],

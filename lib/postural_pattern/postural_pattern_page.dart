@@ -1,6 +1,7 @@
-import 'package:amandaleme_personal_app/postural_pattern/screen/postural_pattern_screen.dart';
 import 'package:company_repository/company_repository.dart';
 import 'package:flutter/material.dart';
+
+import '../lib.dart';
 
 class PosturalPatternPage extends StatelessWidget {
   const PosturalPatternPage({

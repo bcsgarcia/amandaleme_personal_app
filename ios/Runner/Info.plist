@@ -43,8 +43,6 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-<<<<<<< HEAD
-=======
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
@@ -73,6 +71,5 @@
 	<string>tel</string>
 	</array>
 
->>>>>>> 28b7eeb82643fdea068f7eb351c88d3a820c8ea2
 </dict>
 </plist>

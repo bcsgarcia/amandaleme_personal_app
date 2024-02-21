@@ -1,6 +1,7 @@
-import 'package:amandaleme_personal_app/profile/screen/profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:user_repository/user_repository.dart';
+
+import 'profile.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key, required this.userModel});

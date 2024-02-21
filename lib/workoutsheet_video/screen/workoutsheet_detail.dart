@@ -7,7 +7,7 @@ import 'package:video_player/video_player.dart';
 import 'package:workout_repository/workout_repository.dart';
 
 import '../cubit/cubit.dart';
-import 'widgets/widgets.dart';
+import '../widgets/widgets.dart';
 
 class WorkoutsheetDetail extends StatefulWidget {
   const WorkoutsheetDetail({super.key});

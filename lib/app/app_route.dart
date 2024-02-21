@@ -1,12 +1,8 @@
-import 'package:amandaleme_personal_app/app/screen/splash_screen.dart';
-import 'package:amandaleme_personal_app/home/home.page.dart';
-import 'package:amandaleme_personal_app/login/view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:home_repository/home_repository.dart';
 
-import '../home/cubit/home_cubit/cubit.dart';
-import 'bloc/app_bloc.dart';
+import '../lib.dart';
 
 class RouteNames {
   static const String login = '/login';
