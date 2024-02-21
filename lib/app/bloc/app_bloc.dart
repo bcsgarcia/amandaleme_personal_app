@@ -1,10 +1,9 @@
 import 'dart:async';
 
-import 'package:authentication_repository/authentication_repository.dart';
 // ignore: depend_on_referenced_packages
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sync_repository/sync_repository.dart';
+import 'package:repositories/repositories.dart';
 
 part 'app_event.dart';
 part 'app_state.dart';

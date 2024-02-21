@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:home_repository/home_repository.dart';
+import 'package:repositories/repositories.dart';
 
 import '../../app/theme/light_theme.dart';
 import '../cubit/workout_feedback_cubit.dart';

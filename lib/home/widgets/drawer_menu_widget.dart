@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:home_repository/home_repository.dart';
+import 'package:repositories/repositories.dart';
 import 'package:social_share/social_share.dart';
-import 'package:user_repository/user_repository.dart';
 
 import '../../lib.dart';
 

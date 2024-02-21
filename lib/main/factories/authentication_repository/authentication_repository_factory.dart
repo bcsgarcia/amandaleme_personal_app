@@ -1,6 +1,6 @@
-import 'package:authentication_repository/authentication_repository.dart';
 import 'package:cache_adapter/cache_adapter.dart';
 import 'package:http_adapter/http_adapter.dart';
+import 'package:repositories/repositories.dart';
 
 import '../http/http.dart';
 

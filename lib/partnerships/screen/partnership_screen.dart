@@ -1,5 +1,5 @@
-import 'package:company_repository/company_repository.dart';
 import 'package:flutter/material.dart';
+import 'package:repositories/repositories.dart';
 
 import '../../app/common_widgets/common_widgets.dart';
 import '../widgets/widgets.dart';

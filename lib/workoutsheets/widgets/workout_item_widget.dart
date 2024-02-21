@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:home_repository/home_repository.dart';
+import 'package:repositories/repositories.dart';
 
 import '../../lib.dart';
 

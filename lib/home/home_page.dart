@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:home_repository/home_repository.dart';
-import 'package:workoutsheet_repository/workoutsheet_repository.dart';
+import 'package:repositories/repositories.dart';
 
 import '../lib.dart';
 

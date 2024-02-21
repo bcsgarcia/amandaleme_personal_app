@@ -1,6 +1,6 @@
-import 'package:authentication_repository/authentication_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:repositories/repositories.dart';
 
 import '../../app/theme/light_theme.dart';
 import '../cubit/login_cubit.dart';

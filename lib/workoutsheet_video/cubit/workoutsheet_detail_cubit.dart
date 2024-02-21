@@ -2,9 +2,8 @@ import 'dart:io';
 
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:home_repository/home_repository.dart';
+import 'package:repositories/repositories.dart';
 import 'package:video_preparation_service/video_preparation_service.dart';
-import 'package:workoutsheet_repository/workoutsheet_repository.dart';
 
 part 'workoutsheet_detail_state.dart';
 

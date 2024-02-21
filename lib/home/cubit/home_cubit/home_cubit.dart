@@ -2,8 +2,8 @@
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:home_repository/home_repository.dart';
 import 'package:http_adapter/http_adapter.dart';
+import 'package:repositories/repositories.dart';
 
 part 'home_state.dart';
 

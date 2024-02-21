@@ -11,7 +11,7 @@ dependencies:
     sdk: flutter
 
   cupertino_icons: ^1.0.2
-  flutter_bloc: ^8.1.2
+  flutter_bloc: ^8.1.4
   flow_builder: ^0.0.9
   http: ^0.13.5
   shared_preferences: ^2.1.0
@@ -25,30 +25,16 @@ dependencies:
   shimmer: ^3.0.0
 
 # Ours Packages
-  user_repository:
-    path: packages/user_repository
-  home_repository:
-    path: packages/home_repository
-  authentication_repository:
-    path: packages/authentication_repository
-  company_repository:
-    path: packages/company_repository
+  repositories:
+    path: packages/repositories
   http_adapter:
     path: packages/http
   cache_adapter:
     path: packages/cache
   form_inputs:
     path: packages/form_inputs
-  notification_repository:
-    path: packages/notification_repository
   video_preparation_service:
     path: packages/video_preparation
-  sync_repository:
-    path: packages/sync_repository
-  workoutsheet_repository:
-    path: packages/workoutsheet_repository
-  workout_repository:
-    path: packages/workout_repository
   launcher_adapter:
     path: packages/launcher
 

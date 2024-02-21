@@ -1,5 +1,5 @@
-import 'package:company_repository/company_repository.dart';
 import 'package:http_adapter/http_adapter.dart';
+import 'package:repositories/repositories.dart';
 
 import '../factories.dart';
 

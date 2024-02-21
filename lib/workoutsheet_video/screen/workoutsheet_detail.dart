@@ -3,8 +3,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:repositories/repositories.dart';
 import 'package:video_player/video_player.dart';
-import 'package:workout_repository/workout_repository.dart';
 
 import '../cubit/cubit.dart';
 import '../widgets/widgets.dart';

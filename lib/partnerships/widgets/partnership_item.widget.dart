@@ -1,6 +1,6 @@
-import 'package:company_repository/company_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:launcher_adapter/launcher_adapter.dart';
+import 'package:repositories/repositories.dart';
 
 class PartnershipItem extends StatelessWidget {
   final PartnershipModel partnership;

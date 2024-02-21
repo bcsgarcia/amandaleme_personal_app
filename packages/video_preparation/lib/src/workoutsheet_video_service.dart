@@ -2,9 +2,9 @@ import 'dart:io';
 
 import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
-import 'package:home_repository/home_repository.dart';
 import 'package:http_adapter/http_adapter.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:repositories/repositories.dart';
 
 class VideoPreparationService {
   List<String> allMediaFilesPaths = [];

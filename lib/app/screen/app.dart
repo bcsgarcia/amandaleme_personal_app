@@ -1,15 +1,8 @@
-import 'package:authentication_repository/authentication_repository.dart';
-import 'package:company_repository/company_repository.dart';
 import 'package:flow_builder/flow_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:home_repository/home_repository.dart';
-import 'package:notification_repository/notification_repository.dart';
-import 'package:sync_repository/sync_repository.dart';
-import 'package:user_repository/user_repository.dart';
+import 'package:repositories/repositories.dart';
 import 'package:video_preparation_service/video_preparation_service.dart';
-import 'package:workout_repository/workout_repository.dart';
-import 'package:workoutsheet_repository/workoutsheet_repository.dart';
 
 import '../../lib.dart';
 

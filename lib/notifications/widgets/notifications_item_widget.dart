@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:notification_repository/notification_repository.dart';
+import 'package:repositories/repositories.dart';
 
 import '../../lib.dart';
 

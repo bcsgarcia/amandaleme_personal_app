@@ -3,7 +3,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:http_adapter/http_adapter.dart';
-import 'package:sync_repository/sync_repository.dart';
+import 'package:repositories/repositories.dart';
 
 part 'sync_media_page_state.dart';
 

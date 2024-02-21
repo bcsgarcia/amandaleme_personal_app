@@ -1,7 +1,7 @@
 // ignore_for_file: depend_on_referenced_packages
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:workoutsheet_repository/workoutsheet_repository.dart';
+import 'package:repositories/repositories.dart';
 
 part 'feedback_state.dart';
 

@@ -2,7 +2,7 @@
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:workoutsheet_repository/workoutsheet_repository.dart';
+import 'package:repositories/repositories.dart';
 
 part 'workoutsheet_state.dart';
 

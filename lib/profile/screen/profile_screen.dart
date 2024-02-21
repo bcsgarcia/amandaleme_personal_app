@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:user_repository/user_repository.dart';
+import 'package:repositories/repositories.dart';
 
 import '../../app/app.dart';
 import '../profile.dart';
