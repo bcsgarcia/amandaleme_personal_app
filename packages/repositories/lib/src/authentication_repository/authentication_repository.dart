@@ -1,9 +1,8 @@
 import 'dart:async'; // Import needed for StreamController
 
-import 'package:cache_adapter/cache_adapter.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
-import 'package:http_adapter/http_adapter.dart';
+import 'package:helpers/helpers.dart';
 import 'package:local_auth/error_codes.dart' as auth_error;
 import 'package:local_auth/local_auth.dart';
 import 'package:local_auth_android/local_auth_android.dart';

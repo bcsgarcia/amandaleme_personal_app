@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:launcher_adapter/launcher_adapter.dart';
+import 'package:helpers/helpers.dart';
 import 'package:repositories/repositories.dart';
 
 class PartnershipItem extends StatelessWidget {

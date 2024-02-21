@@ -1,9 +1,8 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:cache_adapter/cache_adapter.dart';
 import 'package:collection/collection.dart';
-import 'package:http_adapter/http_adapter.dart';
+import 'package:helpers/helpers.dart';
 import 'package:path_provider/path_provider.dart';
 
 import 'models/models.dart';

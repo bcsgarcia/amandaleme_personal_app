@@ -18,6 +18,7 @@ dependencies:
   formz: ^0.6.0
   google_fonts: ^4.0.3
   video_player: ^2.6.1
+  path_provider: ^2.0.15
   intl: ^0.18.1
   social_share: ^2.3.1
   lottie: ^2.3.2
@@ -27,17 +28,10 @@ dependencies:
 # Ours Packages
   repositories:
     path: packages/repositories
-  http_adapter:
-    path: packages/http
-  cache_adapter:
-    path: packages/cache
-  form_inputs:
-    path: packages/form_inputs
+  helpers:
+    path: packages/helpers
   video_preparation_service:
     path: packages/video_preparation
-  launcher_adapter:
-    path: packages/launcher
-
 
 dev_dependencies:
   flutter_test:

@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:http_adapter/http_adapter.dart';
+import 'package:helpers/helpers.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
 import '../app/app.dart';

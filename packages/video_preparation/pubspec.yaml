@@ -12,8 +12,8 @@ dependencies:
     sdk: flutter
   repositories:
     path: ../repositories
-  http_adapter:
-    path: ../http
+  helpers:
+    path: ../helpers
   path_provider: ^2.0.15
 
 

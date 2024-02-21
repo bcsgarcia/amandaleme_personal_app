@@ -4,6 +4,6 @@
 
 // String makeApiUrlDEV(String path) => 'https://personal-sys-backend.herokuapp.com/$path'; // android
 
-import 'package:http_adapter/http_adapter.dart';
+import 'package:helpers/helpers.dart';
 
 String makeApiUrlDEV(String path) => '${Environment.apiBaseUsr}/$path';

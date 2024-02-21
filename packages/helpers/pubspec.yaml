@@ -1,7 +1,6 @@
-name: repositories
+name: helpers
 description: A starting point for Dart libraries or applications.
 version: 1.0.0
-publish_to: none
 # repository: https://github.com/my_org/my_repo
 
 environment:
@@ -9,13 +8,15 @@ environment:
 
 # Add regular dependencies here.
 dependencies:
-  path_provider: ^2.0.15
+  formz: ^0.6.0
+  http: ^0.13.5
+  url_launcher: ^6.1.11
+  flutter_dotenv: ^5.1.0
+  shared_preferences: ^2.1.0
   equatable: ^2.0.5
+  intl: ^0.18.1
   flutter:
     sdk: flutter
-  local_auth: ^2.1.6
-  helpers:
-    path: ../helpers
 
 dev_dependencies:
   lints: ^2.0.0
@@ -24,3 +25,4 @@ dev_dependencies:
     sdk: flutter
   mocktail: ^0.3.0
   very_good_analysis: ^3.1.0
+  faker: ^2.1.0

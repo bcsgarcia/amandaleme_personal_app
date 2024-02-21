@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:http_adapter/http_adapter.dart';
+import 'package:helpers/helpers.dart';
 
 /// {@template authenticationModel}
 /// Authentication model
@@ -27,5 +27,6 @@ class UserAuthenticationModel extends Equatable {
 
   UserAuthenticationModel toModel() => UserAuthenticationModel(token: token);
 
+  @override
   List get props => [token];
 }

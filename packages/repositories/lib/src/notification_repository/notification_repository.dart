@@ -1,4 +1,4 @@
-import 'package:http_adapter/http_adapter.dart';
+import 'package:helpers/helpers.dart';
 
 abstract class NotificationRepository {
   Future<void> updateReadDateNotification();
@@ -16,10 +16,10 @@ class RemoteNotificationRepository implements NotificationRepository {
   @override
   Future<void> updateReadDateNotification() async {
     try {
-      await this.httpClient.request(
-            url: '$url/${Environment.updateUnreadNotificationPath}',
-            method: 'put',
-          );
+      await httpClient.request(
+        url: '$url/${Environment.updateUnreadNotificationPath}',
+        method: 'put',
+      );
     } catch (_) {
       rethrow;
     }

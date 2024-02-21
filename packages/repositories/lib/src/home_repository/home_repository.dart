@@ -1,4 +1,4 @@
-import 'package:http_adapter/http_adapter.dart';
+import 'package:helpers/helpers.dart';
 
 import 'models/models.dart';
 
@@ -18,12 +18,12 @@ class HomeRespository implements IHomeRepository {
   @override
   Future<HomeScreenModel> getHomeScreen() async {
     try {
-      final response = await this.httpClient.request(url: '$url/${Environment.screenPath}', method: 'get');
+      final response = await httpClient.request(url: '$url/${Environment.screenPath}', method: 'get');
       print(response);
 
       return HomeScreenModel.fromJson(response);
     } catch (e) {
-      throw e;
+      rethrow;
     }
   }
 }

@@ -1,4 +1,4 @@
-import 'package:http_adapter/http_adapter.dart';
+import 'package:helpers/helpers.dart';
 
 import 'models/models.dart';
 

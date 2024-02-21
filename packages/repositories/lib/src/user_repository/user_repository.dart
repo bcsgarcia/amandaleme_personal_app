@@ -1,4 +1,4 @@
-import 'package:http_adapter/http_adapter.dart';
+import 'package:helpers/helpers.dart';
 
 abstract class UserRepository {
   Future<void> changePassword({required String oldPass, required String newPass});
