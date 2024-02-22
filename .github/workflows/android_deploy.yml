@@ -1,0 +1,49 @@
+name: Deploy to Play Store
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Flutter
+      uses: subosito/flutter-action@v1
+
+    - name: Create .env file
+      run: |
+        echo "API_BASE_URL=${{ vars.API_BASE_URL }}" >> .env
+        echo "APP_PATH=${{ vars.APP_PATH }}" >> .env
+        echo "GET_MEET_APP_PATH=${{ vars.GET_MEET_APP_PATH }}" >> .env
+        echo "APP_HOME_PATH=${{ vars.APP_HOME_PATH }}" >> .env
+        echo "NOTIFICATION_PATH=${{ vars.NOTIFICATION_PATH }}" >> .env
+        echo "WORKOUTSHEET_PATH=${{ vars.WORKOUTSHEET_PATH }}" >> .env
+        echo "WORKOUT_PATH=${{ vars.WORKOUT_PATH }}" >> .env
+        echo "AUTH_PATH=${{ vars.AUTH_PATH }}" >> .env
+        echo "REFRESH_TOKEN_PATH=${{ vars.REFRESH_TOKEN_PATH }}" >> .env
+        echo "SCREEN_PATH=${{ vars.SCREEN_PATH }}" >> .env
+        echo "UPDATE_UNREAD_NOTIFICATION_PATH=${{ vars.UPDATE_UNREAD_NOTIFICATION_PATH }}" >> .env
+        echo "ALL_MEDIA_SYNC_PATH=${{ vars.ALL_MEDIA_SYNC_PATH }}" >> .env
+        echo "CHANGE_PASS_PATH=${{ vars.CHANGE_PASS_PATH }}" >> .env
+        echo "FEEDBACK_PATH=${{ vars.FEEDBACK_PATH }}" >> .env
+        echo "WORKOUTSHEET_DONE_PATH=${{ vars.WORKOUTSHEET_DONE_PATH }}" >> .env
+        echo "MY_MEDIAS_DIRECTORY_PATH=${{ vars.MY_MEDIAS_DIRECTORY_PATH }}" >> .env
+        echo "COMPANY_ID=${{ vars.COMPANY_ID }}" >> .env
+
+    - name: Install Fastlane
+      run: sudo gem install fastlane
+
+    - name: Install dependencies
+      run: flutter pub get
+
+    - name: Build APK
+      run: flutter build apk --target=lib/main/main.dart
+
+    - name: Deploy to Google Play
+      env:
+        GOOGLE_CLOUD_CREDENTIALS: ${{ secrets.GOOGLE_CLOUD_CREDENTIALS }}
+      run: fastlane android deploy

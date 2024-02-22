@@ -1,0 +1,2 @@
+json_key_file("~/Downloads/personal-android-fast-supply-3b100e3f2bec.json") # Path to the json secret file - Follow https://docs.fastlane.tools/actions/supply/#setup to get one
+package_name("com.bcsgarcia.personal_app") # e.g. com.krausefx.app
