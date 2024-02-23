@@ -10,7 +10,7 @@ class Environment {
     await dotenv.load(fileName: Environment.fileName);
   }
 
-  static String get fileName => _currentEnv == EnvironmentType.prod ? '.env-prod' : '.env-dev';
+  static String get fileName => _currentEnv == EnvironmentType.prod ? '.env' : '.env-dev';
   static EnvironmentType get env => _currentEnv;
 
   static String get apiBaseUsr => dotenv.env['API_BASE_URL'] ?? 'MY_FALLBACK';
@@ -30,8 +30,4 @@ class Environment {
   static String get myMediasDirectoryPath => dotenv.env['MY_MEDIAS_DIRECTORY_PATH'] ?? 'MY_FALLBACK';
   static String get feedbackPath => dotenv.env['FEEDBACK_PATH'] ?? 'MY_FALLBACK';
   static String get workoutsheetDonePath => dotenv.env['WORKOUTSHEET_DONE_PATH'] ?? 'MY_FALLBACK';
-
-
-
-
 }
