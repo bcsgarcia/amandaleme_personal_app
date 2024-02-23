@@ -19,6 +19,7 @@ platform :android do
   desc "Build the release APK"
   lane :build_release do
     sh("flutter", "clean")
+    sh("cd", "..")
     sh("chmod", "777", "make_install.sh")
     sh("make_install.sh")
     sh("flutter", "build", "apk", "--release", "--target=lib/main/main.dart")
