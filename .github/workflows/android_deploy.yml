@@ -39,7 +39,8 @@ jobs:
     - name: Install Fastlane
       run: sudo gem install fastlane
 
-    - name: Deploy to Google Play
+    - name: Run Fastlane
+      working-directory: ./android/fastlane # Substitua pelo caminho correto, se necessário
       env:
         GOOGLE_CLOUD_CREDENTIALS: ${{ secrets.GOOGLE_CLOUD_CREDENTIALS }}
       run: fastlane android deploy
