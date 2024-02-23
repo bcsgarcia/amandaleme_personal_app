@@ -16,23 +16,25 @@
 default_platform(:android)
 
 platform :android do
-  desc "Runs all the tests"
-  lane :test do
-    gradle(task: "test")
+  desc "Build the release APK"
+  lane :build_release do
+    sh("flutter", "clean")
+    sh("make_install.sh")
+    sh("flutter", "build", "apk", "--release", "--target=lib/main/main.dart")
+    # O APK estará no caminho padrão de saída, a menos que você especifique outro
   end
 
-  desc "Submit a new Beta Build to Crashlytics Beta"
-  lane :beta do
-    gradle(task: "clean assembleRelease")
-    crashlytics
-  
-    # sh "your_script.sh"
-    # You can also use other beta testing services here
-  end
-
-  desc "Deploy a new version to the Google Play"
+  desc "Deploy to the Google Play"
   lane :deploy do
-    gradle(task: "clean assembleRelease")
-    upload_to_play_store
+    build_release # Chama a lane definida acima para fazer o build
+    upload_to_play_store(
+      track: 'alpha', # Ou beta, production, etc., dependendo do seu caso de uso
+      #apk: 'build/app/outputs/flutter-apk/app-release.apk' # Caminho para o seu APK
+      json_key_data: ENV["GOOGLE_CLOUD_CREDENTIALS"], # Usa a variável de ambiente
+      aab: '../build/app/outputs/bundle/release/app-release.aab', # Caminho para o seu AAB
+      skip_upload_metadata: true,
+      skip_upload_images: true,
+      skip_upload_screenshots: true
+    )
   end
 end
