@@ -16,22 +16,21 @@
 default_platform(:android)
 
 platform :android do
-  desc "Build the release APK"
+  desc "Build the release App Bundle"
   lane :build_release do
     sh("flutter", "clean")
     sh("flutter", "pub", "get")
-    sh("flutter", "build", "apk", "--release", "--target=lib/main/main.dart")
-    # O APK estará no caminho padrão de saída, a menos que você especifique outro
+    sh("flutter", "build", "appbundle", "--release", "--target=lib/main/main.dart")
+    # O AAB estará no caminho padrão de saída, a menos que você especifique outro
   end
 
   desc "Deploy to the Google Play"
   lane :deploy do
-    build_release # Chama a lane definida acima para fazer o build
+    build_release # Chama a lane definida acima para fazer o build do AAB
     upload_to_play_store(
       track: 'alpha', # Ou beta, production, etc., dependendo do seu caso de uso
-      #apk: 'build/app/outputs/flutter-apk/app-release.apk' # Caminho para o seu APK
       json_key_data: ENV["GOOGLE_CLOUD_CREDENTIALS"], # Usa a variável de ambiente
-      aab: '../build/app/outputs/bundle/release/app-release.aab', # Caminho para o seu AAB
+      aab: '../build/app/outputs/bundle/release/app-release.aab', # Certifique-se de que este caminho esteja correto
       skip_upload_metadata: true,
       skip_upload_images: true,
       skip_upload_screenshots: true
