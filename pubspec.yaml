@@ -54,8 +54,7 @@ flutter:
     - assets/images/logos/
     - assets/images/gyms/
     - assets/images/icons/
-    - .env-prod
-    - .env-dev
+    - .env
 
   fonts:
     - family: Roboto

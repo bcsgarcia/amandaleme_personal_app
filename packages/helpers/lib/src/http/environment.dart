@@ -10,7 +10,7 @@ class Environment {
     await dotenv.load(fileName: Environment.fileName);
   }
 
-  static String get fileName => _currentEnv == EnvironmentType.prod ? '.env' : '.env-dev';
+  static String get fileName => _currentEnv == EnvironmentType.prod ? '.env' : '.env';
   static EnvironmentType get env => _currentEnv;
 
   static String get apiBaseUsr => dotenv.env['API_BASE_URL'] ?? 'MY_FALLBACK';
