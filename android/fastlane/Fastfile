@@ -11,7 +11,7 @@ platform :android do
 
   lane :increment_version_and_build do
     # Caminho para o pubspec.yaml
-    pubspec_path = "../pubspec.yaml"
+    pubspec_path = "../../pubspec.yaml"
 
     # Lê o conteúdo do pubspec.yaml
     pubspec = File.read(pubspec_path)
