@@ -26,14 +26,14 @@ jobs:
       run: |
         echo "${{ secrets.KEY_JKS_BASE64 }}" | base64 -d > android/app/key.jks
 
-    - name: Build and Sign APK
-      env:
-        KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
-        KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
-        STORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
-      run: |
-          cd android
-          ./gradlew assembleRelease
+    # - name: Build and Sign APK
+    #   env:
+    #     KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+    #     KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+    #     STORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+    #   run: |
+    #       cd android
+    #       ./gradlew assembleRelease
 
     - name: Create .env-dev file
       run: |
