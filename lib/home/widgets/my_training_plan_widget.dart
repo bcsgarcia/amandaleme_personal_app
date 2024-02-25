@@ -113,7 +113,7 @@ class _MyTrainingPlanWidgetState extends State<MyTrainingPlanWidget> {
                         child: Padding(
                           padding: const EdgeInsets.only(right: 10.0, top: 7),
                           child: Text(
-                            DateFormat('E, d MMMM').format(
+                            DateFormat('E, d MMMM', 'pt-BR').format(
                               _workoutSheets[index].date ?? DateTime.now(),
                             ),
                             style: Theme.of(context).textTheme.bodyLarge!.copyWith(

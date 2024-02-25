@@ -74,13 +74,15 @@ class RemoteAuthentication implements Authentication {
   // Getter for the current user
   @override
   UserAuthenticationModel get currentUser {
-    final _token = cacheStorage.fetch('token');
-    return UserAuthenticationModel(token: _token == null ? '' : _token);
+    final token = cacheStorage.fetch('token');
+    return UserAuthenticationModel(token: token ?? '');
   }
 
   @override
-  Future<UserAuthenticationModel> authWithEmailAndPassword(AuthenticationParam param,
-      {required bool keepConnected}) async {
+  Future<UserAuthenticationModel> authWithEmailAndPassword(
+    AuthenticationParam param, {
+    required bool keepConnected,
+  }) async {
     final body = RemoteAuthenticationParams.fromDomain(param).toJson();
     try {
       final httpResponse = await httpClient.request(url: url, method: 'post', body: body);
@@ -107,13 +109,13 @@ class RemoteAuthentication implements Authentication {
   @override
   Future<void> refreshToken() async {
     try {
-      final _token = cacheStorage.fetch('token');
+      final token = cacheStorage.fetch('token');
 
-      final _body = {
-        "token": _token,
+      final body = {
+        "token": token,
       };
       final httpResponse =
-          await httpClient.request(url: '$url/${Environment.refreshTokenPath}', method: 'post', body: _body);
+          await httpClient.request(url: '$url/${Environment.refreshTokenPath}', method: 'post', body: body);
       await saveTokenLocally(httpResponse['accessToken']);
 
       final user = UserAuthenticationModel.fromJson(httpResponse);

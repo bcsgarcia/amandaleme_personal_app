@@ -32,9 +32,8 @@ class AppBloc extends Bloc<AppEvent, AppState> {
     AppUserChanged event,
     Emitter<AppState> emit,
   ) {
-    emit(
-      event.user.isNotEmpty ? AppState.authenticated(event.user) : const AppState.unauthenticated(),
-    );
+    final appState = event.user.isNotEmpty ? AppState.authenticated(event.user) : const AppState.unauthenticated();
+    emit(appState);
   }
 
   void _onLogoutRequested(

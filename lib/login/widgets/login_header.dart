@@ -9,13 +9,14 @@ class LoginHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: 185,
+      // padding: const EdgeInsets.only(bottom: 20),
       decoration: BoxDecoration(
         color: blackColor,
         boxShadow: [
           defaultBoxShadow(),
         ],
         image: const DecorationImage(
-          scale: 2.5,
+          scale: 3.0,
           image: AssetImage(
             'assets/images/logos/logo-black-white.png',
           ),

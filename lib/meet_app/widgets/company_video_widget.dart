@@ -39,6 +39,7 @@ class CompanyVideoWidgetState extends State<CompanyVideoWidget> {
 
   void startCompanyVideo() {
     _controller?.play();
+
     setState(() {});
   }
 
@@ -51,10 +52,12 @@ class CompanyVideoWidgetState extends State<CompanyVideoWidget> {
 
   @override
   Widget build(BuildContext context) {
+    final screenSize = MediaQuery.of(context).size;
+
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16),
-      height: 180,
-      width: double.infinity,
+      height: 200,
+      width: screenSize.width < 600 ? double.infinity : 500,
       child: Stack(
         children: [
           Positioned(
@@ -69,15 +72,25 @@ class CompanyVideoWidgetState extends State<CompanyVideoWidget> {
                 setState(() {});
               },
               child: _controller == null
-                  ? SizedBox(
-                      width: double.infinity, child: Image.asset('assets/images/logos/gym-01.png', fit: BoxFit.fill))
+                  ? Padding(
+                      padding: const EdgeInsets.only(left: 8, right: 8),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(10),
+                        child: SizedBox.expand(
+                          child: Image.asset(
+                            getRandomImagePath(),
+                            fit: BoxFit.fill,
+                          ),
+                        ),
+                      ),
+                    )
                   : Stack(
                       children: [
                         ClipRRect(
                           borderRadius: BorderRadius.circular(10),
                           child: SizedBox.expand(
                             child: FittedBox(
-                              fit: BoxFit.fitWidth,
+                              fit: BoxFit.cover,
                               child: Container(
                                   decoration: BoxDecoration(
                                     boxShadow: !isLoading
@@ -108,20 +121,20 @@ class CompanyVideoWidgetState extends State<CompanyVideoWidget> {
                   borderRadius: BorderRadius.circular(40),
                   color: Colors.white,
                 ),
-                child: FittedBox(
-                  fit: BoxFit.none,
-                  child: SizedBox(
-                    width: 40,
-                    height: 40,
-                    child: Image.asset('assets/images/icons/no-video.png'),
+                child: Center(
+                  child: FittedBox(
+                    fit: BoxFit.none,
+                    child: SizedBox(
+                      width: 40,
+                      height: 40,
+                      child: Image.asset('assets/images/icons/no-video.png'),
+                    ),
                   ),
                 ),
               ),
             )
           else if (!(_controller?.value.isPlaying ?? false))
-            Positioned(
-              top: 65, // Adjust the position of the CircleAvatar widget
-              left: 160,
+            Center(
               child: CircleAvatar(
                 backgroundColor: whiteColor,
                 radius: 20, // Control the radius of the CircleAvatar widget

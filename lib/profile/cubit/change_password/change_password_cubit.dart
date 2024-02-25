@@ -1,4 +1,5 @@
 // ignore_for_file: depend_on_referenced_packages
+import 'dart:convert';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
@@ -55,8 +56,8 @@ class ChangePasswordCubit extends Cubit<ChangePasswordState> {
   void changePassword() async {
     emit(state.copyWith(status: FormzSubmissionStatus.inProgress));
     try {
-      final oldPass = state.oldPass.value;
-      final newPass = state.newPass.value;
+      final oldPass = base64Encode(utf8.encode(state.oldPass.value));
+      final newPass = base64Encode(utf8.encode(state.newPass.value));
       await _userRepository.changePassword(oldPass: oldPass, newPass: newPass);
 
       emit(state.copyWith(status: FormzSubmissionStatus.success));

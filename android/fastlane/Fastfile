@@ -1,18 +1,3 @@
-# This file contains the fastlane.tools configuration
-# You can find the documentation at https://docs.fastlane.tools
-#
-# For a list of all available actions, check out
-#
-#     https://docs.fastlane.tools/actions
-#
-# For a list of all available plugins, check out
-#
-#     https://docs.fastlane.tools/plugins/available-plugins
-#
-
-# Uncomment the line if you want fastlane to automatically update itself
-# update_fastlane
-
 default_platform(:android)
 
 platform :android do
@@ -24,8 +9,43 @@ platform :android do
     # O AAB estará no caminho padrão de saída, a menos que você especifique outro
   end
 
+  lane :increment_version_and_build do
+    # Caminho para o pubspec.yaml
+    pubspec_path = "../pubspec.yaml"
+
+    # Lê o conteúdo do pubspec.yaml
+    pubspec = File.read(pubspec_path)
+
+    # Encontra a linha com a versão atual.
+    version_line = pubspec.match(/version: (\d+\.\d+\.\d+\+\d+)/)[0]
+    version_numbers = version_line.match(/(\d+)\.(\d+)\.(\d+)\+(\d+)/).captures
+
+    major = version_numbers[0]
+    minor = version_numbers[1]
+    patch = version_numbers[2]
+    build = version_numbers[3].to_i
+
+    # Incrementa o número de build
+    new_build = build + 1
+
+    # Cria a nova linha de versão
+    new_version_line = "version: #{major}.#{minor}.#{patch}+#{new_build}"
+
+    # Substitui a linha de versão antiga pela nova no conteúdo do pubspec.yaml
+    new_pubspec = pubspec.sub(version_line, new_version_line)
+
+    # Escreve o novo pubspec.yaml
+    File.open(pubspec_path, "w") { |file| file.puts new_pubspec }
+
+    # Faz o commit das mudanças no git
+    sh("git", "commit", "-am", "Increment version number to #{new_version_line}")
+    sh("git", "push")
+  end
+
+
   desc "Deploy to the Google Play"
   lane :deploy do
+    increment_version_and_build
     build_release # Chama a lane definida acima para fazer o build do AAB
     upload_to_play_store(
       track: 'alpha', # Ou beta, production, etc., dependendo do seu caso de uso

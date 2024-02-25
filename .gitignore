@@ -45,3 +45,7 @@ app.*.map.json
 
 *.env*
 pubspec.lock
+
+# Fastlane build
+/android/fastlane/*
+/android/app/key.jks.base64

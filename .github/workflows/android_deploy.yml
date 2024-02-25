@@ -11,18 +11,30 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
+    - name: Set up Flutter
+      uses: subosito/flutter-action@v1
+      with:
+        flutter-version: '3.13.6' # Especifica a versão do Flutter
+
     - name: Set up Java Environment
       uses: actions/setup-java@v2
       with:
         distribution: 'adopt'
         java-version: '17'
 
-    - name: Set up Flutter
-      uses: subosito/flutter-action@v1
-      with:
-        flutter-version: '3.13.6' # Especifica a versão do Flutter
+    - name: Decode keystore
+      run: |
+        echo "${{ secrets.KEY_JKS_BASE64 }}" | base64 -d > android/app/key.jks
 
-    - name: Create .env file
+    - name: Build and Sign APK
+      env:
+        KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+        KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+        STORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+      run: |
+        ./gradlew assembleRelease
+
+    - name: Create .env-dev file
       run: |
         echo "API_BASE_URL=${{ vars.API_BASE_URL }}" >> .env
         echo "APP_PATH=${{ vars.APP_PATH }}" >> .env
@@ -49,4 +61,15 @@ jobs:
       working-directory: ./android/fastlane # Substitua pelo caminho correto, se necessário
       env:
         GOOGLE_CLOUD_CREDENTIALS: ${{ secrets.GOOGLE_CLOUD_CREDENTIALS }}
+        FASTLANE_GIT_EMAIL: ${{ vars.GIT_EMAIL }}
+        FASTLANE_GIT_NAME: ${{ vars.GIT_USER_NAME }}
+        GITHUB_TOKEN: ${{ secrets.GH_PAT_TOKEN }}
       run: fastlane android deploy
+
+    - name: Commit version bump
+      run: |
+        git config --global user.name 'GitHub Actions'
+        git config --global user.email 'actions@github.com'
+        git commit -am "Bump version number [skip ci]"
+        git push
+      if: success() && env.GITHUB_REF == 'refs/heads/main'

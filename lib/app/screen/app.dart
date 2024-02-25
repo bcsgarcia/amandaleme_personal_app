@@ -1,4 +1,3 @@
-import 'package:flow_builder/flow_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:repositories/repositories.dart';
@@ -99,10 +98,37 @@ class AppView extends StatelessWidget {
     return MaterialApp(
       theme: theme,
       onGenerateRoute: (settings) => AppRouter.generateRoute(settings),
-      home: FlowBuilder<AppStatus>(
-        state: context.select((AppBloc bloc) => bloc.state.status),
-        onGeneratePages: onGenerateAppViewPages,
+      home: BlocBuilder<AppBloc, AppState>(
+        builder: (context, state) {
+          if (state.status == AppStatus.initial) {
+            return const SplashScreen();
+          } else if (state.status == AppStatus.authenticated) {
+            return MultiBlocProvider(
+              providers: [
+                BlocProvider(
+                  create: (context) => HomeCubit(
+                    homeRepository: RepositoryProvider.of<IHomeRepository>(context),
+                  ),
+                ),
+              ],
+              child: const HomePage(),
+            );
+          } else if (state.status == AppStatus.unauthenticated) {
+            return const LoginPage();
+          } else {
+            return Scaffold(
+              body: Center(
+                child: Text('No route defined for ${state.status}'),
+              ),
+            );
+          }
+        },
       ),
+
+      // FlowBuilder<AppStatus>(
+      //   state: context.select((AppBloc bloc) => bloc.state.status),
+      //   onGeneratePages: onGenerateAppViewPages,
+      // ),
     );
   }
 }

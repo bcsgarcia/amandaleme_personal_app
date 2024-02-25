@@ -1,7 +1,7 @@
 name: amandaleme_personal_app
 description: A new Flutter project.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
-version: 1.0.0+1
+version: 0.0.1+3
 
 environment:
   sdk: '>=2.19.5 <3.0.0'
@@ -12,7 +12,7 @@ dependencies:
 
   cupertino_icons: ^1.0.2
   flutter_bloc: ^8.1.4
-  flow_builder: ^0.0.9
+  # flow_builder: ^0.0.9
   http: ^0.13.5
   shared_preferences: ^2.1.0
   formz: ^0.6.0
@@ -32,6 +32,7 @@ dependencies:
     path: packages/helpers
   video_preparation_service:
     path: packages/video_preparation
+  phosphor_flutter: ^2.0.1
 
 dev_dependencies:
   flutter_test:
