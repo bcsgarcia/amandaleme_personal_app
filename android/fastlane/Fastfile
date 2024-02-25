@@ -38,8 +38,8 @@ platform :android do
     File.open(pubspec_path, "w") { |file| file.puts new_pubspec }
 
     # Faz o commit das mudanças no git
-    sh("git", "commit", "-am", "Increment version number to #{new_version_line}")
-    sh("git", "push")
+    # sh("git", "commit", "-am", "Increment version number to #{new_version_line}")
+    # sh("git", "push")
   end
 
 
