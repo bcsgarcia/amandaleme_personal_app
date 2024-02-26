@@ -65,7 +65,8 @@ android {
     signingConfigs {
         release {
             if (System.getenv("CI") != null) { // CI é uma variável de ambiente que indica que está rodando no CI/CD
-                storeFile file(System.getenv("KEYSTORE_PATH"))
+                // storeFile file(System.getenv("KEYSTORE_PATH"))
+                storeFile file('android/app/key.jks')
                 storePassword System.getenv("KEYSTORE_PASSWORD")
                 keyAlias System.getenv("KEY_ALIAS")
                 keyPassword System.getenv("KEY_PASSWORD")
