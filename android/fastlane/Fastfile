@@ -13,7 +13,7 @@ platform :android do
     require 'base64'
 
     # Decodifica o keystore e escreve no arquivo
-    File.open('app/key.jks', 'wb') do |f| # Verifique se o caminho está correto para sua estrutura de projeto
+    File.open('./app/key.jks', 'wb') do |f| # Verifique se o caminho está correto para sua estrutura de projeto
       f.write(Base64.decode64(ENV['KEY_JKS_BASE64']))
     end
   end
