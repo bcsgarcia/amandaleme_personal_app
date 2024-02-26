@@ -24,7 +24,7 @@ jobs:
 
     - name: Decode keystore
       run: |
-        echo "${{ secrets.KEY_JKS_BASE64 }}" | base64 -d > android/app/key.jks
+        echo "${{ secrets.KEY_JKS_BASE64 }}" | base64 -d > android/app/key.jks | ls android/app
 
     # - name: Build and Sign APK
     #   env:
