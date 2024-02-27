@@ -3,6 +3,9 @@ default_platform(:android)
 platform :android do
   desc "Build the release App Bundle"
   lane :build_release do
+
+    sh("pwd")
+
     sh("flutter", "clean")
     sh("flutter", "pub", "get")
     sh("flutter", "build", "appbundle", "--release", "--target=lib/main/main.dart")
