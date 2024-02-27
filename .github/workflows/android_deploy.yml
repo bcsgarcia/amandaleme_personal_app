@@ -59,13 +59,13 @@ jobs:
       run: sudo gem install fastlane
 
     - name: Run Fastlane
-      working-directory: ./android/fastlane # Substitua pelo caminho correto, se necessário
+      working-directory: ./android/fastlane
       env:
         GOOGLE_CLOUD_CREDENTIALS: ${{ secrets.GOOGLE_CLOUD_CREDENTIALS }}
         FASTLANE_GIT_EMAIL: ${{ vars.GIT_EMAIL }}
         FASTLANE_GIT_NAME: ${{ vars.GIT_USER_NAME }}
         GITHUB_TOKEN: ${{ secrets.GH_PAT_TOKEN }}
-        KEYSTORE_PATH: ${{ secrets.KEYSTORE_PATH }}
+        KEYSTORE_PATH: ${{ vars.KEYSTORE_PATH }}
         KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
         KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
         KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}

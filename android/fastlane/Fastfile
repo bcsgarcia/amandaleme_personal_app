@@ -21,6 +21,11 @@ platform :android do
     end
   end
 
+  lane: build_and_sign_apk do
+    sh("cd..")
+    sh("./gradlew assembleRelease")
+  end
+
   lane :increment_version_and_build do
     # Caminho para o pubspec.yaml
     pubspec_path = "../../pubspec.yaml"
@@ -57,7 +62,8 @@ platform :android do
 
   desc "Deploy to the Google Play"
   lane :deploy do
-    #decode_keystore
+    decode_keystore
+    build_and_sign_apk
     increment_version_and_build
     build_release # Chama a lane definida acima para fazer o build do AAB
     upload_to_play_store(
