@@ -19,7 +19,6 @@ class HomeRespository implements IHomeRepository {
   Future<HomeScreenModel> getHomeScreen() async {
     try {
       final response = await httpClient.request(url: '$url/${Environment.screenPath}', method: 'get');
-      print(response);
 
       return HomeScreenModel.fromJson(response);
     } catch (e) {

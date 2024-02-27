@@ -20,8 +20,7 @@ class RemoteCompanyRepository implements CompanyRepository {
     try {
       final response = await client.request(url: url, method: 'get');
 
-      final teste = MeetAppScreenModel.fromJson(response);
-      return teste;
+      return MeetAppScreenModel.fromJson(response);
     } catch (e) {
       rethrow;
     }

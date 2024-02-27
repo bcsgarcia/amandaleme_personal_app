@@ -2,12 +2,15 @@ class PosturalPatternMediaModel {
   final String id;
   final String url;
 
-  PosturalPatternMediaModel({required this.id, required this.url,});
+  PosturalPatternMediaModel({
+    required this.id,
+    required this.url,
+  });
 
   Map<String, dynamic> toMap() {
     return {
-      'id': this.id,
-      'url': this.url,
+      'id': id,
+      'url': url,
     };
   }
 

@@ -15,11 +15,11 @@ class PartnershipModel {
 
   factory PartnershipModel.fromJson(Map json) {
     return PartnershipModel(
-      category: json['partnershipCategoryName'] as String,
-      name: json['partnershipName'] as String,
-      address: json['partnershipAddress'] as String,
-      phone: json['partnershipContact'] as String,
-      imageUrl: json['partnershipImageUrl'] as String,
+      category: json['partnershipCategoryName'],
+      name: json['partnershipName'],
+      address: json['partnershipAddress'],
+      phone: json['partnershipContact'],
+      imageUrl: json['partnershipImageUrl'],
     );
   }
 

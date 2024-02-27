@@ -70,6 +70,7 @@ jobs:
         KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
         KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
         KEY_JKS_BASE64: ${{ secrets.KEY_JKS_BASE64 }}
+        CI: true
       run: fastlane android deploy
 
     - name: Commit version bump
