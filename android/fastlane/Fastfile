@@ -22,7 +22,7 @@ platform :android do
   end
 
   lane :build_and_sign_apk do
-    sh("cd..")
+    sh("cd ..")
     sh("./gradlew assembleRelease")
   end
 
