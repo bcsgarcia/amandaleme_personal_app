@@ -5,6 +5,7 @@ platform :android do
   lane :build_release do
 
     sh("pwd")
+    sh("ls ../app")
 
     sh("flutter", "clean")
     sh("flutter", "pub", "get")
