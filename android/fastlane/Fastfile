@@ -57,7 +57,7 @@ platform :android do
 
   desc "Deploy to the Google Play"
   lane :deploy do
-    decode_keystore
+    #decode_keystore
     increment_version_and_build
     build_release # Chama a lane definida acima para fazer o build do AAB
     upload_to_play_store(
