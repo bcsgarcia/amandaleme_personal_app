@@ -11,29 +11,27 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
+    - name: Check for version bump in pubspec.yaml
+      id: check_version
+      run: |
+        # Verifique se a versão no pubspec.yaml foi alterada
+        VERSION_CHANGE=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} -- 'pubspec.yaml' | grep -E '^\+version:')
+        if [ -z "$VERSION_CHANGE" ]; then
+          echo "::error::No version bump detected in pubspec.yaml, aborting deployment."
+          exit 1
+        fi
+        echo "Version change detected: $VERSION_CHANGE"
+
     - name: Set up Flutter
       uses: subosito/flutter-action@v1
       with:
-        flutter-version: '3.13.6' # Especifica a versão do Flutter
+        flutter-version: '3.13.6'
 
     - name: Set up Java Environment
       uses: actions/setup-java@v2
       with:
         distribution: 'adopt'
         java-version: '17'
-
-    # - name: Decode keystore
-    #   run: |
-    #     echo "${{ secrets.KEY_JKS_BASE64 }}" | base64 -d > android/app/key.jks
-
-    # - name: Build and Sign APK
-    #   env:
-    #     KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
-    #     KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
-    #     STORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
-    #   run: |
-    #       cd android
-    #       ./gradlew assembleRelease
 
     - name: Create .env-dev file
       run: |
@@ -57,6 +55,7 @@ jobs:
 
     - name: Install Fastlane
       run: sudo gem install fastlane
+      if: steps.check_version.outputs.VERSION_CHANGE != ''
 
     - name: Run Fastlane
       working-directory: ./android/fastlane
@@ -72,6 +71,7 @@ jobs:
         KEY_JKS_BASE64: ${{ secrets.KEY_JKS_BASE64 }}
         CI: true
       run: fastlane android deploy
+      if: steps.check_version.outputs.VERSION_CHANGE != ''
 
     - name: Commit version bump
       run: |
