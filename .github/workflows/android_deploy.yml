@@ -15,7 +15,7 @@ jobs:
       id: check_version
       run: |
         # Verifique se a versão no pubspec.yaml foi alterada
-        VERSION_CHANGE=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} -- 'pubspec.yaml' | grep -E '^\+version:')
+        VERSION_CHANGE=$(git diff ${{ github.event.before }} ${{ github.sha }} -- 'pubspec.yaml' | grep -E '^\+\s*version:')
         if [ -z "$VERSION_CHANGE" ]; then
           echo "::error::No version bump detected in pubspec.yaml, aborting deployment."
           exit 1
