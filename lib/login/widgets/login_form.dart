@@ -94,10 +94,10 @@ class KeepConnectedCheckbox extends StatelessWidget {
                 style: Theme.of(context).textTheme.bodyLarge,
               ),
               const Spacer(),
-              Text(
-                'Recuperar senha',
-                style: Theme.of(context).textTheme.bodyLarge,
-              ),
+              // Text(
+              //   'Recuperar senha',
+              //   style: Theme.of(context).textTheme.bodyLarge,
+              // ),
             ],
           ),
         );

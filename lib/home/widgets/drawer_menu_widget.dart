@@ -104,18 +104,19 @@ class HomeDrawerMenu extends StatelessWidget {
                 //   name: 'Parcerias',
                 //   function: () => _goToPartnershipPage(context),
                 // ),
+
+                const SizedBox(height: 24),
+                const Divider(),
+                const SizedBox(height: 24),
+                // DrawerOption(
+                //   iconName: 'user-plus',
+                //   name: 'Convide um amigo',
+                //   function: () => shareSocial(),
+                // ),
                 DrawerOption(
                   iconName: 'log-out',
                   name: 'Sair',
                   function: () => _logout(context),
-                ),
-                const SizedBox(height: 24),
-                const Divider(),
-                const SizedBox(height: 24),
-                DrawerOption(
-                  iconName: 'user-plus',
-                  name: 'Convide um amigo',
-                  function: () => shareSocial(),
                 ),
               ],
             ),

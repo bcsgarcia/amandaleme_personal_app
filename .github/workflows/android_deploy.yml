@@ -52,6 +52,8 @@ jobs:
         echo "WORKOUTSHEET_DONE_PATH=${{ vars.WORKOUTSHEET_DONE_PATH }}" >> .env
         echo "MY_MEDIAS_DIRECTORY_PATH=${{ vars.MY_MEDIAS_DIRECTORY_PATH }}" >> .env
         echo "COMPANY_ID=${{ vars.COMPANY_ID }}" >> .env
+        echo "PHONE_NUMBER=${{ vars.PHONE_NUMBER }}" >> .env
+        echo "EMAIL=${{ vars.EMAIL }}" >> .env
 
     - name: Install Fastlane
       run: sudo gem install fastlane
