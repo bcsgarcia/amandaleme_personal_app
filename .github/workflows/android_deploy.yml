@@ -10,6 +10,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0  # Faz um fetch completo, pode aumentar o tempo de checkout
 
     - name: Debug Info
       run: |
