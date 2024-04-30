@@ -13,21 +13,39 @@ jobs:
       with:
         fetch-depth: 0  # Faz um fetch completo, pode aumentar o tempo de checkout
 
-    - name: Debug Info
-      run: |
-        echo "SHA: ${{ github.sha }}"
-        echo "Before: ${{ github.event.before }}"
-        echo "Event Name: ${{ github.event_name }}"
-        echo "Ref: ${{ github.ref }}"
+    # - name: Debug Info
+    #   run: |
+    #     echo "SHA: ${{ github.sha }}"
+    #     echo "Before: ${{ github.event.before }}"
+    #     echo "Event Name: ${{ github.event_name }}"
+    #     echo "Ref: ${{ github.ref }}"
 
+    # - name: Check for version bump in pubspec.yaml
+    #   run: |
+    #     VERSION_CHANGE=$(git diff HEAD~1 HEAD -- 'pubspec.yaml' | grep -E '^\+\s*version:')
+    #     if [ -z "$VERSION_CHANGE" ]; then
+    #       echo "::error::No version bump detected in pubspec.yaml, aborting deployment."
+    #       exit 1
+    #     fi
+    #     echo "Version change detected: $VERSION_CHANGE"
     - name: Check for version bump in pubspec.yaml
       run: |
-        VERSION_CHANGE=$(git diff HEAD~1 HEAD -- 'pubspec.yaml' | grep -E '^\+\s*version:')
-        if [ -z "$VERSION_CHANGE" ]; then
+        # Extrai a versão atual no branch
+        CURRENT_VERSION=$(grep 'version:' pubspec.yaml | sed 's/version: //')
+
+        # Extrai a versão anterior usando git show
+        PREVIOUS_VERSION=$(git show HEAD^:./pubspec.yaml | grep 'version:' | sed 's/version: //')
+
+        echo "Current version: $CURRENT_VERSION"
+        echo "Previous version: $PREVIOUS_VERSION"
+
+        if [ "$PREVIOUS_VERSION" = "$CURRENT_VERSION" ]; then
           echo "::error::No version bump detected in pubspec.yaml, aborting deployment."
           exit 1
+        else
+          echo "Version change detected: from $PREVIOUS_VERSION to $CURRENT_VERSION"
         fi
-        echo "Version change detected: $VERSION_CHANGE"
+
 
     - name: Set up Flutter
       uses: subosito/flutter-action@v1
