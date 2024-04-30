@@ -75,10 +75,14 @@ class HomeDrawerMenu extends StatelessWidget {
         ),
         child: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 23, vertical: 52),
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 52),
             child: Column(
               children: [
-                PhotoAndNameDrawer(userModel: drawerScreenModel.userModel),
+                BlocBuilder<PhotoDrawerCubit, PhotoDrawerState>(
+                  builder: (context, state) {
+                    return PhotoAndNameDrawer(userModel: drawerScreenModel.userModel);
+                  },
+                ),
                 const SizedBox(height: 40),
                 DrawerOption(
                   iconName: 'user',
@@ -95,11 +99,11 @@ class HomeDrawerMenu extends StatelessWidget {
                   name: 'Padrões Posturais',
                   function: () => _goToPosturalPatternPage(context),
                 ),
-                DrawerOption(
-                  iconName: 'partnership',
-                  name: 'Parcerias',
-                  function: () => _goToPartnershipPage(context),
-                ),
+                // DrawerOption(
+                //   iconName: 'partnership',
+                //   name: 'Parcerias',
+                //   function: () => _goToPartnershipPage(context),
+                // ),
                 DrawerOption(
                   iconName: 'log-out',
                   name: 'Sair',
@@ -136,27 +140,38 @@ class DrawerOption extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: function,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 10.0),
-        child: Row(
-          children: [
-            Image.asset(
-              'assets/images/icons/$iconName.png',
-              height: iconName == 'partnership' ? 27 : 22,
-            ),
-            SizedBox(
-              width: iconName == 'partnership' ? 9 : 14,
-            ),
-            Text(
-              name,
-              style: Theme.of(context).textTheme.labelLarge!.copyWith(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 19,
+    return Padding(
+      padding: const EdgeInsets.all(2.0),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(10),
+        child: Material(
+          color: Colors.transparent, // Define o fundo como transparente.
+          child: InkWell(
+            splashColor: Colors.orange.withOpacity(0.8), // Aqui você pode personalizar a cor do efeito.
+            onTap: function,
+            child: Container(
+              padding: const EdgeInsets.only(top: 8.0, bottom: 8.0, left: 8.0),
+              color: Colors.white.withOpacity(0.5),
+              child: Row(
+                children: [
+                  Image.asset(
+                    'assets/images/icons/$iconName.png',
+                    height: iconName == 'partnership' ? 27 : 22,
                   ),
+                  SizedBox(
+                    width: iconName == 'partnership' ? 9 : 14,
+                  ),
+                  Text(
+                    name,
+                    style: Theme.of(context).textTheme.labelLarge!.copyWith(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 19,
+                        ),
+                  ),
+                ],
+              ),
             ),
-          ],
+          ),
         ),
       ),
     );

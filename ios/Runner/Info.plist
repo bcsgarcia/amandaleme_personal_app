@@ -2,6 +2,10 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Habilitando o acesso à biblioteca, permite que o App Amanda Leme use uma foto sua selecionada para que seja a foto do seu perfil</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Habilitando o acesso à camera, permite que você use a camera do seu telefone para tirar uma foto que será usada como foto do seu perfil</string>
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>
 	<key>CFBundleDevelopmentRegion</key>
@@ -24,8 +28,22 @@
 	<string>????</string>
 	<key>CFBundleVersion</key>
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>sms</string>
+		<string>tel</string>
+	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+	</dict>
+	<key>NSFaceIDUsageDescription</key>
+	<string>To allow user keep their autentication valid in order to facilitate the login?</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Required for saving images to the photo library</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>UILaunchStoryboardName</key>
@@ -43,33 +61,5 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-	<key>CADisableMinimumFrameDurationOnPhone</key>
-	<true/>
-	<key>UIApplicationSupportsIndirectInputEvents</key>
-	<true/>
-	<key>NSAppTransportSecurity</key>
-	<dict>
-		<key>NSAllowsArbitraryLoads</key>
-		<true/>
-	</dict>
-
-	<key>LSApplicationQueriesSchemes</key>
-	<array>
-	<string>instagram</string>
-	<string>twitter</string>
-	<string>whatsapp</string>
-	</array>
-
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Required for saving images to the photo library</string>
-
-	<key>NSFaceIDUsageDescription</key>
-	<string>To allow user keep their autentication valid in order to facilitate the login?</string>
-	<key>LSApplicationQueriesSchemes</key>
-	<array>
-	<string>sms</string>
-	<string>tel</string>
-	</array>
-
 </dict>
 </plist>

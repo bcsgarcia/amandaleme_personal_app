@@ -11,6 +11,8 @@ environment:
 dependencies:
   path_provider: ^2.0.15
   equatable: ^2.0.5
+  http_parser: ^4.0.2
+  http: ^0.13.5
   flutter:
     sdk: flutter
   local_auth: ^2.1.6

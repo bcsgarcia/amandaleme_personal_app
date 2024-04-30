@@ -37,8 +37,10 @@ class CompanyPresentationWidget extends StatelessWidget {
                 children: [
                   Text(
                     aboutCompanyModel.description,
-                    style: Theme.of(context).textTheme.bodyLarge!.copyWith(fontSize: 16, height: 1.5),
-                    textAlign: TextAlign.justify,
+                    style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                          fontSize: 16,
+                        ),
+                    // textAlign: TextAlign.justify,
                   ),
                 ],
               ),

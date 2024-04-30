@@ -1,8 +1,26 @@
 import 'dart:convert';
+import 'dart:typed_data';
 
 import 'package:http/http.dart';
+import 'package:http_parser/http_parser.dart';
 
 import 'http.dart';
+
+abstract class HttpClient {
+  Future<dynamic> request({
+    required String url,
+    required String method,
+    Map? body,
+    Map? headers,
+  });
+
+  Future<dynamic> send({
+    required String url,
+    required Uint8List fileData,
+    String filename,
+    Map? headers,
+  });
+}
 
 class HttpAdapter implements HttpClient {
   final Client client;
@@ -38,6 +56,40 @@ class HttpAdapter implements HttpClient {
     }
 
     return _handleResponse(response);
+  }
+
+  @override
+  Future<dynamic> send({
+    required String url,
+    required Uint8List fileData,
+    String filename = 'file.jpg',
+    Map? headers,
+  }) async {
+    final defaultHeaders = headers?.cast<String, String>() ?? {}
+      ..addAll({'content-type': 'application/json', 'accept': 'application/json'});
+
+    var uri = Uri.parse(url);
+    var request = MultipartRequest('POST', uri)
+      ..headers.addAll(defaultHeaders)
+      ..files.add(MultipartFile.fromBytes(
+        'file',
+        fileData,
+        filename: filename,
+        contentType: MediaType('image', 'jpeg'),
+      ));
+
+    try {
+      var streamedResponse = await client.send(request);
+      var response = await Response.fromStream(streamedResponse);
+
+      if (response.statusCode != 200 && response.statusCode != 201) {
+        throw HttpError.serverError;
+      }
+
+      return _handleResponse(response);
+    } catch (e) {
+      throw HttpError.serverError;
+    }
   }
 
   dynamic _handleResponse(Response response, {bool bodyBytes = false}) {

@@ -27,7 +27,10 @@ class Environment {
   static String get updateUnreadNotificationPath => dotenv.env['UPDATE_UNREAD_NOTIFICATION_PATH'] ?? 'MY_FALLBACK';
   static String get allMediaSyncPath => dotenv.env['ALL_MEDIA_SYNC_PATH'] ?? 'MY_FALLBACK';
   static String get changePassPath => dotenv.env['CHANGE_PASS_PATH'] ?? 'MY_FALLBACK';
+  static String get changeProfilePhoto => dotenv.env['CHANGE_PROFILE_PHOTO_PATH'] ?? 'MY_FALLBACK';
   static String get myMediasDirectoryPath => dotenv.env['MY_MEDIAS_DIRECTORY_PATH'] ?? 'MY_FALLBACK';
   static String get feedbackPath => dotenv.env['FEEDBACK_PATH'] ?? 'MY_FALLBACK';
   static String get workoutsheetDonePath => dotenv.env['WORKOUTSHEET_DONE_PATH'] ?? 'MY_FALLBACK';
+  static String get phoneNumber => dotenv.env['PHONE_NUMBER'] ?? 'MY_FALLBACK';
+  static String get email => dotenv.env['EMAIL'] ?? 'MY_FALLBACK';
 }

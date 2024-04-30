@@ -10,5 +10,6 @@ export 'partnerships/partnership.dart';
 export 'postural_pattern/postural_pattern.dart';
 export 'profile/profile.dart';
 export 'sync_medias/sync_medias.dart';
+export 'utils/utils.dart';
 export 'workoutsheet_video/workoutsheet_video.dart';
 export 'workoutsheets/workoutsheets.dart';

@@ -4,9 +4,11 @@ class CallToActionButtonWidget extends StatelessWidget {
   const CallToActionButtonWidget({
     super.key,
     required this.text,
+    required this.onPressed,
   });
 
   final String text;
+  final VoidCallback? onPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +18,7 @@ class CallToActionButtonWidget extends StatelessWidget {
         height: 51,
         width: 291,
         child: ElevatedButton(
-          onPressed: () {},
+          onPressed: onPressed,
           style: ElevatedButton.styleFrom(
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(14),

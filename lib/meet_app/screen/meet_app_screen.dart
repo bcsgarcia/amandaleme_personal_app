@@ -1,7 +1,9 @@
 import 'package:amandaleme_personal_app/app/common_widgets/error_dialog_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:helpers/helpers.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../cubit/meet_app_cubit.dart';
 import '../widgets/widgets.dart';
@@ -233,8 +235,9 @@ class MeetAppScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 20),
-            const CallToActionButtonWidget(
+            CallToActionButtonWidget(
               text: 'Quero treinar com a Amanda',
+              onPressed: _queroTreinarButtonPressed,
             ),
             const SizedBox(height: 20),
             MyClassVideoWidget(
@@ -249,13 +252,30 @@ class MeetAppScreen extends StatelessWidget {
               images: state.screenModel!.photosBeforeAndAfter,
             ),
             const SizedBox(height: 20),
-            const CallToActionButtonWidget(
+            CallToActionButtonWidget(
               text: 'Quero treinar com a Amanda',
+              onPressed: _queroTreinarButtonPressed,
             ),
             const SizedBox(height: 20),
           ],
         ),
       ),
     );
+  }
+
+  void _queroTreinarButtonPressed() async {
+    String message = Uri.encodeComponent("Olá Amanda, gostaria de treinar com você!\n Me mande seus planos!!");
+    String whatsappUrlString = "whatsapp://send?phone=${Environment.phoneNumber}&text=$message";
+
+    Uri whatsappUri = Uri.parse(whatsappUrlString);
+
+    try {
+      await launchUrl(whatsappUri);
+    } catch (_) {
+      String emailUrlString = 'mailto:${Environment.email}?subject=Consulta&body=$message';
+      Uri emailUri = Uri.parse(emailUrlString);
+
+      await launchUrl(emailUri);
+    }
   }
 }

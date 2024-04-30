@@ -84,6 +84,9 @@ class App extends StatelessWidget {
                 _companyRepository,
               ),
             ),
+            BlocProvider(
+              create: (_) => PhotoDrawerCubit(),
+            ),
           ],
           child: const AppView(),
         ));
@@ -97,6 +100,7 @@ class AppView extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: theme,
+      debugShowCheckedModeBanner: false,
       onGenerateRoute: (settings) => AppRouter.generateRoute(settings),
       home: BlocBuilder<AppBloc, AppState>(
         builder: (context, state) {

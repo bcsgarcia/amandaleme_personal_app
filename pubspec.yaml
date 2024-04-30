@@ -24,6 +24,9 @@ dependencies:
   lottie: ^2.3.2
   flutter_dotenv: ^5.1.0
   shimmer: ^3.0.0
+  image_picker: ^1.0.8
+  url_launcher: ^6.1.11
+
 
 # Ours Packages
   repositories:
