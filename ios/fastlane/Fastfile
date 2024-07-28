@@ -61,13 +61,14 @@ platform :ios do
       workspace: "Runner.xcworkspace",
       scheme: "Runner",
       export_method: "app-store",
-      include_bitcode: true,  # ou false, dependendo da necessidade
       export_options: {
         provisioningProfiles: {
           "com.bcsgarcia.personal-app-amanda-leme" => "match AppStore com.bcsgarcia.personal-app-amanda-leme"
         }
       },
-      allowProvisioningUpdates: true  # permite atualizações automáticas do perfil de provisionamento
+      include_bitcode: true,  # ou false, dependendo da necessidade
+      codesigning_identity: "iPhone Distribution",  # ajuste conforme necessário
+      skip_profile_detection: false  # Para não pular a detecção de perfil
     )
 
 
