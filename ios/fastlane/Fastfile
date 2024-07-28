@@ -39,7 +39,7 @@ platform :ios do
     UI.message("API_KEY: #{api_key}")
 
     # Sincronizar versão com o projeto iOS
-    sync_version
+    # sync_version
 
     match(
       type: "appstore",
@@ -54,7 +54,8 @@ platform :ios do
 
     sync_code_signing(
       type: "appstore",
-      api_key: api_key
+      api_key: api_key,
+      readonly: true,
     )
 
     # build_app(
@@ -71,12 +72,29 @@ platform :ios do
     #   skip_profile_detection: false  # Para não pular a detecção de perfil
     # )
 
+    pubspec = File.read("../../pubspec.yaml")
+    version = pubspec.match(/version: (\d+\.\d+\.\d+\+\d+)/)[1]
+
+    # Separar versão e número de build
+    version_name, version_code = version.split("+")
+
+
+    Dir.chdir "../.." do
+      puts "*** Build flutter iOS release for version #{version_name}+#{version_code} ***"
+      sh("flutter", "build", "ipa", "--release", "--build-number=#{version_code}", "--build-name=#{version_name}", "--target=lib/main/main.dart")
+    end
+
     build_app(
-      workspace: "Runner.xcworkspace",
-      scheme: "Runner",
-      export_method: "app-store",
-      xcargs: "-allowProvisioningUpdates",
+      skip_build_archive: true,
+      archive_path: "../build/ios/archive/Runner.xcarchive",
     )
+
+    # build_app(
+    #   workspace: "Runner.xcworkspace",
+    #   scheme: "Runner",
+    #   export_method: "app-store",
+    #   xcargs: "-allowProvisioningUpdates",
+    # )
 
 
     upload_to_testflight(
