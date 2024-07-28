@@ -75,8 +75,12 @@ platform :ios do
       workspace: "Runner.xcworkspace",
       scheme: "Runner",
       export_method: "app-store",
-      codesigning_identity: "iPhone Distribution",  # Use uma identidade de distribuição
-      provisioning_profile: "Apple Connect Distribution"
+      codesigning_identity: "iPhone Distribution",
+      export_options: {
+        provisioningProfiles: {
+          "com.bcsgarcia.personal-app-amanda-leme" => "match AppStore com.bcsgarcia.personal-app-amanda-leme"
+        }
+      }
     )
 
 
