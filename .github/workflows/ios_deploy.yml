@@ -52,13 +52,11 @@ jobs:
         env:
           MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
 
-
-      - name: Debug Information
+      - name: Install Pods
         run: |
-            echo "Fastlane Version: $(fastlane --version)"
-            echo "Ruby Version: $(ruby -v)"
-            echo "Environment Variables:"
-            env
+            cd ios
+            pod deintegrate
+            pod install --repo-update
 
       - name: Build and Deploy
         working-directory: ./ios/fastlane
