@@ -1,28 +1,29 @@
-default_platform(:ios)
-
 api_key = app_store_connect_api_key(
   key_id: ENV['APP_STORE_CONNECT_API_KEY'], # Substitua com o Key ID da sua API Key
   issuer_id: ENV['APP_STORE_CONNECT_API_ISSUER_ID'], # Substitua com o Issuer ID da sua API Key
-  key_filepath: "./ios/fastlane/AuthKey.p8", # Caminho para o arquivo .p8 da sua API Key
+  key_filepath: "AuthKey.p8", # Caminho para o arquivo .p8 da sua API Key
   in_house: false # Define se o app é empresarial (in-house)
 )
+
+default_platform(:ios)
 
 platform :ios do
   desc "Build and deploy to TestFlight"
   lane :deploy do
-    match(type: "appstore")
-
-    build_app(
-      workspace: "Runner.xcworkspace",
-      scheme: "Runner",
-      export_method: "app-store",
-      export_options: {
-        provisioningProfiles: {
-          "com.bcsgarcia.personal_app.amanda_leme" => "match AppStore com.bcsgarcia.personal_app.amanda_leme"
-        }
-      }
+    match(
+      type: "appstore",
+      api_key: api_key
     )
 
-    upload_to_testflight
+    build_app(
+      workspace: "Runner.xcworkspace", # Substitua com o nome do seu workspace
+      scheme: "Runner", # Substitua com o nome do seu scheme
+      export_method: "app-store",
+      api_key: api_key
+    )
+
+    upload_to_testflight(
+      api_key: api_key
+    )
   end
 end
