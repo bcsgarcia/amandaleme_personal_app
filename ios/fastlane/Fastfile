@@ -46,11 +46,30 @@ platform :ios do
       api_key: api_key
     )
 
+    # build_app(
+    #   workspace: "Runner.xcworkspace",
+    #   scheme: "Runner",
+    #   export_method: "app-store"
+    # )
+
+    sync_code_signing(
+      type: "appstore",
+      api_key: api_key
+    )
+
     build_app(
       workspace: "Runner.xcworkspace",
       scheme: "Runner",
-      export_method: "app-store"
+      export_method: "app-store",
+      include_bitcode: true,  # ou false, dependendo da necessidade
+      export_options: {
+        provisioningProfiles: {
+          "com.bcsgarcia.personal-app-amanda-leme" => "match AppStore com.bcsgarcia.personal-app-amanda-leme"
+        }
+      },
+      allowProvisioningUpdates: true  # permite atualizações automáticas do perfil de provisionamento
     )
+
 
     upload_to_testflight(
       api_key: api_key
