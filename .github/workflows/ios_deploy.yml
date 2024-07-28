@@ -27,8 +27,8 @@ jobs:
         with:
           ruby-version: 3.0
 
-      - name: Set up Fastlane
-        run: gem install fastlane
+      - name: Install Fastlane
+        run: gem install fastlane -v 2.222.0
 
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
@@ -51,6 +51,7 @@ jobs:
           security set-keychain-settings -t 3600 -l ~/Library/Keychains/build.keychain
         env:
           MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
+
 
       - name: Debug Information
         run: |
