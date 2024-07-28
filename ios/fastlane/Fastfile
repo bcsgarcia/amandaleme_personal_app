@@ -77,6 +77,7 @@ platform :ios do
       export_method: "app-store",
       xcargs: "-allowProvisioningUpdates",
       export_options: {
+        signingStyle: "automatic",
         provisioningProfiles: {
           "com.bcsgarcia.personal-app-amanda-leme" => "match AppStore com.bcsgarcia.personal-app-amanda-leme"
         }
