@@ -43,16 +43,8 @@ jobs:
         env:
           MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
 
-      # - name: Import certificates
-      #   run: |
-      #     echo "${{ secrets.APPLE_CERTIFICATE }}" | base64 --decode > apple.cer
-      #     echo "${{ secrets.PROVISIONING_PROFILE }}" | base64 --decode > profile.mobileprovision
-      #     security import apple.cer -k ~/Library/Keychains/build.keychain -T /usr/bin/codesign
-      #     mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
-      #     cp profile.mobileprovision ~/Library/MobileDevice/Provisioning\ Profiles/
-      #   env:
-      #     APPLE_CERTIFICATE: ${{ secrets.APPLE_CERTIFICATE }}
-      #     PROVISIONING_PROFILE: ${{ secrets.PROVISIONING_PROFILE }}
+      - name: Decode API Key
+        run: echo "${{ secrets.APP_STORE_CONNECT_API_KEY }}" | base64 --decode > ./fastlane/AuthKey.p8
 
       - name: Build and Deploy
         working-directory: ./ios/fastlane
