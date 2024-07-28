@@ -46,8 +46,8 @@ platform :ios do
     # )
 
     api_key = app_store_connect_api_key(
-      key_id: 'JS3MYV9HPQ',
-      issuer_id: '513d5581-7fd6-470a-8e83-f2f97820b525',
+      key_id: ENV['APP_STORE_CONNECT_KEY_ID'],
+      issuer_id: ENV['APP_STORE_CONNECT_ISSUER_ID'],
       key_filepath: api_key_path
     )
 
