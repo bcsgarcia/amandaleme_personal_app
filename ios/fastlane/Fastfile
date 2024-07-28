@@ -10,13 +10,25 @@ platform :ios do
     sh("ssh-add /tmp/deploy_key")
     sh("ssh-keyscan github.com >> ~/.ssh/known_hosts")
 
-    # p12_path = "/tmp/certificado.p12"
-    # File.open(p12_path, "wb") do |file|
-    #   file.write(Base64.decode64(ENV['CERTIFICATE_PERSONAL_P12']))
+    # Decodificar e salvar a chave API
+    # api_key_base64 = ENV['APP_STORE_CONNECT_API_KEY']
+    # api_key_path = File.expand_path("AuthKey.p8", Dir.pwd)  # Usando caminho absoluto
+    # UI.message("Decodificando e salvando a chave API em #{api_key_path}")
+
+    # File.open(api_key_path, "wb") do |file|
+    #   file.write(Base64.decode64(api_key_base64))
     # end
 
-    # # Importando o certificado para o Keychain
-    # sh("security import #{p12_path} -P #{ENV['P12_PASSWORD']} -A -t cert -f pkcs12 -k ~/Library/Keychains/login.keychain-db")
+    # if File.exist?(api_key_path)
+    #   UI.message("Arquivo de chave API criado com sucesso em #{api_key_path}")
+
+    #   # Ler e imprimir o conteúdo do arquivo AuthKey.p8
+    #   api_key_content = File.read(api_key_path)
+    #   UI.message("Conteúdo de AuthKey.p8: #{api_key_content}")
+    # else
+    #   UI.error("Erro ao criar o arquivo de chave API em #{api_key_path}")
+    #   return  # Saia da execução se o arquivo não puder ser criado
+    # end
 
     api_key = app_store_connect_api_key(
       key_id: 'JS3MYV9HPQ',
@@ -25,49 +37,165 @@ platform :ios do
       is_key_content_base64: true,
     )
 
+    UI.message("API_KEY: #{api_key}")
+
+    # Sincronizar versão com o projeto iOS
+    # sync_version
+
     match(
       type: "appstore",
-      api_key: api_key,
-      # keychain_name: "login.keychain-db",
-      keychain_password: ENV['MATCH_PASSWORD']
+      api_key: api_key
     )
-
-    build_app(
-      workspace: "Runner.xcworkspace",
-      scheme: "Runner",
-      export_method: "app-store",
-      export_options: {
-        provisioningProfiles: {
-          "com.bcsgarcia.personal-app-amanda-leme" => "match AppStore com.bcsgarcia.personal-app-amanda-leme"
-        }
-      }
-    )
-
-    # sync_code_signing(
-    #   type: "appstore",
-    #   api_key: api_key,
-    #   readonly: true,
-    # )
-
-    # pubspec = File.read("../../pubspec.yaml")
-    # version = pubspec.match(/version: (\d+\.\d+\.\d+\+\d+)/)[1]
-
-    # # Separar versão e número de build
-    # version_name, version_code = version.split("+")
-
-    # Dir.chdir "../.." do
-    #   puts "*** Build flutter iOS release for version #{version_name}+#{version_code} ***"
-    #   sh("flutter", "build", "ipa", "--release", "--build-number=#{version_code}", "--build-name=#{version_name}", "--target=lib/main/main.dart")
-    # end
 
     # build_app(
-    #   skip_build_archive: true,
-    #   archive_path: "../build/ios/archive/Runner.xcarchive",
+    #   workspace: "Runner.xcworkspace",
+    #   scheme: "Runner",
+    #   export_method: "app-store"
     # )
+
+    sync_code_signing(
+      type: "appstore",
+      api_key: api_key,
+      readonly: true,
+    )
+
+    # build_app(
+    #   workspace: "Runner.xcworkspace",
+    #   scheme: "Runner",
+    #   export_method: "app-store",
+    #   export_options: {
+    #     provisioningProfiles: {
+    #       "com.bcsgarcia.personal-app-amanda-leme" => "match AppStore com.bcsgarcia.personal-app-amanda-leme"
+    #     }
+    #   },
+    #   include_bitcode: true,  # ou false, dependendo da necessidade
+    #   codesigning_identity: "iPhone Distribution",  # ajuste conforme necessário
+    #   skip_profile_detection: false  # Para não pular a detecção de perfil
+    # )
+
+    pubspec = File.read("../../pubspec.yaml")
+    version = pubspec.match(/version: (\d+\.\d+\.\d+\+\d+)/)[1]
+
+    # Separar versão e número de build
+    version_name, version_code = version.split("+")
+
+
+    Dir.chdir "../.." do
+      puts "*** Build flutter iOS release for version #{version_name}+#{version_code} ***"
+      sh("flutter", "build", "ipa", "--release", "--build-number=#{version_code}", "--build-name=#{version_name}", "--target=lib/main/main.dart")
+    end
+
+    build_app(
+      skip_build_archive: true,
+      archive_path: "../build/ios/archive/Runner.xcarchive",
+    )
+
+    # build_app(
+    #   workspace: "Runner.xcworkspace",
+    #   scheme: "Runner",
+    #   export_method: "app-store",
+    #   xcargs: "-allowProvisioningUpdates",
+    # )
+
 
     upload_to_testflight(
       api_key: api_key
     )
   end
 
+  desc "Synchronize version with pubspec.yaml"
+  lane :sync_version do
+    # Ler a versão do pubspec.yaml
+    pubspec = File.read("../../pubspec.yaml")
+    version = pubspec.match(/version: (\d+\.\d+\.\d+\+\d+)/)[1]
+
+    # Separar versão e número de build
+    version_name, version_code = version.split("+")
+
+    # Atualizar o projeto iOS
+    increment_version_number(
+      version_number: version_name,
+      xcodeproj: "Runner.xcodeproj"
+    )
+    increment_build_number(
+      build_number: version_code,
+      xcodeproj: "Runner.xcodeproj"
+    )
+  end
 end
+
+
+
+# default_platform(:ios)
+
+# platform :ios do
+#   desc "Build and deploy to TestFlight"
+#   lane :deploy do
+#     # Configurar SSH para acessar o repositório de certificados
+#     sh("echo \"#{ENV['SSH_PRIVATE_KEY_CERT_REPO']}\" > /tmp/deploy_key")
+#     sh("chmod 600 /tmp/deploy_key")
+#     sh("eval $(ssh-agent -s)")
+#     sh("ssh-add /tmp/deploy_key")
+#     sh("ssh-keyscan github.com >> ~/.ssh/known_hosts")
+
+#     # p12_path = "/tmp/certificado.p12"
+#     # File.open(p12_path, "wb") do |file|
+#     #   file.write(Base64.decode64(ENV['CERTIFICATE_PERSONAL_P12']))
+#     # end
+
+#     # # Importando o certificado para o Keychain
+#     # sh("security import #{p12_path} -P #{ENV['P12_PASSWORD']} -A -t cert -f pkcs12 -k ~/Library/Keychains/login.keychain-db")
+
+#     api_key = app_store_connect_api_key(
+#       key_id: 'JS3MYV9HPQ',
+#       issuer_id: '513d5581-7fd6-470a-8e83-f2f97820b525',
+#       key_content: ENV['APP_STORE_CONNECT_API_KEY'],
+#       is_key_content_base64: true,
+#     )
+
+#     match(
+#       type: "appstore",
+#       api_key: api_key,
+#       # keychain_name: "login.keychain-db",
+#       keychain_password: ENV['MATCH_PASSWORD']
+#     )
+
+#     build_app(
+#       workspace: "Runner.xcworkspace",
+#       scheme: "Runner",
+#       export_method: "app-store",
+#       export_options: {
+#         provisioningProfiles: {
+#           "com.bcsgarcia.personal-app-amanda-leme" => "match AppStore com.bcsgarcia.personal-app-amanda-leme"
+#         }
+#       }
+#     )
+
+#     # sync_code_signing(
+#     #   type: "appstore",
+#     #   api_key: api_key,
+#     #   readonly: true,
+#     # )
+
+#     # pubspec = File.read("../../pubspec.yaml")
+#     # version = pubspec.match(/version: (\d+\.\d+\.\d+\+\d+)/)[1]
+
+#     # # Separar versão e número de build
+#     # version_name, version_code = version.split("+")
+
+#     # Dir.chdir "../.." do
+#     #   puts "*** Build flutter iOS release for version #{version_name}+#{version_code} ***"
+#     #   sh("flutter", "build", "ipa", "--release", "--build-number=#{version_code}", "--build-name=#{version_name}", "--target=lib/main/main.dart")
+#     # end
+
+#     # build_app(
+#     #   skip_build_archive: true,
+#     #   archive_path: "../build/ios/archive/Runner.xcarchive",
+#     # )
+
+#     upload_to_testflight(
+#       api_key: api_key
+#     )
+#   end
+
+# end
