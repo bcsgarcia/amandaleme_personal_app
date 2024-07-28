@@ -54,7 +54,7 @@ platform :ios do
   desc "Synchronize version with pubspec.yaml"
   lane :sync_version do
     # Ler a versão do pubspec.yaml
-    pubspec = File.read("../pubspec.yaml")
+    pubspec = File.read("../../pubspec.yaml")
     version = pubspec.match(/version: (\d+\.\d+\.\d+\+\d+)/)[1]
 
     # Separar versão e número de build
