@@ -23,6 +23,14 @@ For _fastlane_ installation instructions, see [Installing _fastlane_](https://do
 
 Build and deploy to TestFlight
 
+### ios sync_version
+
+```sh
+[bundle exec] fastlane ios sync_version
+```
+
+Synchronize version with pubspec.yaml
+
 ----
 
 This README.md is auto-generated and will be re-generated every time [_fastlane_](https://fastlane.tools) is run.

@@ -5,24 +5,100 @@
     
     
       
-      <testcase classname="fastlane.lanes" name="0: default_platform" time="0.000269">
+      <testcase classname="fastlane.lanes" name="0: default_platform" time="0.000249">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="1: match" time="19.568341">
+      <testcase classname="fastlane.lanes" name="1: echo &quot;-----BEGIN OPENSSH PRIVATE KEY-----
+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
+-----END OPENSSH PRIVATE KEY-----&quot; &gt; /tmp/deploy_key" time="0.006819">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="2: build_app" time="117.571615">
+      <testcase classname="fastlane.lanes" name="2: chmod 600 /tmp/deploy_key" time="0.004557">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="3: upload_to_testflight" time="8.446939">
+      <testcase classname="fastlane.lanes" name="3: eval $(ssh-agent -s)" time="0.010553">
         
-          <failure message="/opt/homebrew/Cellar/fastlane/2.222.0/libexec/gems/fastlane-2.222.0/fastlane/lib/fastlane/actions/actions_helper.rb:67:in `execute_action&apos;&#10;/opt/homebrew/Cellar/fastlane/2.222.0/libexec/gems/fastlane-2.222.0/fastlane/lib/fastlane/runner.rb:255:in `block in execute_action&apos;&#10;/opt/homebrew/Cellar/fastlane/2.222.0/libexec/gems/fastlane-2.222.0/fastlane/lib/fastlane/runner.rb:229:in `chdir&apos;&#10;/opt/homebrew/Cellar/fastlane/2.222.0/libexec/gems/fastlane-2.222.0/fastlane/lib/fastlane/runner.rb:229:in `execute_action&apos;&#10;/opt/homebrew/Cellar/fastlane/2.222.0/libexec/gems/fastlane-2.222.0/fastlane/lib/fastlane/runner.rb:157:in `trigger_action_by_name&apos;&#10;/opt/homebrew/Cellar/fastlane/2.222.0/libexec/gems/fastlane-2.222.0/fastlane/lib/fastlane/fast_file.rb:159:in `method_missing&apos;&#10;Fastfile:19:in `block (2 levels) in parsing_binding&apos;&#10;/opt/homebrew/Cellar/fastlane/2.222.0/libexec/gems/fastlane-2.222.0/fastlane/lib/fastlane/lane.rb:41:in `call&apos;&#10;/opt/homebrew/Cellar/fastlane/2.222.0/libexec/gems/fastlane-2.222.0/fastlane/lib/fastlane/runner.rb:49:in `block in execute&apos;&#10;/opt/homebrew/Cellar/fastlane/2.222.0/libexec/gems/fastlane-2.222.0/fastlane/lib/fastlane/runner.rb:45:in `chdir&apos;&#10;/opt/homebrew/Cellar/fastlane/2.222.0/libexec/gems/fastlane-2.222.0/fastlane/lib/fastlane/runner.rb:45:in `execute&apos;&#10;/opt/homebrew/Cellar/fastlane/2.222.0/libexec/gems/fastlane-2.222.0/fastlane/lib/fastlane/lane_manager.rb:46:in `cruise_lane&apos;&#10;/opt/homebrew/Cellar/fastlane/2.222.0/libexec/gems/fastlane-2.222.0/fastlane/lib/fastlane/command_line_handler.rb:34:in `handle&apos;&#10;/opt/homebrew/Cellar/fastlane/2.222.0/libexec/gems/fastlane-2.222.0/fastlane/lib/fastlane/commands_generator.rb:110:in `block (2 levels) in run&apos;&#10;/opt/homebrew/Cellar/fastlane/2.222.0/libexec/gems/commander-4.6.0/lib/commander/command.rb:187:in `call&apos;&#10;/opt/homebrew/Cellar/fastlane/2.222.0/libexec/gems/commander-4.6.0/lib/commander/command.rb:157:in `run&apos;&#10;/opt/homebrew/Cellar/fastlane/2.222.0/libexec/gems/commander-4.6.0/lib/commander/runner.rb:444:in `run_active_command&apos;&#10;/opt/homebrew/Cellar/fastlane/2.222.0/libexec/gems/fastlane-2.222.0/fastlane_core/lib/fastlane_core/ui/fastlane_runner.rb:124:in `run!&apos;&#10;/opt/homebrew/Cellar/fastlane/2.222.0/libexec/gems/commander-4.6.0/lib/commander/delegates.rb:18:in `run!&apos;&#10;/opt/homebrew/Cellar/fastlane/2.222.0/libexec/gems/fastlane-2.222.0/fastlane/lib/fastlane/commands_generator.rb:363:in `run&apos;&#10;/opt/homebrew/Cellar/fastlane/2.222.0/libexec/gems/fastlane-2.222.0/fastlane/lib/fastlane/commands_generator.rb:43:in `start&apos;&#10;/opt/homebrew/Cellar/fastlane/2.222.0/libexec/gems/fastlane-2.222.0/fastlane/lib/fastlane/cli_tools_distributor.rb:123:in `take_off&apos;&#10;/opt/homebrew/Cellar/fastlane/2.222.0/libexec/gems/fastlane-2.222.0/bin/fastlane:23:in `&lt;top (required)&gt;&apos;&#10;/opt/homebrew/Cellar/fastlane/2.222.0/libexec/bin/fastlane:25:in `load&apos;&#10;/opt/homebrew/Cellar/fastlane/2.222.0/libexec/bin/fastlane:25:in `&lt;main&gt;&apos;&#10;&#10;Error uploading ipa file: &#10; [Application Loader Error Output]: Error uploading &apos;/var/folders/q4/6_r1x16d0zjdw8m1y41xkp800000gn/T/e7985f8c-a1ae-466e-b07e-cb76c955a291.ipa&apos;.&#10;[Application Loader Error Output]: Unable to upload archive. Failed to get authorization for username &apos;bcsgarciapersonalapp@gmail.com&apos; and password. (&#10;[Application Loader Error Output]: The call to the altool completed with a non-zero exit status: 1. This indicates a failure." />
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="4: ssh-add /tmp/deploy_key" time="0.014708">
+        
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="5: ssh-keyscan github.com &gt;&gt; ~/.ssh/known_hosts" time="1.818947">
+        
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="6: app_store_connect_api_key" time="0.002819">
+        
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="7: match" time="5.381986">
+        
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="8: sync_code_signing" time="2.652433">
+        
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="9: flutter build ipa --release --build-number\=7 --build-name\=0.0.6 --target\=lib/main/main.dart" time="5.415962">
         
       </testcase>
     
