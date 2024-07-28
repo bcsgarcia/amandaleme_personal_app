@@ -30,14 +30,19 @@ platform :ios do
       return  # Saia da execução se o arquivo não puder ser criado
     end
 
-    UI.message("APP_STORE_CONNECT_KEY_ID: #{ENV['APP_STORE_CONNECT_KEY_ID']}")
-    UI.message("APP_STORE_CONNECT_ISSUER_ID: #{ENV['APP_STORE_CONNECT_ISSUER_ID']}")
+    key_id = ENV['APP_STORE_CONNECT_KEY_ID']
+    issuer_id = ENV['APP_STORE_CONNECT_ISSUER_ID']
+
+    UI.message("APP_STORE_CONNECT_KEY_ID: #{key_id}")
+    UI.message("APP_STORE_CONNECT_ISSUER_ID: #{issuer_id}")
 
     api_key = app_store_connect_api_key(
       key_id: ENV['APP_STORE_CONNECT_KEY_ID'],
       issuer_id: ENV['APP_STORE_CONNECT_ISSUER_ID'],
       key_filepath: api_key_path
     )
+
+    UI.message("API_KEY: #{api_key}")
 
     # Sincronizar versão com o projeto iOS
     sync_version
