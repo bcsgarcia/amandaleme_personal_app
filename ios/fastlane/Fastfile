@@ -57,18 +57,26 @@ platform :ios do
       api_key: api_key
     )
 
+    # build_app(
+    #   workspace: "Runner.xcworkspace",
+    #   scheme: "Runner",
+    #   export_method: "app-store",
+    #   export_options: {
+    #     provisioningProfiles: {
+    #       "com.bcsgarcia.personal-app-amanda-leme" => "match AppStore com.bcsgarcia.personal-app-amanda-leme"
+    #     }
+    #   },
+    #   include_bitcode: true,  # ou false, dependendo da necessidade
+    #   codesigning_identity: "iPhone Distribution",  # ajuste conforme necessário
+    #   skip_profile_detection: false  # Para não pular a detecção de perfil
+    # )
+
     build_app(
       workspace: "Runner.xcworkspace",
       scheme: "Runner",
       export_method: "app-store",
-      export_options: {
-        provisioningProfiles: {
-          "com.bcsgarcia.personal-app-amanda-leme" => "match AppStore com.bcsgarcia.personal-app-amanda-leme"
-        }
-      },
-      include_bitcode: true,  # ou false, dependendo da necessidade
-      codesigning_identity: "iPhone Distribution",  # ajuste conforme necessário
-      skip_profile_detection: false  # Para não pular a detecção de perfil
+      codesigning_identity: "iPhone Distribution",  # Use uma identidade de distribuição
+      provisioning_profile: "Apple Connect Distribution"
     )
 
 
