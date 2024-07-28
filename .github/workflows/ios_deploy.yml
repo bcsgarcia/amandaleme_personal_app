@@ -43,14 +43,15 @@ jobs:
         env:
           MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
 
-      - name: Decode API Key
-        run: echo "${{ secrets.APP_STORE_CONNECT_API_KEY }}" | base64 --decode > ./ios/fastlane/AuthKey.p8
+      # - name: Decode API Key
+      #   run: echo "${{ secrets.APP_STORE_CONNECT_API_KEY }}" | base64 --decode > ./ios/fastlane/AuthKey.p8
 
       - name: Build and Deploy
         working-directory: ./ios/fastlane
         run: fastlane ios deploy
         env:
           MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
-          APP_STORE_CONNECT_API_KEY: ${{ secrets.APP_STORE_CONNECT_API_KEY }}
+          APP_STORE_CONNECT_API_KEY: ${{ secrets.APP_STORE_CONNECT_API_KEY }},
+          APP_STORE_CONNECT_KEY_ID: ${{ secrets.APP_STORE_CONNECT_KEY_ID }}
           APP_STORE_CONNECT_API_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

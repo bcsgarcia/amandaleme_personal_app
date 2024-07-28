@@ -1,15 +1,22 @@
-api_key = app_store_connect_api_key(
-  key_id: ENV['APP_STORE_CONNECT_API_KEY'], # Substitua com o Key ID da sua API Key
-  issuer_id: ENV['APP_STORE_CONNECT_API_ISSUER_ID'], # Substitua com o Issuer ID da sua API Key
-  key_filepath: "AuthKey.p8", # Caminho para o arquivo .p8 da sua API Key
-  in_house: false # Define se o app é empresarial (in-house)
-)
-
 default_platform(:ios)
 
 platform :ios do
   desc "Build and deploy to TestFlight"
   lane :deploy do
+    # Decodificar e salvar a chave API
+    api_key_base64 = ENV['APP_STORE_CONNECT_API_KEY']
+    api_key_path = "./AuthKey.p8"
+    File.open(api_key_path, "wb") do |file|
+      file.write(Base64.decode64(api_key_base64))
+    end
+
+    api_key = app_store_connect_api_key(
+      key_id: ENV['APP_STORE_CONNECT_API_KEY_ID'],
+      issuer_id: ENV['APP_STORE_CONNECT_API_ISSUER_ID'],
+      key_filepath: api_key_path, # Usar o caminho para o arquivo decodificado
+      in_house: false
+    )
+
     match(
       type: "appstore",
       api_key: api_key
@@ -17,7 +24,7 @@ platform :ios do
 
     build_app(
       workspace: "Runner.xcworkspace", # Substitua com o nome do seu workspace
-      scheme: "Runner", # Substitua com o nome do seu scheme
+      scheme: "Runner",               # Substitua com o nome do seu scheme
       export_method: "app-store",
       api_key: api_key
     )
@@ -27,3 +34,33 @@ platform :ios do
     )
   end
 end
+
+# api_key = app_store_connect_api_key(
+#   key_id: ENV['APP_STORE_CONNECT_KEY_ID'], # Substitua com o Key ID da sua API Key
+#   issuer_id: ENV['APP_STORE_CONNECT_API_ISSUER_ID'], # Substitua com o Issuer ID da sua API Key
+#   key_filepath: "AuthKey.p8", # Caminho para o arquivo .p8 da sua API Key
+#   in_house: false # Define se o app é empresarial (in-house)
+# )
+
+# default_platform(:ios)
+
+# platform :ios do
+#   desc "Build and deploy to TestFlight"
+#   lane :deploy do
+#     match(
+#       type: "appstore",
+#       api_key: api_key
+#     )
+
+#     build_app(
+#       workspace: "Runner.xcworkspace", # Substitua com o nome do seu workspace
+#       scheme: "Runner", # Substitua com o nome do seu scheme
+#       export_method: "app-store",
+#       api_key: api_key
+#     )
+
+#     upload_to_testflight(
+#       api_key: api_key
+#     )
+#   end
+# end
