@@ -21,6 +21,10 @@ platform :ios do
 
     if File.exist?(api_key_path)
       UI.message("Arquivo de chave API criado com sucesso em #{api_key_path}")
+
+      # Ler e imprimir o conteúdo do arquivo AuthKey.p8
+      api_key_content = File.read(api_key_path)
+      UI.message("Conteúdo de AuthKey.p8: #{api_key_content}")
     else
       UI.error("Erro ao criar o arquivo de chave API em #{api_key_path}")
       return  # Saia da execução se o arquivo não puder ser criado
