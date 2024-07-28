@@ -5,7 +5,7 @@ platform :ios do
   lane :deploy do
     # Decodificar e salvar a chave API
     api_key_base64 = ENV['APP_STORE_CONNECT_API_KEY']
-    api_key_path = "./AuthKey.p8"
+    api_key_path = "./fastlane/AuthKey.p8"
     File.open(api_key_path, "wb") do |file|
       file.write(Base64.decode64(api_key_base64))
     end
