@@ -4,6 +4,10 @@ platform :ios do
   desc "Build and deploy to TestFlight"
   lane :deploy do
     # Configurar SSH para acessar o repositório de certificados
+    teste_bruno = ENV['SSH_PRIVATE_KEY_CERT_REPO'];
+    UI.message("teste_bruno: #{teste_bruno}")
+
+
     sh("echo \"#{ENV['SSH_PRIVATE_KEY_CERT_REPO']}\" > /tmp/deploy_key")
     sh("chmod 600 /tmp/deploy_key")
     sh("eval $(ssh-agent -s)")
