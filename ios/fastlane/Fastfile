@@ -6,8 +6,16 @@ platform :ios do
     # Decodificar e salvar a chave API
     api_key_base64 = ENV['APP_STORE_CONNECT_API_KEY']
     api_key_path = "./AuthKey.p8"
+    UI.message("Decodificando e salvando a chave API em #{api_key_path}")
+
     File.open(api_key_path, "wb") do |file|
       file.write(Base64.decode64(api_key_base64))
+    end
+
+    if File.exist?(api_key_path)
+      UI.message("Arquivo de chave API criado com sucesso em #{api_key_path}")
+    else
+      UI.error("Erro ao criar o arquivo de chave API em #{api_key_path}")
     end
 
     api_key = app_store_connect_api_key(
