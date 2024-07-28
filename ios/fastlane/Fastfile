@@ -76,9 +76,6 @@ platform :ios do
       scheme: "Runner",
       export_method: "app-store",
       xcargs: "-allowProvisioningUpdates",
-      export_options: {
-        signingStyle: "automatic"
-      }
     )
 
 
