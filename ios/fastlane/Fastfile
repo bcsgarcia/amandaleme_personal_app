@@ -5,7 +5,7 @@ platform :ios do
   lane :deploy do
     # Decodificar e salvar a chave API
     api_key_base64 = ENV['APP_STORE_CONNECT_API_KEY']
-    api_key_path = "./AuthKey.p8"
+    api_key_path = File.expand_path("AuthKey.p8", Dir.pwd)  # Usando caminho absoluto
     UI.message("Decodificando e salvando a chave API em #{api_key_path}")
 
     File.open(api_key_path, "wb") do |file|
@@ -16,12 +16,13 @@ platform :ios do
       UI.message("Arquivo de chave API criado com sucesso em #{api_key_path}")
     else
       UI.error("Erro ao criar o arquivo de chave API em #{api_key_path}")
+      return  # Saia da execução se o arquivo não puder ser criado
     end
 
     api_key = app_store_connect_api_key(
       key_id: ENV['APP_STORE_CONNECT_API_KEY_ID'],
       issuer_id: ENV['APP_STORE_CONNECT_API_ISSUER_ID'],
-      key_filepath: api_key_path, # Usar o caminho para o arquivo decodificado
+      key_filepath: api_key_path, # Usar o caminho absoluto para o arquivo decodificado
       in_house: false
     )
 
@@ -42,33 +43,3 @@ platform :ios do
     )
   end
 end
-
-# api_key = app_store_connect_api_key(
-#   key_id: ENV['APP_STORE_CONNECT_KEY_ID'], # Substitua com o Key ID da sua API Key
-#   issuer_id: ENV['APP_STORE_CONNECT_API_ISSUER_ID'], # Substitua com o Issuer ID da sua API Key
-#   key_filepath: "AuthKey.p8", # Caminho para o arquivo .p8 da sua API Key
-#   in_house: false # Define se o app é empresarial (in-house)
-# )
-
-# default_platform(:ios)
-
-# platform :ios do
-#   desc "Build and deploy to TestFlight"
-#   lane :deploy do
-#     match(
-#       type: "appstore",
-#       api_key: api_key
-#     )
-
-#     build_app(
-#       workspace: "Runner.xcworkspace", # Substitua com o nome do seu workspace
-#       scheme: "Runner", # Substitua com o nome do seu scheme
-#       export_method: "app-store",
-#       api_key: api_key
-#     )
-
-#     upload_to_testflight(
-#       api_key: api_key
-#     )
-#   end
-# end
