@@ -4,11 +4,11 @@ platform :ios do
   desc "Build and deploy to TestFlight"
   lane :deploy do
     # Configurar SSH para acessar o repositório de certificados
-    sh("echo \"#{ENV['SSH_PRIVATE_KEY_CERT_REPO']}\" > /tmp/deploy_key")
-    sh("chmod 600 /tmp/deploy_key")
-    sh("eval $(ssh-agent -s)")
-    sh("ssh-add /tmp/deploy_key")
-    sh("ssh-keyscan github.com >> ~/.ssh/known_hosts")
+    # sh("echo \"#{ENV['SSH_PRIVATE_KEY_CERT_REPO']}\" > /tmp/deploy_key")
+    # sh("chmod 600 /tmp/deploy_key")
+    # sh("eval $(ssh-agent -s)")
+    # sh("ssh-add /tmp/deploy_key")
+    # sh("ssh-keyscan github.com >> ~/.ssh/known_hosts")
 
     # Decodificar e salvar a chave API
     # api_key_base64 = ENV['APP_STORE_CONNECT_API_KEY']
