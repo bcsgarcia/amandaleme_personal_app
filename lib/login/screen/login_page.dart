@@ -31,6 +31,7 @@ class _LoginPageState extends State<LoginPage> {
         toolbarHeight: 0,
         elevation: 0,
       ),
+      resizeToAvoidBottomInset: false,
       body: SizedBox(
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,

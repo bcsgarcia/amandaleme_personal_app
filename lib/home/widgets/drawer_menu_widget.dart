@@ -99,11 +99,11 @@ class HomeDrawerMenu extends StatelessWidget {
                   name: 'Padrões Posturais',
                   function: () => _goToPosturalPatternPage(context),
                 ),
-                // DrawerOption(
-                //   iconName: 'partnership',
-                //   name: 'Parcerias',
-                //   function: () => _goToPartnershipPage(context),
-                // ),
+                DrawerOption(
+                  iconName: 'partnership',
+                  name: 'Parcerias',
+                  function: () => _goToPartnershipPage(context),
+                ),
 
                 const SizedBox(height: 24),
                 const Divider(),

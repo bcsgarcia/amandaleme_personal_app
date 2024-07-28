@@ -1,7 +1,7 @@
 name: amandaleme_personal_app
 description: A new Flutter project.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
-version: 0.0.2+4
+version: 0.0.5+7
 
 environment:
   sdk: '>=2.19.5 <3.0.0'
@@ -59,6 +59,7 @@ flutter:
     - assets/images/gyms/
     - assets/images/icons/
     - .env
+    - .env-prod
 
   fonts:
     - family: Roboto
