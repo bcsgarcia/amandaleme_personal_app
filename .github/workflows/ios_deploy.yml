@@ -23,8 +23,9 @@ jobs:
         run: gem install fastlane
 
       - name: Install CocoaPods
-        run: pod install --repo-update
-        working-directory: ./ios
+        run: |
+            cd ios
+            pod install --repo-update
 
       - name: Set up keychain
         run: |
