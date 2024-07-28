@@ -55,6 +55,7 @@ jobs:
       #     PROVISIONING_PROFILE: ${{ secrets.PROVISIONING_PROFILE }}
 
       - name: Build and Deploy
+        working-directory: ./ios/fastlane
         run: fastlane ios deploy
         env:
           MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
