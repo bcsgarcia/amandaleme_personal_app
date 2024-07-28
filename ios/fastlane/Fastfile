@@ -32,6 +32,12 @@ platform :ios do
       key_filepath: api_key_path
     )
 
+    # Incrementar o número de build automaticamente com base na data
+    increment_build_number(
+      xcodeproj: "Runner.xcodeproj",
+      build_number: Time.now.strftime("%Y%m%d%H%M")
+    )
+
     match(
       type: "appstore",
       api_key: api_key
@@ -40,8 +46,7 @@ platform :ios do
     build_app(
       workspace: "Runner.xcworkspace",
       scheme: "Runner",
-      export_method: "app-store",
-      api_key: api_key
+      export_method: "app-store"
     )
 
     upload_to_testflight(
