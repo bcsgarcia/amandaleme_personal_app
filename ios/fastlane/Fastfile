@@ -10,6 +10,14 @@ platform :ios do
     sh("ssh-add /tmp/deploy_key")
     sh("ssh-keyscan github.com >> ~/.ssh/known_hosts")
 
+    p12_path = "/tmp/certificado.p12"
+    File.open(p12_path, "wb") do |file|
+      file.write(Base64.decode64(ENV['CERTIFICATE_PERSONAL_P12']))
+    end
+
+    # Importando o certificado para o Keychain
+    sh("security import #{p12_path} -P #{ENV['P12_PASSWORD']} -A -t cert -f pkcs12 -k ~/Library/Keychains/login.keychain-db")
+
     api_key = app_store_connect_api_key(
       key_id: 'JS3MYV9HPQ',
       issuer_id: '513d5581-7fd6-470a-8e83-f2f97820b525',
@@ -19,7 +27,9 @@ platform :ios do
 
     match(
       type: "appstore",
-      api_key: api_key
+      api_key: api_key,
+      keychain_name: "login.keychain-db",
+      keychain_password: ENV['MATCH_PASSWORD']
     )
 
     build_app(
