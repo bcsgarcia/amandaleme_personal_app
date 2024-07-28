@@ -52,6 +52,13 @@ jobs:
         env:
           MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
 
+      - name: Debug Information
+        run: |
+            echo "Fastlane Version: $(fastlane --version)"
+            echo "Ruby Version: $(ruby -v)"
+            echo "Environment Variables:"
+            env
+
       - name: Build and Deploy
         working-directory: ./ios/fastlane
         run: fastlane ios deploy
