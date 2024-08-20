@@ -57,8 +57,8 @@ class _BottomWorkoutBarState extends State<BottomWorkoutBar> {
       },
       child: ClipRRect(
         borderRadius: const BorderRadius.only(
-          bottomLeft: Radius.circular(40),
-          bottomRight: Radius.circular(40),
+          bottomLeft: Radius.circular(10),
+          bottomRight: Radius.circular(10),
         ),
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 200),
@@ -68,8 +68,8 @@ class _BottomWorkoutBarState extends State<BottomWorkoutBar> {
             color: _isVideoPlaying ? Colors.white.withOpacity(0.3) : Colors.white,
             border: Border.all(),
             borderRadius: const BorderRadius.only(
-              bottomLeft: Radius.circular(40),
-              bottomRight: Radius.circular(40),
+              bottomLeft: Radius.circular(10),
+              bottomRight: Radius.circular(10),
             ),
           ),
           child: Column(
@@ -218,9 +218,7 @@ class PlayerButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: isPlaying
-          ? pauseVideoFunction //context.read<WorkoutsheetVideoCubit>().pauseCurrentVideo
-          : playVideoFunction, //context.read<WorkoutsheetVideoCubit>().playCurrentVideo,
+      onTap: isPlaying ? pauseVideoFunction : playVideoFunction,
       child: Container(
         height: 70,
         width: 70,

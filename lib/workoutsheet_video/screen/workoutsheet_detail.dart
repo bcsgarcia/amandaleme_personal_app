@@ -21,6 +21,7 @@ class _WorkoutsheetDetailState extends State<WorkoutsheetDetail> {
 
   late WorkoutsheetDetailCubit _cubit;
   double volume = 1;
+  bool isBuffering = false;
 
   @override
   void initState() {
@@ -51,6 +52,7 @@ class _WorkoutsheetDetailState extends State<WorkoutsheetDetail> {
       final position = videoPlayerController?.value.position.inSeconds.toDouble() ?? 0;
       final duration = videoPlayerController?.value.duration.inSeconds.toDouble() ?? 0;
       _cubit.updateProgress(position / duration);
+      setState(() => isBuffering = videoPlayerController?.value.isBuffering ?? false);
     });
 
     if (videoAction == VideoAction.next || videoAction == VideoAction.previous) {
@@ -150,17 +152,21 @@ class _WorkoutsheetDetailState extends State<WorkoutsheetDetail> {
                         child: Container(
                           margin: const EdgeInsets.symmetric(vertical: 15),
                           decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(40),
+                            borderRadius: BorderRadius.circular(10),
                             border: Border.all(width: 1.5),
                           ),
                           child: Stack(
                             children: [
                               ClipRRect(
-                                borderRadius: BorderRadius.circular(40),
+                                borderRadius: BorderRadius.circular(8),
                                 child: videoPlayerController != null
                                     ? VideoPlayer(videoPlayerController!)
                                     : const SizedBox.shrink(),
                               ),
+                              if (isBuffering)
+                                const Center(
+                                  child: CircularProgressIndicator(), // Indicador de buffering
+                                ),
                               Container(
                                 margin: const EdgeInsets.only(left: 15, right: 15, top: 10),
                                 height: 14,
@@ -182,20 +188,13 @@ class _WorkoutsheetDetailState extends State<WorkoutsheetDetail> {
                                             : EdgeInsets.zero,
                                         child: videoPlayerController != null
                                             ? LinearProgressIndicator(
+                                                borderRadius: BorderRadius.circular(100),
+                                                backgroundColor: Colors.white.withOpacity(0.5),
                                                 value: index == state.currentWorkoutVideoIndex
                                                     ? state.progress
                                                     : index > state.currentWorkoutVideoIndex
                                                         ? 0
                                                         : 1)
-                                            // VideoProgressIndicator(
-                                            //     videoPlayerController!,
-                                            //     allowScrubbing: false,
-                                            //     colors: const VideoProgressColors(
-                                            //       playedColor: primaryColor,
-                                            //       bufferedColor: Colors.grey,
-                                            //       backgroundColor: Colors.grey,
-                                            //     ),
-                                            //   )
                                             : const SizedBox.shrink(),
                                       ),
                                     ),

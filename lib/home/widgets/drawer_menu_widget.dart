@@ -118,6 +118,16 @@ class HomeDrawerMenu extends StatelessWidget {
                   name: 'Sair',
                   function: () => _logout(context),
                 ),
+                const SizedBox(height: 40),
+                if (context.read<MeetAppCubit>().appVersion != null)
+                  Text(
+                    'versão: ${context.read<MeetAppCubit>().appVersion}',
+                    style: const TextStyle(
+                      color: Colors.grey,
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
               ],
             ),
           ),

@@ -121,7 +121,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     child: TextButton(
                       style: ButtonStyle(
                         alignment: Alignment.centerRight,
-                        padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
+                        padding: WidgetStateProperty.all<EdgeInsetsGeometry>(
                           EdgeInsets.zero,
                         ),
                       ),
@@ -202,6 +202,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Row(
         children: [
+          const SizedBox(
+            height: 36,
+          ),
           Expanded(
             flex: 2,
             child: SizedBox(
@@ -218,7 +221,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
           Expanded(
             flex: 8,
             child: SizedBox(
-              height: 35,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.end,

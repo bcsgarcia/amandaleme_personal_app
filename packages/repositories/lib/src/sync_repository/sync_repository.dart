@@ -1,7 +1,8 @@
 import 'dart:async';
-import 'dart:io';
+import 'dart:io' as io;
 
 import 'package:collection/collection.dart';
+import 'package:flutter/foundation.dart';
 import 'package:helpers/helpers.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -38,6 +39,8 @@ class RemoteSyncRepostory implements SyncRepository, Disposable {
   List<String> remoteIdMediaList = [];
 
   final StreamController<double> _downloadProgressController = StreamController<double>.broadcast();
+  int _totalDownloadedBytes = 0;
+  int _totalExpectedBytes = 0; // Este é o tamanho total esperado de todos os arquivos
 
   @override
   Future<bool> isFirstTimeLogin() async {
@@ -59,35 +62,40 @@ class RemoteSyncRepostory implements SyncRepository, Disposable {
       await cacheStorage.removeFirstTimeLogin();
       await _deleteAllMedias();
     } catch (error) {
-      print(error);
+      debugPrint("Error removing all data: $error");
     }
   }
 
   @override
   Future<void> call() async {
     try {
-      int filesDownloaded = 0;
+      _totalDownloadedBytes = 0; // Zera o contador de bytes baixados
 
       Set<String> setLocalIdsMidias = Set<String>.from(localIdMediaList);
       Set<String> setRemoteIdsMidias = Set<String>.from(remoteIdMediaList);
 
       // Elements present in set1 but not in set2
       Set<String> newMidias = setRemoteIdsMidias.difference(setLocalIdsMidias);
-      print(newMidias);
 
-      // This function will be called each time a file finishes downloading.
-      void onFileDownloaded() {
-        filesDownloaded++;
-        _downloadProgressController.sink.add(filesDownloaded / newMidias.length);
-      }
+      // Calcular o tamanho total esperado dos arquivos
+      await _calculateTotalExpectedBytes(newMidias);
 
-      await downloadAllMidias(onFileDownloaded);
+      await downloadAllMidias();
 
       await listFilesInLocalDirectory();
-
-      print(localIdMediaList);
     } catch (error) {
-      print(error);
+      debugPrint("Error during call: $error");
+    }
+  }
+
+  Future<void> _calculateTotalExpectedBytes(Set<String> newMidias) async {
+    for (var element in remoteWorkoutsheetMidias) {
+      if (newMidias.contains(element.id)) {
+        final fileSize = await getFileSize(element.url);
+        if (fileSize != null) {
+          _totalExpectedBytes += fileSize;
+        }
+      }
     }
   }
 
@@ -119,74 +127,87 @@ class RemoteSyncRepostory implements SyncRepository, Disposable {
     }
   }
 
-  Future<void> downloadAllMidias(void Function() onFileDownloaded) async {
+  Future<void> downloadAllMidias() async {
     try {
-      // Prepare a list of Future instances
-      List<Future<File>> futures = [];
+      List<Future<io.File>> futures = [];
 
       for (var element in remoteWorkoutsheetMidias) {
         if (!localIdMediaList.contains(element.id)) {
           final extensionFile = element.type == 'video' ? 'mp4' : 'png';
-          futures.add(downloadMidia(element.url, '${element.id}.$extensionFile', onFileDownloaded));
+          futures.add(downloadMidia(element.url, '${element.id}.$extensionFile'));
         }
       }
-
-      // Wait for all futures to complete
       await Future.wait(futures);
     } catch (e) {
+      print("Error downloading media: $e");
       rethrow;
     }
   }
 
-  Future<File> downloadMidia(String videoUrl, String fileName, void Function() onFileDownloaded) async {
+  Future<io.File> downloadMidia(String videoUrl, String fileName) async {
     int retries = 3;
 
     for (int i = 0; i < retries; i++) {
       try {
-        final response = await httpClient.request(url: videoUrl, method: 'download');
+        final io.HttpClient httpClient = io.HttpClient(); // Usa o HttpClient do dart:io
+        final request = await httpClient.getUrl(Uri.parse(videoUrl));
+        final response = await request.close();
 
         // Get the documents directory path
         final directory = await getApplicationDocumentsDirectory();
-        final myMidiasDir = Directory('${directory.path}/mymidias/');
+        final myMidiasDir = io.Directory('${directory.path}/mymidias/');
         final path = myMidiasDir.path;
 
         if (!await myMidiasDir.exists()) {
           // If the directory does not exist, create it
-          final newDirectory = await myMidiasDir.create();
-          print("Directory Created: ${newDirectory.path}");
+          await myMidiasDir.create();
         }
 
-        // Create a new file in the documents directory
-        final file = File('$path$fileName');
+        final file = io.File('$path$fileName');
 
-        // Write the response body bytes to the file
-        await file.writeAsBytes(response);
+        // Abre o arquivo para escrita
+        final sink = file.openWrite();
 
-        onFileDownloaded();
+        // Lê os bytes recebidos e atualiza o progresso
+        response.listen(
+          (chunk) {
+            sink.add(chunk);
+            _totalDownloadedBytes += chunk.length;
+            final percentage = _totalDownloadedBytes / _totalExpectedBytes;
+            _downloadProgressController.add(percentage);
+          },
+          onDone: () async {
+            await sink.close();
+          },
+          onError: (error) {
+            sink.close();
+            throw error;
+          },
+          cancelOnError: true,
+        );
 
         return file;
-      } on Exception catch (_) {
-        print('Download failed, retrying...');
+      } on Exception catch (e) {
+        debugPrint('Download failed, retrying... Error: $e');
       }
     }
 
-    // If the code reached here, it means all retry attempts have failed
-    print('Failed to download file after $retries attempts.');
+    debugPrint('Failed to download file after $retries attempts.');
     throw Exception();
   }
 
   Future<void> listFilesInLocalDirectory() async {
     final directory = await getApplicationDocumentsDirectory();
-    final myMidiasDir = Directory('${directory.path}/mymidias/');
+    final myMidiasDir = io.Directory('${directory.path}/mymidias/');
 
     if (!myMidiasDir.existsSync()) {
       myMidiasDir.createSync();
     }
 
-    List<FileSystemEntity> files =
-        myMidiasDir.listSync().where((entity) => FileSystemEntity.isFileSync(entity.path)).toList();
+    List<io.FileSystemEntity> files =
+        myMidiasDir.listSync().where((entity) => io.FileSystemEntity.isFileSync(entity.path)).toList();
 
-    for (FileSystemEntity file in files) {
+    for (io.FileSystemEntity file in files) {
       final idMedia = file.path.split('/').last.replaceAll('.mp4', '').replaceAll('.png', '');
       if (localIdMediaList.firstWhereOrNull((e) => e == idMedia) == null) {
         localIdMediaList.add(idMedia);
@@ -196,23 +217,46 @@ class RemoteSyncRepostory implements SyncRepository, Disposable {
 
   Future<void> _deleteAllMedias() async {
     final directory = await getApplicationDocumentsDirectory();
-    final myMidiasDir = Directory('${directory.path}/mymidias/');
+    final myMidiasDir = io.Directory('${directory.path}/mymidias/');
 
     if (myMidiasDir.existsSync()) {
-      final List<FileSystemEntity> files = myMidiasDir.listSync();
+      final List<io.FileSystemEntity> files = myMidiasDir.listSync();
 
-      for (FileSystemEntity file in files) {
+      for (io.FileSystemEntity file in files) {
         try {
           file.deleteSync();
         } catch (e) {
-          print("Erro ao deletar arquivo: $e");
+          debugPrint("Error deleting file ${file.path}: $e");
         }
       }
     }
+    debugPrint("All media files deleted");
   }
 
   @override
   Stream<double> get downloadProgressStream => _downloadProgressController.stream;
+
+  Future<int?> getFileSize(String url) async {
+    final ioHttpClient = io.HttpClient();
+    try {
+      final request = await ioHttpClient.headUrl(Uri.parse(url));
+      final response = await request.close();
+
+      if (response.statusCode == 200) {
+        final contentLength = response.headers.value('content-length');
+        if (contentLength != null) {
+          return int.parse(contentLength);
+        }
+      } else {
+        debugPrint('Failed to get file size. Status code: ${response.statusCode}');
+      }
+    } catch (e) {
+      debugPrint('Error occurred while getting file size: $e');
+    } finally {
+      ioHttpClient.close();
+    }
+    return null;
+  }
 
   @override
   void dispose() {

@@ -7,13 +7,20 @@ import 'package:repositories/repositories.dart';
 part 'home_sync_state.dart';
 
 class HomeSyncCubit extends Cubit<HomeSyncState> {
-  HomeSyncCubit(this.syncRepository) : super(const HomeSyncState(SyncStatus.initial));
+  HomeSyncCubit(this.syncRepository) : super(const HomeSyncState(SyncStatus.initial, 0)) {
+    syncRepository.downloadProgressStream.listen((percentage) {
+      emit(state.copyWith(status: SyncStatus.loadInProgress, percentage: percentage));
+      if (percentage == 1) {
+        emit(state.copyWith(status: SyncStatus.loadSuccess));
+      }
+    });
+  }
 
   final SyncRepository syncRepository;
 
   void shouldSync({bool forceSync = false}) async {
     try {
-      emit(state.copyWith(status: SyncStatus.loadInProgress));
+      emit(state.copyWith(status: SyncStatus.loadInProgress, percentage: 0));
 
       final mustSync = await syncRepository.mustSync();
       final isFirstTimeLogin = await syncRepository.isFirstTimeLogin();

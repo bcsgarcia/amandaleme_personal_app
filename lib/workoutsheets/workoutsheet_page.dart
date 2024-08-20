@@ -114,9 +114,11 @@ class _WorkoutsheetPageState extends State<WorkoutsheetPage> {
               return WorkoutFloatingButton(
                 title: 'Iniciar treino',
                 function: () {
-                  if (context.read<HomeSyncCubit>().state.status == SyncStatus.loadInProgress) {
-                    const snackBar = SnackBar(
-                      content: Text('Aguarde o download dos treinos terminar!'),
+                  if (context.read<HomeSyncCubit>().state.status == SyncStatus.loadInProgress &&
+                      context.read<HomeSyncCubit>().state.percentage < 0.03) {
+                    final percentage = (context.read<HomeSyncCubit>().state.percentage * 100).toInt();
+                    final snackBar = SnackBar(
+                      content: Text('Download em andamento, aguarde um momento. $percentage%'),
                     );
                     ScaffoldMessenger.of(context).showSnackBar(snackBar);
                     return;
