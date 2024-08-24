@@ -40,9 +40,11 @@ jobs:
         echo "Previous version: $PREVIOUS_VERSION"
 
         if [ "$PREVIOUS_VERSION" = "$CURRENT_VERSION" ]; then
+          VERSION_CHANGE="false"
           echo "::error::No version bump detected in pubspec.yaml, aborting deployment."
           exit 1
         else
+          VERSION_CHANGE="true"
           echo "Version change detected: from $PREVIOUS_VERSION to $CURRENT_VERSION"
         fi
 
@@ -82,7 +84,7 @@ jobs:
 
     - name: Install Fastlane
       run: sudo gem install fastlane
-      if: steps.check_version.outputs.VERSION_CHANGE != ''
+      if: steps.check_version.outputs.VERSION_CHANGE == 'true'
 
     - name: Run Fastlane
       working-directory: ./android/fastlane
@@ -98,7 +100,7 @@ jobs:
         KEY_JKS_BASE64: ${{ secrets.KEY_JKS_BASE64 }}
         CI: true
       run: fastlane android deploy
-      if: steps.check_version.outputs.VERSION_CHANGE != ''
+      if: steps.check_version.outputs.VERSION_CHANGE == 'true'
 
     - name: Commit version bump
       run: |
