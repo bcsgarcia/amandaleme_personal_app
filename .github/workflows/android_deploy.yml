@@ -13,21 +13,6 @@ jobs:
       with:
         fetch-depth: 0  # Faz um fetch completo, pode aumentar o tempo de checkout
 
-    # - name: Debug Info
-    #   run: |
-    #     echo "SHA: ${{ github.sha }}"
-    #     echo "Before: ${{ github.event.before }}"
-    #     echo "Event Name: ${{ github.event_name }}"
-    #     echo "Ref: ${{ github.ref }}"
-
-    # - name: Check for version bump in pubspec.yaml
-    #   run: |
-    #     VERSION_CHANGE=$(git diff HEAD~1 HEAD -- 'pubspec.yaml' | grep -E '^\+\s*version:')
-    #     if [ -z "$VERSION_CHANGE" ]; then
-    #       echo "::error::No version bump detected in pubspec.yaml, aborting deployment."
-    #       exit 1
-    #     fi
-    #     echo "Version change detected: $VERSION_CHANGE"
     - name: Check for version bump in pubspec.yaml
       run: |
         # Extrai a versão atual no branch
@@ -47,7 +32,6 @@ jobs:
           echo "::set-output name=VERSION_CHANGE::$CURRENT_VERSION"  # Definindo a saída com a nova versão
           echo "Version change detected: from $PREVIOUS_VERSION to $CURRENT_VERSION"
         fi
-
 
     - name: Set up Flutter
       uses: subosito/flutter-action@v1
@@ -84,7 +68,6 @@ jobs:
 
     - name: Install Fastlane
       run: sudo gem install fastlane
-      if: steps.check_version.outputs.VERSION_CHANGE != ''
 
     - name: Run Fastlane
       working-directory: ./android/fastlane
@@ -100,7 +83,6 @@ jobs:
         KEY_JKS_BASE64: ${{ secrets.KEY_JKS_BASE64 }}
         CI: true
       run: fastlane android deploy
-      if: steps.check_version.outputs.VERSION_CHANGE != ''
 
     - name: Commit version bump
       run: |
