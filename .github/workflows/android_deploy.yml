@@ -69,6 +69,9 @@ jobs:
     - name: Install Fastlane
       run: sudo gem install fastlane
 
+    - name: Install Ruby dependencies
+      run: bundle install
+
     - name: Run Fastlane
       working-directory: ./android/fastlane
       env:
