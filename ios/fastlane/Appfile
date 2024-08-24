@@ -1,0 +1,5 @@
+app_identifier("com.bcsgarcia.personal-app-amanda-leme") # Your app identifier
+apple_id("bcsgarciapersonalapp@gmail.com") # Your Apple email address
+
+team_id("GC564MTQ76") # App Store Connect Team ID
+itc_team_id("513d5581-7fd6-470a-8e83-f2f97820b525") # Developer Portal Team ID

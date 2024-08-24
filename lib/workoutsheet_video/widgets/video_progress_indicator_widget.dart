@@ -18,8 +18,14 @@ class _VideoPlayerWithProgressIndicatorState extends State<VideoPlayerWithProgre
 
   @override
   void initState() {
-    _controller = VideoPlayerController.network(widget.videoUrl);
-    _initializeVideoPlayerFuture = _controller.initialize();
+    try {
+      final Uri uri = Uri.parse(widget.videoUrl);
+      _controller = VideoPlayerController.networkUrl(uri);
+      _initializeVideoPlayerFuture = _controller.initialize();
+    } catch (e) {
+      debugPrint(e.toString());
+    }
+
     super.initState();
   }
 
@@ -45,7 +51,7 @@ class _VideoPlayerWithProgressIndicatorState extends State<VideoPlayerWithProgre
                 _controller,
                 allowScrubbing: true,
                 colors: const VideoProgressColors(
-                  playedColor: Colors.red,
+                  playedColor: Colors.orange,
                   bufferedColor: Colors.green,
                   backgroundColor: Colors.grey,
                 ),

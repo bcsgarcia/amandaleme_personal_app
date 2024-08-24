@@ -9,18 +9,21 @@ enum SyncStatus {
 }
 
 class HomeSyncState extends Equatable {
-  const HomeSyncState(this.status);
+  const HomeSyncState(this.status, this.percentage);
 
   final SyncStatus status;
+  final double percentage;
 
   @override
-  List<Object?> get props => [status];
+  List<Object?> get props => [status, percentage];
 
   HomeSyncState copyWith({
     SyncStatus? status,
+    double? percentage,
   }) {
     return HomeSyncState(
       status ?? this.status,
+      percentage ?? this.percentage,
     );
   }
 }

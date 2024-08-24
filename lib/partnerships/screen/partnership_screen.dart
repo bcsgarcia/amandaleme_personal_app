@@ -43,51 +43,68 @@ class _PartnershipScreenState extends State<PartnershipScreen> {
       children: [
         Column(
           children: [
-            Expanded(
-              child: ListView(
-                padding: const EdgeInsets.only(top: 180, left: 16, right: 16),
-                children: [
-                  Text(
-                    'Confira aqui as nossas parcerias',
+            if (groupedPartnerships.entries.isEmpty)
+              Expanded(
+                  child: Center(
+                child: Padding(
+                  padding: const EdgeInsets.all(32.0),
+                  child: Text(
+                    'Confira aqui em breve as nossas parcerias!!!',
+                    textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.headlineLarge!.copyWith(
                           fontSize: 23,
                           color: Colors.black,
                           fontWeight: FontWeight.bold,
                         ),
                   ),
-                  const SizedBox(height: 35),
-                  ...groupedPartnerships.entries.map((entry) {
-                    final category = entry.key;
-                    final categoryPartnerships = entry.value;
+                ),
+              ))
+            else
+              Expanded(
+                child: ListView(
+                  padding: const EdgeInsets.only(top: 180, left: 16, right: 16),
+                  children: [
+                    Text(
+                      'Confira aqui as nossas parcerias',
+                      style: Theme.of(context).textTheme.headlineLarge!.copyWith(
+                            fontSize: 23,
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold,
+                          ),
+                    ),
+                    const SizedBox(height: 35),
+                    ...groupedPartnerships.entries.map((entry) {
+                      final category = entry.key;
+                      final categoryPartnerships = entry.value;
 
-                    return Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          category,
-                          style: Theme.of(context).textTheme.headlineLarge!.copyWith(
-                                fontSize: 19,
-                                color: Colors.black,
-                                fontWeight: FontWeight.bold,
-                              ),
-                        ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        ...categoryPartnerships
-                            .map(
-                              (partnership) => PartnershipItem(partnership: partnership),
-                            )
-                            .toList(),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                      ],
-                    );
-                  }).toList(),
-                ],
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            category,
+                            style: Theme.of(context).textTheme.headlineLarge!.copyWith(
+                                  fontSize: 19,
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          ...categoryPartnerships
+                              .map(
+                                (partnership) => PartnershipItem(partnership: partnership),
+                              )
+                              .toList(),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                        ],
+                      );
+                    }).toList(),
+                  ],
+                ),
               ),
-            ),
             const SizedBox(height: 30),
           ],
         ),

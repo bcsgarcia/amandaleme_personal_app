@@ -1,0 +1,71 @@
+name: Deploy to App Store
+
+on:
+  push:
+    branches:
+      - ios-deploy-test
+
+jobs:
+  ios-build-and-deploy:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Setup SSH
+        run: |
+          echo "${{ secrets.SSH_PRIVATE_KEY_CERT_REPO }}" > /tmp/deploy_key
+          chmod 600 /tmp/deploy_key
+          eval "$(ssh-agent -s)"
+          ssh-add /tmp/deploy_key
+          ssh-keyscan github.com >> ~/.ssh/known_hosts
+        shell: bash
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.0
+
+      - name: Install Fastlane
+        run: gem install fastlane -v 2.222.0
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.13.6'
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Install CocoaPods
+        run: |
+          cd ios
+          pod install --repo-update
+
+      - name: Set up keychain
+        run: |
+          security create-keychain -p "action" build.keychain
+          security default-keychain -s build.keychain
+          security unlock-keychain -p "action" build.keychain
+          security set-keychain-settings -t 3600 -l ~/Library/Keychains/build.keychain
+        env:
+          MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
+
+      - name: Install Pods
+        run: |
+            cd ios
+            pod deintegrate
+            pod install --repo-update
+
+      - name: Build and Deploy
+        working-directory: ./ios/fastlane
+        run: fastlane ios deploy
+        env:
+          MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
+          APP_STORE_CONNECT_API_KEY: ${{ secrets.APP_STORE_CONNECT_API_KEY }},
+          APP_STORE_CONNECT_KEY_ID: ${{ vars.APP_STORE_CONNECT_KEY_ID }},
+          APP_STORE_CONNECT_ISSUER_ID: ${{ vars.APP_STORE_CONNECT_ISSUER_ID }},
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }},
+          SSH_PRIVATE_KEY_CERT_REPO: ${{ secrets.SSH_PRIVATE_KEY_CERT_REPO }},
+          CERTIFICATE_PERSONAL_P12: ${{ secrets.CERTIFICATE_PERSONAL_P12 }},

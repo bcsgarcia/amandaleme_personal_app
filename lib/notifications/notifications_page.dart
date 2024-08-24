@@ -28,12 +28,6 @@ class _NotificationsPageState extends State<NotificationsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        toolbarHeight: 0,
-        automaticallyImplyLeading: true,
-        backgroundColor: blackColor,
-        elevation: 0,
-      ),
       body: NotificationsScreen(notifications: _notifications),
     );
   }

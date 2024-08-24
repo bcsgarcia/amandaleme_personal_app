@@ -41,6 +41,16 @@ class LoginForm extends StatelessWidget {
                 const KeepConnectedCheckbox(),
                 const SizedBox(height: 20),
                 _LoginButton(_formKey),
+                const SizedBox(height: 20),
+                if (context.read<MeetAppCubit>().appVersion != null)
+                  Text(
+                    'versão: ${context.read<MeetAppCubit>().appVersion}',
+                    style: const TextStyle(
+                      color: Colors.grey,
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
               ],
             ),
           ),
@@ -213,6 +223,8 @@ class _LoginButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<LoginCubit, LoginState>(
       builder: (context, state) {
+        final isValid = state.emailInput.isValid && state.passInput.value.isNotEmpty;
+
         return state.status.isInProgress
             ? const CircularProgressIndicator()
             : SizedBox(
@@ -225,13 +237,18 @@ class _LoginButton extends StatelessWidget {
                       borderRadius: BorderRadius.circular(10),
                     ),
                   ),
-                  onPressed: state.emailInput.isValid && state.passInput.value.isNotEmpty
+                  onPressed: isValid
                       ? () {
                           if (!formKey.currentState!.validate()) return;
                           context.read<LoginCubit>().authWithEmailAndPassword();
                         }
                       : null,
-                  child: const Text('Entrar'),
+                  child: Text(
+                    'Entrar',
+                    style: TextStyle(
+                      color: isValid ? Colors.white : Colors.grey,
+                    ),
+                  ),
                 ),
               );
       },

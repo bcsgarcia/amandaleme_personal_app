@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Habilitando o acesso à biblioteca, permite que o App Amanda Leme use uma foto sua selecionada para que seja a foto do seu perfil</string>
+	<string>O App Amanda Leme gostaria de acessar sua biblioteca de fotos para permitir que você selecione uma foto para o seu perfil. As fotos podem conter dados associados, como informações de localização, profundidade, legendas e áudio, que serão utilizados exclusivamente para a personalização do perfil e não serão compartilhados com terceiros.</string>
 	<key>NSCameraUsageDescription</key>
-	<string>Habilitando o acesso à camera, permite que você use a camera do seu telefone para tirar uma foto que será usada como foto do seu perfil</string>
+	<string>O App Amanda Leme gostaria de acessar sua câmera para permitir que você tire uma foto para usar como foto de perfil. A imagem capturada será usada exclusivamente para a personalização do perfil e não será compartilhada com terceiros.</string>
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>
 	<key>CFBundleDevelopmentRegion</key>
@@ -42,8 +42,6 @@
 	</dict>
 	<key>NSFaceIDUsageDescription</key>
 	<string>To allow user keep their autentication valid in order to facilitate the login?</string>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Required for saving images to the photo library</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>UILaunchStoryboardName</key>

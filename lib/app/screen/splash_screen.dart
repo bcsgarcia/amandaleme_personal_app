@@ -30,7 +30,12 @@ class SplashScreen extends StatelessWidget {
             const Spacer(),
             ElevatedButton(
               onPressed: () => context.read<AppBloc>().add(AppVerifyUser()),
-              child: const Text('Entrar'),
+              child: const Text(
+                'Entrar',
+                style: TextStyle(
+                  color: Colors.white,
+                ),
+              ),
             ),
             const SizedBox(height: 10),
             TextButton(

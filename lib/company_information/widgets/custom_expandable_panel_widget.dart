@@ -44,7 +44,6 @@ class _CustomExpandablePanelState extends State<CustomExpandablePanel> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-              height: 46,
               decoration: BoxDecoration(
                 color: primaryColor,
                 borderRadius: BorderRadius.only(
@@ -59,7 +58,7 @@ class _CustomExpandablePanelState extends State<CustomExpandablePanel> {
                   visualDensity: VisualDensity.compact,
                   contentPadding: EdgeInsets.zero,
                   title: Padding(
-                    padding: const EdgeInsets.only(left: 15.0),
+                    padding: const EdgeInsets.only(left: 15.0, bottom: 8.0, top: 8.0),
                     child: Text(
                       widget.title,
                       style: Theme.of(context).textTheme.titleMedium!.copyWith(
