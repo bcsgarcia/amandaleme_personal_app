@@ -66,14 +66,20 @@ jobs:
         echo "PHONE_NUMBER=${{ vars.PHONE_NUMBER }}" >> .env
         echo "EMAIL=${{ vars.EMAIL }}" >> .env
 
-    - name: Install Fastlane
-      run: sudo gem install fastlane
+    - name: Set up Ruby
+      uses: actions/setup-ruby@v1
+      with:
+        ruby-version: '3.x'  # Ajuste a versão conforme necessário
+
+    - name: Install Bundler
+      run: gem install bundler
 
     - name: Install Ruby dependencies
       run: bundle install
 
     - name: Run Fastlane
       working-directory: ./android/fastlane
+      run: bundle exec fastlane android deploy
       env:
         GOOGLE_CLOUD_CREDENTIALS: ${{ secrets.GOOGLE_CLOUD_CREDENTIALS }}
         FASTLANE_GIT_EMAIL: ${{ vars.GIT_EMAIL }}
@@ -85,7 +91,7 @@ jobs:
         KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
         KEY_JKS_BASE64: ${{ secrets.KEY_JKS_BASE64 }}
         CI: true
-      run: fastlane android deploy
+#      run: fastlane android deploy
 
     - name: Commit version bump
       run: |
