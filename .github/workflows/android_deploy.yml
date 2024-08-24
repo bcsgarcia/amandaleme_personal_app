@@ -9,95 +9,100 @@ jobs:
   android-build-and-deploy:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-      with:
-        fetch-depth: 0  # Faz um fetch completo, pode aumentar o tempo de checkout
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0  # Faz um fetch completo, pode aumentar o tempo de checkout
 
-    - name: Check for version bump in pubspec.yaml
-      run: |
-        # Extrai a versão atual no branch
-        CURRENT_VERSION=$(grep 'version:' pubspec.yaml | sed 's/version: //')
+      - name: Check for version bump in pubspec.yaml
+        run: |
+          CURRENT_VERSION=$(grep 'version:' pubspec.yaml | sed 's/version: //')
+          PREVIOUS_VERSION=$(git show HEAD^:./pubspec.yaml | grep 'version:' | sed 's/version: //')
+          echo "Current version: $CURRENT_VERSION"
+          echo "Previous version: $PREVIOUS_VERSION"
+          if [ "$PREVIOUS_VERSION" = "$CURRENT_VERSION" ]; then
+            echo "::set-output name=VERSION_CHANGE::"
+            echo "::error::No version bump detected in pubspec.yaml, aborting deployment."
+            exit 1
+          else
+            echo "::set-output name=VERSION_CHANGE::$CURRENT_VERSION"
+            echo "Version change detected: from $PREVIOUS_VERSION to $CURRENT_VERSION"
+          fi
 
-        # Extrai a versão anterior usando git show
-        PREVIOUS_VERSION=$(git show HEAD^:./pubspec.yaml | grep 'version:' | sed 's/version: //')
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v1
+        with:
+          flutter-version: '3.24.0'
 
-        echo "Current version: $CURRENT_VERSION"
-        echo "Previous version: $PREVIOUS_VERSION"
+      - name: Set up Java Environment
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'adopt'
+          java-version: '17'
 
-        if [ "$PREVIOUS_VERSION" = "$CURRENT_VERSION" ]; then
-          echo "::set-output name=VERSION_CHANGE::"  # Definindo uma saída vazia
-          echo "::error::No version bump detected in pubspec.yaml, aborting deployment."
-          exit 1
-        else
-          echo "::set-output name=VERSION_CHANGE::$CURRENT_VERSION"  # Definindo a saída com a nova versão
-          echo "Version change detected: from $PREVIOUS_VERSION to $CURRENT_VERSION"
-        fi
+      - name: Create .env-dev file
+        run: |
+          echo "API_BASE_URL=${{ vars.API_BASE_URL }}" >> .env
+          echo "APP_PATH=${{ vars.APP_PATH }}" >> .env
+          echo "GET_MEET_APP_PATH=${{ vars.GET_MEET_APP_PATH }}" >> .env
+          echo "APP_HOME_PATH=${{ vars.APP_HOME_PATH }}" >> .env
+          echo "NOTIFICATION_PATH=${{ vars.NOTIFICATION_PATH }}" >> .env
+          echo "WORKOUTSHEET_PATH=${{ vars.WORKOUTSHEET_PATH }}" >> .env
+          echo "WORKOUT_PATH=${{ vars.WORKOUT_PATH }}" >> .env
+          echo "AUTH_PATH=${{ vars.AUTH_PATH }}" >> .env
+          echo "REFRESH_TOKEN_PATH=${{ vars.REFRESH_TOKEN_PATH }}" >> .env
+          echo "SCREEN_PATH=${{ vars.SCREEN_PATH }}" >> .env
+          echo "UPDATE_UNREAD_NOTIFICATION_PATH=${{ vars.UPDATE_UNREAD_NOTIFICATION_PATH }}" >> .env
+          echo "ALL_MEDIA_SYNC_PATH=${{ vars.ALL_MEDIA_SYNC_PATH }}" >> .env
+          echo "CHANGE_PASS_PATH=${{ vars.CHANGE_PASS_PATH }}" >> .env
+          echo "FEEDBACK_PATH=${{ vars.FEEDBACK_PATH }}" >> .env
+          echo "WORKOUTSHEET_DONE_PATH=${{ vars.WORKOUTSHEET_DONE_PATH }}" >> .env
+          echo "MY_MEDIAS_DIRECTORY_PATH=${{ vars.MY_MEDIAS_DIRECTORY_PATH }}" >> .env
+          echo "COMPANY_ID=${{ vars.COMPANY_ID }}" >> .env
+          echo "PHONE_NUMBER=${{ vars.PHONE_NUMBER }}" >> .env
+          echo "EMAIL=${{ vars.EMAIL }}" >> .env
 
-    - name: Set up Flutter
-      uses: subosito/flutter-action@v1
-      with:
-        flutter-version: '3.24.0'
+      - name: Set up Ruby
+        uses: actions/setup-ruby@v1
+        with:
+          ruby-version: '3.x'  # Ajuste a versão conforme necessário
 
-    - name: Set up Java Environment
-      uses: actions/setup-java@v2
-      with:
-        distribution: 'adopt'
-        java-version: '17'
+      - name: Adjust permissions
+        run: sudo chmod o-w /opt/hostedtoolcache/Ruby/3.2.5/x64/lib/ruby/gems/3.2.0/gems
 
-    - name: Create .env-dev file
-      run: |
-        echo "API_BASE_URL=${{ vars.API_BASE_URL }}" >> .env
-        echo "APP_PATH=${{ vars.APP_PATH }}" >> .env
-        echo "GET_MEET_APP_PATH=${{ vars.GET_MEET_APP_PATH }}" >> .env
-        echo "APP_HOME_PATH=${{ vars.APP_HOME_PATH }}" >> .env
-        echo "NOTIFICATION_PATH=${{ vars.NOTIFICATION_PATH }}" >> .env
-        echo "WORKOUTSHEET_PATH=${{ vars.WORKOUTSHEET_PATH }}" >> .env
-        echo "WORKOUT_PATH=${{ vars.WORKOUT_PATH }}" >> .env
-        echo "AUTH_PATH=${{ vars.AUTH_PATH }}" >> .env
-        echo "REFRESH_TOKEN_PATH=${{ vars.REFRESH_TOKEN_PATH }}" >> .env
-        echo "SCREEN_PATH=${{ vars.SCREEN_PATH }}" >> .env
-        echo "UPDATE_UNREAD_NOTIFICATION_PATH=${{ vars.UPDATE_UNREAD_NOTIFICATION_PATH }}" >> .env
-        echo "ALL_MEDIA_SYNC_PATH=${{ vars.ALL_MEDIA_SYNC_PATH }}" >> .env
-        echo "CHANGE_PASS_PATH=${{ vars.CHANGE_PASS_PATH }}" >> .env
-        echo "FEEDBACK_PATH=${{ vars.FEEDBACK_PATH }}" >> .env
-        echo "WORKOUTSHEET_DONE_PATH=${{ vars.WORKOUTSHEET_DONE_PATH }}" >> .env
-        echo "MY_MEDIAS_DIRECTORY_PATH=${{ vars.MY_MEDIAS_DIRECTORY_PATH }}" >> .env
-        echo "COMPANY_ID=${{ vars.COMPANY_ID }}" >> .env
-        echo "PHONE_NUMBER=${{ vars.PHONE_NUMBER }}" >> .env
-        echo "EMAIL=${{ vars.EMAIL }}" >> .env
+      - name: Set GEM_HOME
+        run: echo "GEM_HOME=$HOME/.gem" >> $GITHUB_ENV
 
-    - name: Set up Ruby
-      uses: actions/setup-ruby@v1
-      with:
-        ruby-version: '3.x'  # Ajuste a versão conforme necessário
+      - name: Install Bundler
+        run: gem install bundler
+        env:
+          GEM_HOME: $HOME/.gem
 
-    - name: Install Bundler
-      run: gem install bundler
+      - name: Install Ruby dependencies
+        working-directory: ./android/fastlane
+        run: bundle install
+        env:
+          GEM_HOME: $HOME/.gem
 
-    - name: Install Ruby dependencies
-      working-directory: ./android/fastlane
-      run: bundle install
+      - name: Run Fastlane
+        working-directory: ./android/fastlane
+        run: bundle exec fastlane android deploy
+        env:
+          GOOGLE_CLOUD_CREDENTIALS: ${{ secrets.GOOGLE_CLOUD_CREDENTIALS }}
+          FASTLANE_GIT_EMAIL: ${{ vars.GIT_EMAIL }}
+          FASTLANE_GIT_NAME: ${{ vars.GIT_USER_NAME }}
+          GITHUB_TOKEN: ${{ secrets.GH_PAT_TOKEN }}
+          KEYSTORE_PATH: ${{ vars.KEYSTORE_PATH }}
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+          KEY_JKS_BASE64: ${{ secrets.KEY_JKS_BASE64 }}
+          CI: true
+          GEM_HOME: $HOME/.gem
 
-    - name: Run Fastlane
-      working-directory: ./android/fastlane
-      run: bundle exec fastlane android deploy
-      env:
-        GOOGLE_CLOUD_CREDENTIALS: ${{ secrets.GOOGLE_CLOUD_CREDENTIALS }}
-        FASTLANE_GIT_EMAIL: ${{ vars.GIT_EMAIL }}
-        FASTLANE_GIT_NAME: ${{ vars.GIT_USER_NAME }}
-        GITHUB_TOKEN: ${{ secrets.GH_PAT_TOKEN }}
-        KEYSTORE_PATH: ${{ vars.KEYSTORE_PATH }}
-        KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
-        KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
-        KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
-        KEY_JKS_BASE64: ${{ secrets.KEY_JKS_BASE64 }}
-        CI: true
-#      run: fastlane android deploy
-
-    - name: Commit version bump
-      run: |
-        git config --global user.name 'GitHub Actions'
-        git config --global user.email 'actions@github.com'
-        git commit -am "Bump version number [skip ci]"
-        git push
-      if: success() && env.GITHUB_REF == 'refs/heads/main'
+      - name: Commit version bump
+        run: |
+          git config --global user.name 'GitHub Actions'
+          git config --global user.email 'actions@github.com'
+          git commit -am "Bump version number [skip ci]"
+          git push
+        if: success() && env.GITHUB_REF == 'refs/heads/main'
