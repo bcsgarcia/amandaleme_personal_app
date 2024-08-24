@@ -75,6 +75,7 @@ jobs:
       run: gem install bundler
 
     - name: Install Ruby dependencies
+      working-directory: ./android/fastlane
       run: bundle install
 
     - name: Run Fastlane
