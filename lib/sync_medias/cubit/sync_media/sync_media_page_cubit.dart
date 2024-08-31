@@ -2,6 +2,7 @@
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/foundation.dart';
 import 'package:helpers/helpers.dart';
 import 'package:repositories/repositories.dart';
 
@@ -24,7 +25,8 @@ class SyncMediaPageCubit extends Cubit<SyncMadiaPageState> {
     } on HttpError catch (e) {
       emit(state.copyWith(
           status: e == HttpError.unauthorized ? SyncPageStatus.unautorized : SyncPageStatus.loadFailure));
-    } catch (_) {
+    } catch (error, stacktrace) {
+      debugPrint('${error.toString()}\n${stacktrace.toString()}');
       emit(state.copyWith(status: SyncPageStatus.loadFailure));
     }
   }

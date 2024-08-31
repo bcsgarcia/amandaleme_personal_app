@@ -12,9 +12,9 @@ class CompanyPresentationWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 183,
       margin: const EdgeInsets.symmetric(horizontal: 16),
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           SizedBox(
             height: 183,
@@ -33,16 +33,13 @@ class CompanyPresentationWidget extends StatelessWidget {
           Expanded(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 15),
-              child: ListView(
-                children: [
-                  Text(
-                    aboutCompanyModel.description,
-                    style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                          fontSize: 16,
-                        ),
-                    // textAlign: TextAlign.justify,
-                  ),
-                ],
+              child: Text(
+                aboutCompanyModel.description,
+
+                style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                      fontSize: 14,
+                    ),
+                // textAlign: TextAlign.justify,
               ),
             ),
           )

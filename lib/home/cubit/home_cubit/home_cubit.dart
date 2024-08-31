@@ -2,6 +2,7 @@
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/foundation.dart';
 import 'package:helpers/helpers.dart';
 import 'package:repositories/repositories.dart';
 
@@ -26,7 +27,8 @@ class HomeCubit extends Cubit<HomePageState> {
       ));
     } on HttpError catch (_) {
       emit(state.copyWith(status: HomePageStatus.unautorized));
-    } catch (_) {
+    } catch (error, stacktrace) {
+      debugPrint('${error.toString()}\n${stacktrace.toString()}');
       emit(state.copyWith(status: HomePageStatus.failure));
     }
   }
@@ -39,7 +41,8 @@ class HomeCubit extends Cubit<HomePageState> {
         status: HomePageStatus.loadSuccess,
         screenModel: getHomeScreen,
       ));
-    } catch (error) {
+    } catch (error, stacktrace) {
+      debugPrint('${error.toString()}\n${stacktrace.toString()}');
       emit(state.copyWith(status: HomePageStatus.failure));
     }
   }

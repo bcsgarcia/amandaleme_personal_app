@@ -1,5 +1,6 @@
 // ignore: depend_on_referenced_packages
 import 'package:equatable/equatable.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
 import 'package:helpers/helpers.dart';
@@ -38,7 +39,8 @@ class LoginCubit extends Cubit<LoginState> {
       );
 
       emit(state.copyWith(status: FormzSubmissionStatus.success));
-    } catch (e) {
+    } catch (error, stacktrace) {
+      debugPrint('${error.toString()}\n${stacktrace.toString()}');
       emit(state.copyWith(status: FormzSubmissionStatus.failure));
     }
   }

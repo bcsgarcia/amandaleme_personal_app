@@ -42,8 +42,8 @@ class WorkoutsheetVideoCubit extends Cubit<WorkoutsheetVideoPageState> {
           currentWorkoutVideoIndex: 0,
         ),
       );
-    } catch (error) {
-      debugPrint(error.toString());
+    } catch (error, stacktrace) {
+      debugPrint('${error.toString()}\n${stacktrace.toString()}');
     }
   }
 
@@ -53,7 +53,8 @@ class WorkoutsheetVideoCubit extends Cubit<WorkoutsheetVideoPageState> {
       await workoutsheetRepository.done(idWorkoutsheet);
 
       emit(state.copyWith(status: WorkoutsheetVideoPageStatus.loadSuccess));
-    } catch (e) {
+    } catch (error, stacktrace) {
+      debugPrint('${error.toString()}\n${stacktrace.toString()}');
       emit(state.copyWith(status: WorkoutsheetVideoPageStatus.loadFailure));
     }
   }

@@ -34,8 +34,8 @@ class VideoPreparationService {
         videoControllerModelList.add(videoControllerModel);
       }
       return videoControllerModelList;
-    } catch (error) {
-      debugPrint(error.toString());
+    } catch (error, stacktrace) {
+      debugPrint('${error.toString()}\n${stacktrace.toString()}');
       return [];
     }
   }

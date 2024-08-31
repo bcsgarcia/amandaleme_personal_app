@@ -13,8 +13,9 @@ class LauncherAdapter {
       if (canLaunch) {
         await launchUrl(uri);
       }
-    } catch (e) {
-      throw Exception();
+    } catch (error, stacktrace) {
+      debugPrint('${error.toString()}\n${stacktrace.toString()}');
+      rethrow;
     }
   }
 

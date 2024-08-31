@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:helpers/helpers.dart';
 
 import 'models/models.dart';
@@ -21,7 +22,8 @@ class RemoteCompanyRepository implements CompanyRepository {
       final response = await client.request(url: url, method: 'get');
 
       return MeetAppScreenModel.fromJson(response);
-    } catch (e) {
+    } catch (error, stacktrace) {
+      debugPrint('${error.toString()}\n${stacktrace.toString()}');
       rethrow;
     }
   }

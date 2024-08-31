@@ -1,3 +1,4 @@
+import 'package:amandaleme_personal_app/app/app.dart';
 import 'package:flutter/material.dart';
 import 'package:repositories/repositories.dart';
 
@@ -11,6 +12,9 @@ class ProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: const CustomAppBar(
+        title: 'Perfil',
+      ),
       body: ProfileScreen(userModel: userModel),
     );
   }

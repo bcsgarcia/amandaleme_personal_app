@@ -1,6 +1,7 @@
 // ignore_for_file: depend_on_referenced_packages
 
 import 'package:equatable/equatable.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:repositories/repositories.dart';
 
@@ -32,7 +33,8 @@ class HomeSyncCubit extends Cubit<HomeSyncState> {
       }
 
       emit(state.copyWith(status: SyncStatus.loadSuccess));
-    } catch (error) {
+    } catch (error, stacktrace) {
+      debugPrint('${error.toString()}\n${stacktrace.toString()}');
       emit(state.copyWith(status: SyncStatus.failure));
     }
   }

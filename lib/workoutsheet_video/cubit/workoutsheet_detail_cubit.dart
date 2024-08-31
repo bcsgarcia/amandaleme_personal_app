@@ -84,17 +84,12 @@ class WorkoutsheetDetailCubit extends Cubit<WorkoutsheetDetailState> {
 
   void onNextWorkoutVideo() {
     final workoutVideoModel = state.allWorkoutVideoModel.firstWhere((element) => element.idWorkout == state.workout.id);
-    print('checkIfVideoHasEnded: 1');
     if (workoutVideoModel.mediaFileList.length <= 1) {
-      print('checkIfVideoHasEnded: SAIU');
       return;
     }
-    print('checkIfVideoHasEnded: 2');
     if (state.currentWorkoutVideoIndex == workoutVideoModel.mediaFileList.length - 1) {
-      print('checkIfVideoHasEnded: SAIU');
       return;
     }
-    print('checkIfVideoHasEnded: 3');
     emit(
       state.copyWith(
         currentWorkoutVideoIndex: state.currentWorkoutVideoIndex + 1,
@@ -131,7 +126,6 @@ class WorkoutsheetDetailCubit extends Cubit<WorkoutsheetDetailState> {
   }
 
   void updateProgress(double progress) {
-    print('checkIfVideoHasEnded: PROGRESS - $progress');
     emit(state.copyWith(
       progress: progress,
       videoAction: VideoAction.play,

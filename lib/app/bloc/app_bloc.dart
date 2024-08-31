@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:repositories/repositories.dart';
 
 part 'app_event.dart';
+
 part 'app_state.dart';
 
 class AppBloc extends Bloc<AppEvent, AppState> {
@@ -64,7 +65,8 @@ class AppBloc extends Bloc<AppEvent, AppState> {
       } else {
         _logout();
       }
-    } catch (_) {
+    } catch (error, stacktrace) {
+      // debugPrint('${error.toString()}\n${stacktrace.toString()}');
       _logout();
     }
   }

@@ -26,6 +26,7 @@ class CallToActionButtonWidget extends StatelessWidget {
           ),
           child: Text(
             text,
+            textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.titleLarge!.copyWith(
                   fontSize: 19,
                   color: Colors.white,

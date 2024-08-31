@@ -1,5 +1,6 @@
 // ignore: depend_on_referenced_packages
 import 'package:equatable/equatable.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:repositories/repositories.dart';
@@ -35,7 +36,8 @@ class MeetAppCubit extends Cubit<MeetAppState> {
 
       final meetAppScreen = await _companyRepository.getMeetAppScreen();
       emit(state.copyWith(status: MeetAppStatus.success, screenModel: meetAppScreen));
-    } catch (e) {
+    } catch (error, stacktrace) {
+      debugPrint('${error.toString()}\n${stacktrace.toString()}');
       emit(state.copyWith(status: MeetAppStatus.failure));
     }
   }

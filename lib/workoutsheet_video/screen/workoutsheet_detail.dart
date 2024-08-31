@@ -45,6 +45,7 @@ class _WorkoutsheetDetailState extends State<WorkoutsheetDetail> {
   void _setVideoPlayerControllerFile(File file, VideoAction videoAction) async {
     videoPlayerController?.dispose();
     videoPlayerController = VideoPlayerController.file(file);
+
     await videoPlayerController?.initialize();
     await videoPlayerController?.setVolume(volume);
     await videoPlayerController?.seekTo(Duration.zero);
@@ -111,6 +112,7 @@ class _WorkoutsheetDetailState extends State<WorkoutsheetDetail> {
               ),
               backgroundColor: Colors.transparent,
               elevation: 0,
+              scrolledUnderElevation: 0,
               leading: IconButton(
                 icon: const Icon(
                   Icons.close,
@@ -157,6 +159,33 @@ class _WorkoutsheetDetailState extends State<WorkoutsheetDetail> {
                           ),
                           child: Stack(
                             children: [
+                              // ClipRRect(
+                              //   borderRadius: BorderRadius.circular(8),
+                              //   child: videoPlayerController != null && videoPlayerController!.value.isInitialized
+                              //       ? Container(
+                              //           width: double.infinity,
+                              //           height: double.infinity,
+                              //           decoration: BoxDecoration(
+                              //             image: DecorationImage(
+                              //               image: NetworkImage(
+                              //                 state.workout.medias.first.type == 'image'
+                              //                     ? state.workout.medias.first.url
+                              //                     : state.workout.medias.first.thumbnailUrl ?? '',
+                              //               ),
+                              //               fit: BoxFit.cover,
+                              //             ),
+                              //           ),
+                              //           child: FittedBox(
+                              //             fit: BoxFit.cover,
+                              //             child: SizedBox(
+                              //               width: videoPlayerController!.value.size.width,
+                              //               height: videoPlayerController!.value.size.height,
+                              //               child: VideoPlayer(videoPlayerController!),
+                              //             ),
+                              //           ),
+                              //         )
+                              //       : const Center(child: CircularProgressIndicator()),
+                              // ),
                               ClipRRect(
                                 borderRadius: BorderRadius.circular(8),
                                 child: videoPlayerController != null

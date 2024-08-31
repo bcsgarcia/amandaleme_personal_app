@@ -1,9 +1,9 @@
-import 'dart:typed_data';
-
+import 'package:flutter/foundation.dart';
 import 'package:helpers/helpers.dart';
 
 abstract class UserRepository {
   Future<void> changePassword({required String oldPass, required String newPass});
+
   Future<void> uploadPhoto(Uint8List newPhoto);
 }
 
@@ -27,7 +27,8 @@ class RemoteUserRepository implements UserRepository {
         "newpass": newPass,
       };
       await httpClient.request(url: '$url/${Environment.changePassPath}', method: 'post', body: body);
-    } catch (error) {
+    } catch (error, stacktrace) {
+      debugPrint('${error.toString()}\n${stacktrace.toString()}');
       rethrow;
     }
   }
@@ -40,12 +41,11 @@ class RemoteUserRepository implements UserRepository {
         fileData: newPhoto,
       );
 
-      print(retorno);
-
       // if (retorno.statusCode != 200) {
       //   throw HttpError.serverError;
       // }
-    } catch (e) {
+    } catch (error, stacktrace) {
+      debugPrint('${error.toString()}\n${stacktrace.toString()}');
       rethrow;
     }
   }

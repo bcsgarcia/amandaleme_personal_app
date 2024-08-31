@@ -108,8 +108,8 @@ class _WorkoutFeedbackDialogWidgetState extends State<WorkoutFeedbackDialogWidge
                   ),
                   const SizedBox(height: 23),
                   Text(
-                    'Qual seu comentário para o exercicio "${_workout.title}"?',
-                    textAlign: TextAlign.justify,
+                    'Qual seu comentário para o exercicio \n"${_workout.title}"?',
+                    textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.displayMedium!.copyWith(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
@@ -140,7 +140,7 @@ class _WorkoutFeedbackDialogWidgetState extends State<WorkoutFeedbackDialogWidge
                               ? const CircularProgressIndicator()
                               : SizedBox(
                                   height: 41,
-                                  width: 90,
+                                  width: 110,
                                   child: ElevatedButton(
                                     style: ElevatedButton.styleFrom(
                                       backgroundColor: isButtonEnabled ? successColor : Colors.grey,
@@ -149,13 +149,15 @@ class _WorkoutFeedbackDialogWidgetState extends State<WorkoutFeedbackDialogWidge
                                       ),
                                     ),
                                     onPressed: isButtonEnabled ? submitFeedback : null,
-                                    child: Text(
-                                      'Concluir',
-                                      style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                                            fontSize: 15,
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.bold,
-                                          ),
+                                    child: FittedBox(
+                                      child: Text(
+                                        'Concluir',
+                                        style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                                              fontSize: 15,
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                      ),
                                     ),
                                   ),
                                 ),

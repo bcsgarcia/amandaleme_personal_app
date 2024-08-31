@@ -245,7 +245,7 @@ class _FeedbackDialogWidgetState extends State<FeedbackDialogWidget> {
             const SizedBox(width: 8),
             SizedBox(
               height: 41,
-              width: 90,
+              width: 110,
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   backgroundColor: isButtonEnabled ? successColor : Colors.grey,
@@ -254,13 +254,15 @@ class _FeedbackDialogWidgetState extends State<FeedbackDialogWidget> {
                   ),
                 ),
                 onPressed: isButtonEnabled ? submitFeedback : null,
-                child: Text(
-                  'Concluir',
-                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                        fontSize: 15,
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                      ),
+                child: FittedBox(
+                  child: Text(
+                    'Concluir',
+                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                          fontSize: 15,
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
+                  ),
                 ),
               ),
             ),

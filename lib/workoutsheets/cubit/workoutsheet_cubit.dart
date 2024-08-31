@@ -2,6 +2,7 @@
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/foundation.dart';
 import 'package:repositories/repositories.dart';
 
 part 'workoutsheet_state.dart';
@@ -28,7 +29,8 @@ class WorkoutsheetCubit extends Cubit<WorkoutsheetPageState> {
       emit(state.copyWith(status: WorkoutsheetPageStatus.loadInProgress));
       await workoutsheetRepository.done(idWorkoutsheet);
       emit(state.copyWith(status: WorkoutsheetPageStatus.loadSuccess));
-    } catch (e) {
+    } catch (error, stacktrace) {
+      debugPrint('${error.toString()}\n${stacktrace.toString()}');
       emit(state.copyWith(status: WorkoutsheetPageStatus.loadFailure));
     }
   }

@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:helpers/helpers.dart';
 
 abstract class NotificationRepository {
@@ -20,7 +21,8 @@ class RemoteNotificationRepository implements NotificationRepository {
         url: '$url/${Environment.updateUnreadNotificationPath}',
         method: 'put',
       );
-    } catch (_) {
+    } catch (error, stacktrace) {
+      debugPrint('${error.toString()}\n${stacktrace.toString()}');
       rethrow;
     }
   }

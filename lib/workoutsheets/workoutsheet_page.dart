@@ -57,7 +57,8 @@ class _WorkoutsheetPageState extends State<WorkoutsheetPage> {
       builder: (BuildContext context) {
         return SuccessDialogWidget(
           title: 'Parabéns!',
-          description: 'Estamos um passo mais perto de alcançar nossos objetivos. Nos vemos no próximo treino!',
+          description:
+              'Estamos um passo mais perto de alcançar nossos objetivos. Nos vemos no próximo treino!',
           buttonLabel: 'Voltar à página inicial',
           onPressed: () {
             Navigator.of(context).pushAndRemoveUntil(
@@ -66,7 +67,8 @@ class _WorkoutsheetPageState extends State<WorkoutsheetPage> {
                   providers: [
                     BlocProvider(
                       create: (context) => HomeCubit(
-                        homeRepository: RepositoryProvider.of<IHomeRepository>(context),
+                        homeRepository:
+                            RepositoryProvider.of<IHomeRepository>(context),
                       ),
                     ),
                   ],
@@ -100,11 +102,17 @@ class _WorkoutsheetPageState extends State<WorkoutsheetPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBodyBehindAppBar: true,
+      appBar: CustomAppBar(
+        title: _workoutSheet.name,
+      ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: BlocBuilder<WorkoutsheetCubit, WorkoutsheetPageState>(
+      floatingActionButton:
+          BlocBuilder<WorkoutsheetCubit, WorkoutsheetPageState>(
         bloc: cubit,
         builder: (context, state) {
-          if (showFloatingButton && state.status != WorkoutsheetPageStatus.loadInProgress) {
+          if (showFloatingButton &&
+              state.status != WorkoutsheetPageStatus.loadInProgress) {
             if (state.status == WorkoutsheetPageStatus.complete) {
               return WorkoutFloatingButton(
                 title: 'Finalizar treino',
@@ -114,28 +122,36 @@ class _WorkoutsheetPageState extends State<WorkoutsheetPage> {
               return WorkoutFloatingButton(
                 title: 'Iniciar treino',
                 function: () {
-                  if (context.read<HomeSyncCubit>().state.status == SyncStatus.loadInProgress &&
+                  if (context.read<HomeSyncCubit>().state.status ==
+                          SyncStatus.loadInProgress &&
                       context.read<HomeSyncCubit>().state.percentage < 0.03) {
-                    final percentage = (context.read<HomeSyncCubit>().state.percentage * 100).toInt();
+                    final percentage =
+                        (context.read<HomeSyncCubit>().state.percentage * 100)
+                            .toInt();
                     final snackBar = SnackBar(
-                      content: Text('Download em andamento, aguarde um momento. $percentage%'),
+                      content: Text(
+                          'Download em andamento, aguarde um momento. $percentage%'),
                     );
                     ScaffoldMessenger.of(context).showSnackBar(snackBar);
                     return;
                   }
 
-                  final nextUncheckedWorkout = _workoutSheet.workouts.indexWhere((element) => element.done == false);
+                  final nextUncheckedWorkout = _workoutSheet.workouts
+                      .indexWhere((element) => element.done == false);
 
                   Navigator.push(
                     context,
                     MaterialPageRoute(
                       builder: (context) => BlocProvider(
                         create: (_) => WorkoutsheetVideoCubit(
-                          videoPreparationService: context.read<VideoPreparationService>(),
-                          workoutsheetRepository: context.read<WorkoutsheetRepository>(),
+                          videoPreparationService:
+                              context.read<VideoPreparationService>(),
+                          workoutsheetRepository:
+                              context.read<WorkoutsheetRepository>(),
                         ),
-                        child:
-                            WorkoutsheetVideoPage(workoutsheet: _workoutSheet, startWorkoutIndex: nextUncheckedWorkout),
+                        child: WorkoutsheetVideoPage(
+                            workoutsheet: _workoutSheet,
+                            startWorkoutIndex: nextUncheckedWorkout),
                       ),
                     ),
                   );

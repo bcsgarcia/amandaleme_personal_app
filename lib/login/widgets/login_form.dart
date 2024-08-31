@@ -10,8 +10,6 @@ class LoginForm extends StatelessWidget {
 
   final _formKey = GlobalKey<FormState>();
 
-  final ScrollController _scrollController = ScrollController();
-
   @override
   Widget build(BuildContext context) {
     return BlocListener<LoginCubit, LoginState>(
@@ -26,34 +24,28 @@ class LoginForm extends StatelessWidget {
             );
         }
       },
-      child: Align(
-        alignment: const Alignment(0, -1 / 3),
-        child: SingleChildScrollView(
-          controller: _scrollController,
-          child: Form(
-            key: _formKey,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                _EmailInput(scrollController: _scrollController),
-                const SizedBox(height: 10),
-                _PasswordInput(),
-                const KeepConnectedCheckbox(),
-                const SizedBox(height: 20),
-                _LoginButton(_formKey),
-                const SizedBox(height: 20),
-                if (context.read<MeetAppCubit>().appVersion != null)
-                  Text(
-                    'versão: ${context.read<MeetAppCubit>().appVersion}',
-                    style: const TextStyle(
-                      color: Colors.grey,
-                      fontSize: 12,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-              ],
-            ),
-          ),
+      child: Form(
+        key: _formKey,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const _EmailInput(),
+            const SizedBox(height: 10),
+            _PasswordInput(),
+            const KeepConnectedCheckbox(),
+            const SizedBox(height: 20),
+            _LoginButton(_formKey),
+            const SizedBox(height: 20),
+            if (context.read<MeetAppCubit>().appVersion != null)
+              Text(
+                'versão: ${context.read<MeetAppCubit>().appVersion}',
+                style: const TextStyle(
+                  color: Colors.grey,
+                  fontSize: 12,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+          ],
         ),
       ),
     );
@@ -117,9 +109,8 @@ class KeepConnectedCheckbox extends StatelessWidget {
 }
 
 class _EmailInput extends StatelessWidget {
-  final ScrollController scrollController;
+  const _EmailInput({super.key});
 
-  const _EmailInput({required this.scrollController});
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -260,7 +251,7 @@ extension on EmailValidationError {
   String text() {
     switch (this) {
       case EmailValidationError.invalid:
-        return 'Please ensure the email entered is valid';
+        return 'Por favor confirme se este é um email válido';
     }
   }
 }

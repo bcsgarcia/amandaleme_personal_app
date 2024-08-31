@@ -41,8 +41,8 @@ class WorkoutModel {
                 ? []
                 : List<WorkoutMedia>.from(json['media'].map((item) => WorkoutMedia.fromJson(item))),
       );
-    } catch (error) {
-      debugPrint('WorkoutModel: $error');
+    } catch (error, stackTrace) {
+      debugPrint('WorkoutModel: $error \n ${stackTrace.toString()}');
       debugPrint(json.toString());
       rethrow;
     }

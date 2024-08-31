@@ -1,7 +1,9 @@
+import 'package:flutter/foundation.dart';
 import 'package:helpers/helpers.dart';
 
 abstract class WorkoutsheetRepository {
   Future<void> done(String idWorkoutSheet);
+
   Future<void> createFeedback(String idWorkoutSheet, String feedback);
 }
 
@@ -20,7 +22,8 @@ class RemoteWorkoutsheetRepository implements WorkoutsheetRepository {
       final body = {"idworkoutsheet": idWorkoutSheet};
 
       return await httpClient.request(url: '$url/${Environment.workoutsheetDonePath}', method: 'post', body: body);
-    } catch (_) {
+    } catch (error, stacktrace) {
+      debugPrint('${error.toString()}\n${stacktrace.toString()}');
       rethrow;
     }
   }
@@ -34,7 +37,8 @@ class RemoteWorkoutsheetRepository implements WorkoutsheetRepository {
       };
 
       return await httpClient.request(url: '$url/${Environment.feedbackPath}', method: 'post', body: body);
-    } catch (e) {
+    } catch (error, stacktrace) {
+      debugPrint('${error.toString()}\n${stacktrace.toString()}');
       rethrow;
     }
   }

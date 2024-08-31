@@ -33,7 +33,9 @@ class CompanyVideoWidgetState extends State<CompanyVideoWidget> {
 
     _controller = VideoPlayerController.networkUrl(Uri.parse(_videoUrl))
       ..initialize().then((_) {
-        setState(() => isLoading = false);
+        if (mounted) {
+          setState(() => isLoading = false);
+        }
       });
   }
 

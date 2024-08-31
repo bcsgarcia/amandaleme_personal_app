@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:repositories/repositories.dart';
 
-import '../../app/common_widgets/common_widgets.dart';
 import '../widgets/widgets.dart';
 
-class CompanyInformationScreen extends StatefulWidget {
+class CompanyInformationScreen extends StatelessWidget {
   const CompanyInformationScreen({
     super.key,
     required this.informations,
@@ -13,50 +12,33 @@ class CompanyInformationScreen extends StatefulWidget {
   final List<InformationModel> informations;
 
   @override
-  State<CompanyInformationScreen> createState() => _CompanyInformationScreenState();
-}
-
-class _CompanyInformationScreenState extends State<CompanyInformationScreen> {
-  List<InformationModel> get _informations => widget.informations;
-
-  @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        AppHeaderWithTitleLeadinAndAction(
-          title: 'Informações',
-          leadingButton: IconButton(
-            icon: const Icon(
-              Icons.chevron_left_rounded,
-              color: Colors.white,
-              size: 35,
-            ),
-            onPressed: () => Navigator.pop(context),
-          ),
-        ),
-        const SizedBox(height: 35),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          child: Text(
-            'Informações importantes a serem consideradas',
-            textAlign: TextAlign.justify,
-            style: Theme.of(context).textTheme.headlineLarge!.copyWith(
-                  fontSize: 23,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black,
-                ),
-          ),
-        ),
-        const SizedBox(height: 30),
         Expanded(
           child: ListView.builder(
-            padding: EdgeInsets.zero,
-            itemCount: _informations.length,
+            padding: const EdgeInsets.only(top: 190, bottom: 16),
+            itemCount: informations.length + 1,
             itemBuilder: (context, index) {
-              final currentIndex = index;
+              if (index == 0) {
+                return Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 30),
+                  child: Text(
+                    'Informações importantes a serem consideradas',
+                    textAlign: TextAlign.justify,
+                    style: Theme.of(context).textTheme.headlineLarge!.copyWith(
+                          fontSize: 23,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black,
+                        ),
+                  ),
+                );
+              }
+
+              final currentIndex = index - 1;
               return CustomExpandablePanel(
-                title: _informations[currentIndex].title,
-                description: _informations[currentIndex].description,
+                title: informations[currentIndex].title,
+                description: informations[currentIndex].description,
               );
             },
           ),

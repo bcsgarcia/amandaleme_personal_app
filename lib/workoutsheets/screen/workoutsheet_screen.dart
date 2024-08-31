@@ -21,6 +21,7 @@ class WorkoutsheetScreen extends StatefulWidget {
 
 class _WorkoutsheetScreenState extends State<WorkoutsheetScreen> {
   WorkoutSheetModel get _workoutSheet => widget.workoutsheet;
+
   bool get _isAlreadyDone => widget.isAlreadyDone;
 
   @override
@@ -59,47 +60,34 @@ class _WorkoutsheetScreenState extends State<WorkoutsheetScreen> {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        Expanded(
-          child: Padding(
-            padding: const EdgeInsets.only(top: 100),
-            child: ListView.separated(
-              padding: const EdgeInsets.only(top: 50.0, bottom: 120),
-              separatorBuilder: (context, i) => const Divider(
-                color: Colors.transparent,
-              ),
-              itemCount: _workoutSheet.workouts.length,
-              itemBuilder: (context, i) {
-                final item = _workoutSheet.workouts[i];
+        Padding(
+          padding: const EdgeInsets.only(top: 100),
+          child: ListView.separated(
+            padding: const EdgeInsets.only(top: 50.0, bottom: 120),
+            separatorBuilder: (context, i) => const Divider(
+              color: Colors.transparent,
+            ),
+            itemCount: _workoutSheet.workouts.length,
+            itemBuilder: (context, i) {
+              final item = _workoutSheet.workouts[i];
 
-                return GestureDetector(
-                  onTap: () => _goToWorkoutSheetVideo(i),
-                  child: WorkoutItem(
-                    workout: item,
-                    isAlreadyDone: _isAlreadyDone,
-                    funcDone: () {
-                      item.done = !item.done;
-                      if (_workoutSheet.workouts.every((element) => element.done)) {
-                        context.read<WorkoutsheetCubit>().workoutsheetComplete();
-                      } else {
-                        context.read<WorkoutsheetCubit>().workoutsheetIncomplete();
-                      }
-                      setState(() {});
-                    },
-                  ),
-                );
-              },
-            ),
-          ),
-        ),
-        AppHeaderWithTitleLeadinAndAction(
-          title: _workoutSheet.name,
-          leadingButton: IconButton(
-            icon: const Icon(
-              Icons.chevron_left_rounded,
-              color: Colors.white,
-              size: 35,
-            ),
-            onPressed: () => Navigator.pop(context),
+              return GestureDetector(
+                onTap: () => _goToWorkoutSheetVideo(i),
+                child: WorkoutItem(
+                  workout: item,
+                  isAlreadyDone: _isAlreadyDone,
+                  funcDone: () {
+                    item.done = !item.done;
+                    if (_workoutSheet.workouts.every((element) => element.done)) {
+                      context.read<WorkoutsheetCubit>().workoutsheetComplete();
+                    } else {
+                      context.read<WorkoutsheetCubit>().workoutsheetIncomplete();
+                    }
+                    setState(() {});
+                  },
+                ),
+              );
+            },
           ),
         ),
       ],

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:repositories/repositories.dart';
 
-import 'screen/screen.dart';
+import '../lib.dart';
 
 class PartnershipPage extends StatelessWidget {
   const PartnershipPage({
@@ -14,6 +14,10 @@ class PartnershipPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBodyBehindAppBar: true,
+      appBar: const CustomAppBar(
+        title: 'Parcerias',
+      ),
       body: PartnershipScreen(
         partnerships: partnerships,
       ),

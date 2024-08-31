@@ -1,7 +1,7 @@
 import 'dart:io';
-import 'dart:typed_data';
 
 import 'package:equatable/equatable.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:repositories/repositories.dart';
 
@@ -23,7 +23,8 @@ class ChangePhotoCubit extends Cubit<ChangePhotoState> {
       await userRepository.uploadPhoto(photoByte);
 
       emit(state.copyWith(status: ChangePhotoStatusEnum.success));
-    } catch (e) {
+    } catch (error, stacktrace) {
+      debugPrint('${error.toString()}\n${stacktrace.toString()}');
       emit(state.copyWith(status: ChangePhotoStatusEnum.failure));
     }
   }

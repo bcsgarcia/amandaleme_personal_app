@@ -14,6 +14,10 @@ class PosturalPatternPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBodyBehindAppBar: true,
+      appBar: const CustomAppBar(
+        title: 'Padrões posturais',
+      ),
       body: PosturalPatternScreen(
         posturalPatterns: posturalPatterns,
       ),

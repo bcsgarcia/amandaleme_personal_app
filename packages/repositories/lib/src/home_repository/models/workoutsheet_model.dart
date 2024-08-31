@@ -24,11 +24,10 @@ class WorkoutSheetModel {
         date: json['date'] == null ? null : DateTime.parse(json['date']),
         name: json['name'],
         workoutsheetOrder: json['workoutsheetOrder'],
-        workouts: List<WorkoutModel>.from(
-            json['workouts'].map((item) => WorkoutModel.fromJson(item))),
+        workouts: List<WorkoutModel>.from(json['workouts'].map((item) => WorkoutModel.fromJson(item))),
       );
-    } catch (error) {
-      debugPrint('WorkoutSheetModel: $error');
+    } catch (error, stacktrace) {
+      debugPrint('WorkoutSheetModel: $error\n${stacktrace.toString()}');
       debugPrint(json.toString());
       rethrow;
     }

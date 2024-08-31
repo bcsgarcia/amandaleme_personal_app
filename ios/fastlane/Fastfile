@@ -5,11 +5,11 @@ platform :ios do
   lane :deploy do
     # Configurar SSH para acessar o repositório de certificados
 
-    teste_bruno = ENV['SSH_PRIVATE_KEY_CERT_REPO'];
-
-    bruno_teste = "teste_bruno: #{teste_bruno}"
-
-    UI.message("teste_bruno: #{bruno_teste}")
+#     teste_bruno = ENV['SSH_PRIVATE_KEY_CERT_REPO'];
+#
+#     bruno_teste = "teste_bruno: #{teste_bruno}"
+#
+#     UI.message("teste_bruno: #{bruno_teste}")
 
 
     sh("echo \"#{ENV['SSH_PRIVATE_KEY_CERT_REPO']}\" > /tmp/deploy_key")
@@ -87,28 +87,22 @@ platform :ios do
     # Separar versão e número de build
     version_name, version_code = version.split("+")
 
+#      UI.message("teste_bruno: #{version_name} - #{version_code}")
+
 
     Dir.chdir "../.." do
       puts "*** Build flutter iOS release for version #{version_name}+#{version_code} ***"
       sh("flutter", "build", "ipa", "--release", "--build-number=#{version_code}", "--build-name=#{version_name}", "--target=lib/main/main.dart")
     end
 
-    build_app(
-      skip_build_archive: true,
-      archive_path: "../build/ios/archive/Runner.xcarchive",
-    )
-
-    # build_app(
-    #   workspace: "Runner.xcworkspace",
-    #   scheme: "Runner",
-    #   export_method: "app-store",
-    #   xcargs: "-allowProvisioningUpdates",
-    # )
-
-
-    upload_to_testflight(
-      api_key: api_key
-    )
+#     build_app(
+#       skip_build_archive: true,
+#       archive_path: "../build/ios/archive/Runner.xcarchive",
+#     )
+#
+#     upload_to_testflight(
+#       api_key: api_key
+#     )
   end
 
   desc "Synchronize version with pubspec.yaml"

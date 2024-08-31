@@ -19,54 +19,53 @@ class MeetAppScreenContentWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return RefreshIndicator(
       onRefresh: onRefresh,
-      child: SingleChildScrollView(
-        child: Column(
-          children: [
-            const SizedBox(height: 40),
-            CompanyPresentationWidget(
-              aboutCompanyModel: state.screenModel!.aboutCompany,
+      child: ListView(
+        padding: const EdgeInsets.only(bottom: 100),
+        children: [
+          const SizedBox(height: 40),
+          CompanyPresentationWidget(
+            aboutCompanyModel: state.screenModel!.aboutCompany,
+          ),
+          const SizedBox(height: 20),
+          Center(
+            child: CompanyVideoWidget(
+              videoUrl: state.screenModel!.aboutCompany.videoUrl,
             ),
-            const SizedBox(height: 20),
-            Center(
-              child: CompanyVideoWidget(
-                videoUrl: state.screenModel!.aboutCompany.videoUrl,
-              ),
-            ),
-            const SizedBox(height: 20),
-            BlocBuilder<ContactButtonCubit, bool>(
-              bloc: contactButtonCubit,
-              builder: (context, canSendMessage) => canSendMessage
-                  ? CallToActionButtonWidget(
-                      text: 'Quero treinar com a Amanda',
-                      onPressed: contactButtonCubit.sendMessage,
-                    )
-                  : const SizedBox.shrink(),
-            ),
-            const SizedBox(height: 20),
-            MyClassVideoWidget(
-              videoUrl: state.screenModel!.aboutCompany.secondVideoUrl,
-            ),
-            const SizedBox(height: 20),
-            TestimoniesWidget(
-              testimonies: state.screenModel!.testemonies,
-            ),
-            const SizedBox(height: 20),
-            ResultsBeforeAndAfterWidget(
-              images: state.screenModel!.photosBeforeAndAfter,
-            ),
-            const SizedBox(height: 20),
-            BlocBuilder<ContactButtonCubit, bool>(
-              bloc: contactButtonCubit,
-              builder: (context, canSendMessage) => canSendMessage
-                  ? CallToActionButtonWidget(
-                      text: 'Quero treinar com a Amanda',
-                      onPressed: contactButtonCubit.sendMessage,
-                    )
-                  : const SizedBox.shrink(),
-            ),
-            const SizedBox(height: 20),
-          ],
-        ),
+          ),
+          const SizedBox(height: 20),
+          BlocBuilder<ContactButtonCubit, bool>(
+            bloc: contactButtonCubit,
+            builder: (context, canSendMessage) => canSendMessage
+                ? CallToActionButtonWidget(
+                    text: 'Quero treinar com a Amanda',
+                    onPressed: contactButtonCubit.sendMessage,
+                  )
+                : const SizedBox.shrink(),
+          ),
+          const SizedBox(height: 20),
+          MyClassVideoWidget(
+            videoUrl: state.screenModel!.aboutCompany.secondVideoUrl,
+          ),
+          const SizedBox(height: 20),
+          TestimoniesWidget(
+            testimonies: state.screenModel!.testemonies,
+          ),
+          const SizedBox(height: 20),
+          ResultsBeforeAndAfterWidget(
+            images: state.screenModel!.photosBeforeAndAfter,
+          ),
+          const SizedBox(height: 20),
+          BlocBuilder<ContactButtonCubit, bool>(
+            bloc: contactButtonCubit,
+            builder: (context, canSendMessage) => canSendMessage
+                ? CallToActionButtonWidget(
+                    text: 'Quero treinar com a Amanda',
+                    onPressed: contactButtonCubit.sendMessage,
+                  )
+                : const SizedBox.shrink(),
+          ),
+          const SizedBox(height: 20),
+        ],
       ),
     );
   }

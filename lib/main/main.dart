@@ -12,12 +12,13 @@ Future<void> main() async {
   await Environment.loadDotEnv(environmentType);
 
   WidgetsFlutterBinding.ensureInitialized();
-  Bloc.observer = const AppBlocObserver();
+  if (kDebugMode) {
+    Bloc.observer = const AppBlocObserver();
+  }
 
   initializeDateFormatting('pt_BR', null);
 
   final localStorageAdapter = await CacheStorageFactory.makeLocalStorageAdapter();
-
   final authenticationRepository = makeAuthenticationRepositoryFactory(localStorageAdapter);
   authenticationRepository.user.first;
 

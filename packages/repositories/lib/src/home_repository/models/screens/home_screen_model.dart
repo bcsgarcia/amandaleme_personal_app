@@ -16,7 +16,6 @@ class HomeScreenModel extends Equatable {
   final DrawerScreenModel drawerMenu;
 
   factory HomeScreenModel.fromJson(Map json) {
-    print(json['myTrainingPlan']);
     return HomeScreenModel(
       myTrainingPlan: (json['myTrainingPlan'] as List).first == null
           ? []

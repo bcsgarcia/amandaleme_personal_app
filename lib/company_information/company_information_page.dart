@@ -14,6 +14,10 @@ class CompanyInformationPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBodyBehindAppBar: true,
+      appBar: const CustomAppBar(
+        title: 'Informações',
+      ),
       body: CompanyInformationScreen(informations: informations),
     );
   }

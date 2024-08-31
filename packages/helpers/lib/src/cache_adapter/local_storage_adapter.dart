@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -28,8 +29,8 @@ class LocalStorageAdapter implements CacheStorage {
   Future<void> clear() async {
     try {
       await localStorage.clear();
-    } catch (error) {
-      print(error);
+    } catch (error, stacktrace) {
+      debugPrint('${error.toString()}\n${stacktrace.toString()}');
     }
   }
 

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:repositories/repositories.dart';
 
-import '../../app/common_widgets/common_widgets.dart';
 import '../widgets/widgets.dart';
 
 class PartnershipScreen extends StatefulWidget {
@@ -27,11 +26,14 @@ class _PartnershipScreenState extends State<PartnershipScreen> {
     super.initState();
   }
 
-  Map<String, List<PartnershipModel>> groupByCategory(List<PartnershipModel> partnerships) {
+  Map<String, List<PartnershipModel>> groupByCategory(
+      List<PartnershipModel> partnerships) {
     Map<String, List<PartnershipModel>> groupedPartnerships = {};
 
     for (var partnership in partnerships) {
-      groupedPartnerships.putIfAbsent(partnership.category, () => []).add(partnership);
+      groupedPartnerships
+          .putIfAbsent(partnership.category, () => [])
+          .add(partnership);
     }
 
     return groupedPartnerships;
@@ -66,11 +68,12 @@ class _PartnershipScreenState extends State<PartnershipScreen> {
                   children: [
                     Text(
                       'Confira aqui as nossas parcerias',
-                      style: Theme.of(context).textTheme.headlineLarge!.copyWith(
-                            fontSize: 23,
-                            color: Colors.black,
-                            fontWeight: FontWeight.bold,
-                          ),
+                      style:
+                          Theme.of(context).textTheme.headlineLarge!.copyWith(
+                                fontSize: 23,
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold,
+                              ),
                     ),
                     const SizedBox(height: 35),
                     ...groupedPartnerships.entries.map((entry) {
@@ -82,7 +85,10 @@ class _PartnershipScreenState extends State<PartnershipScreen> {
                         children: [
                           Text(
                             category,
-                            style: Theme.of(context).textTheme.headlineLarge!.copyWith(
+                            style: Theme.of(context)
+                                .textTheme
+                                .headlineLarge!
+                                .copyWith(
                                   fontSize: 19,
                                   color: Colors.black,
                                   fontWeight: FontWeight.bold,
@@ -93,7 +99,8 @@ class _PartnershipScreenState extends State<PartnershipScreen> {
                           ),
                           ...categoryPartnerships
                               .map(
-                                (partnership) => PartnershipItem(partnership: partnership),
+                                (partnership) =>
+                                    PartnershipItem(partnership: partnership),
                               )
                               .toList(),
                           const SizedBox(
@@ -107,17 +114,6 @@ class _PartnershipScreenState extends State<PartnershipScreen> {
               ),
             const SizedBox(height: 30),
           ],
-        ),
-        AppHeaderWithTitleLeadinAndAction(
-          title: 'Parcerias',
-          leadingButton: IconButton(
-            icon: const Icon(
-              Icons.chevron_left_rounded,
-              color: Colors.white,
-              size: 35,
-            ),
-            onPressed: () => Navigator.pop(context),
-          ),
         ),
       ],
     );

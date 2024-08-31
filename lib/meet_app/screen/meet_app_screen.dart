@@ -17,49 +17,40 @@ class MeetAppScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: BlocListener<MeetAppCubit, MeetAppState>(
-        listener: (context, state) {
-          if (state.status == MeetAppStatus.failure) {
-            showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return ErrorDialog(
-                  buttonPressed: () {
-                    Navigator.of(context).pop();
-                    context.read<MeetAppCubit>().retrieveMeetAppScreen();
-                  },
-                );
-              },
+    return BlocListener<MeetAppCubit, MeetAppState>(
+      listener: (context, state) {
+        if (state.status == MeetAppStatus.failure) {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return ErrorDialog(
+                buttonPressed: () {
+                  Navigator.of(context).pop();
+                  context.read<MeetAppCubit>().retrieveMeetAppScreen();
+                },
+              );
+            },
+          );
+        }
+      },
+      child: BlocBuilder<MeetAppCubit, MeetAppState>(
+        builder: (context, state) {
+          if (state.status == MeetAppStatus.inProgress) {
+            return Padding(
+              padding: const EdgeInsets.only(top: 8.0, left: 16, right: 16),
+              child: Shimmer.fromColors(
+                baseColor: Colors.grey[300]!,
+                highlightColor: Colors.grey[100]!,
+                child: const MeetAppScreenSkeletonLoadingWidget(),
+              ),
             );
           }
-        },
-        child: Stack(
-          children: [
-            Positioned(
-              top: 170,
-              bottom: 86,
-              left: 0,
-              right: 0,
-              child: BlocBuilder<MeetAppCubit, MeetAppState>(
-                builder: (context, state) {
-                  if (state.status == MeetAppStatus.inProgress) {
-                    return Shimmer.fromColors(
-                      baseColor: Colors.grey[300]!,
-                      highlightColor: Colors.grey[100]!,
-                      child: const MeetAppScreenSkeletonLoadingWidget(),
-                    );
-                  }
 
-                  return MeetAppScreenContentWidget(
-                    onRefresh: () => _onRefresh(context),
-                    state: state,
-                  );
-                },
-              ),
-            ),
-          ],
-        ),
+          return MeetAppScreenContentWidget(
+            onRefresh: () => _onRefresh(context),
+            state: state,
+          );
+        },
       ),
     );
   }

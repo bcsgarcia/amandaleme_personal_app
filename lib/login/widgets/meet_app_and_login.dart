@@ -61,6 +61,7 @@ class _MeetAppAndLoginState extends State<MeetAppAndLogin> {
                 child: TextButton(
                   onPressed: () => selectedOption(EnumPageSelected.meetApp),
                   child: const Text(
+                    textAlign: TextAlign.left,
                     'Conheça o app',
                     style: TextStyle(color: Colors.white, fontSize: 19, fontWeight: FontWeight.bold),
                   ),

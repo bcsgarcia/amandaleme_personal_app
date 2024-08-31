@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:helpers/helpers.dart';
 
 import 'models/models.dart';
@@ -21,7 +22,8 @@ class HomeRespository implements IHomeRepository {
       final response = await httpClient.request(url: '$url/${Environment.screenPath}', method: 'get');
 
       return HomeScreenModel.fromJson(response);
-    } catch (e) {
+    } catch (error, stacktrace) {
+      debugPrint('${error.toString()}\n${stacktrace.toString()}');
       rethrow;
     }
   }

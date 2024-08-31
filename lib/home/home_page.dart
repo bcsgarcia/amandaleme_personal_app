@@ -57,28 +57,17 @@ class _HomePageState extends State<HomePage> {
                 },
               );
             }
-
-            // if (state.status == HomePageStatus.sync) {
-            //   _goToSyncPage();
-            // }
           },
           child: BlocBuilder<HomeCubit, HomePageState>(
             builder: (context, state) {
-              // if (state.status == HomePageStatus.loadSuccess) {
               return BlocProvider(
-                create: (_) => FeedbackCubit(context.read<WorkoutsheetRepository>()),
+                create: (_) => FeedbackCubit(
+                  context.read<WorkoutsheetRepository>(),
+                ),
                 child: HomeScreen(
-                  // homeScreenModel: state.screenModel!,
                   showFeedbackWidget: widget.isShowFeedback,
                 ),
               );
-              // }
-
-              // if (state.status == HomePageStatus.sync) {
-              //   return const DownloadProgressPage();
-              // }
-
-              // return const Center(child: CircularProgressIndicator());
             },
           ),
         ),

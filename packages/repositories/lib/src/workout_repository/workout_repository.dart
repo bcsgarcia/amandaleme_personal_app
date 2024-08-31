@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:helpers/helpers.dart';
 
 abstract class WorkoutRepository {
@@ -22,7 +23,8 @@ class RemoteWorkoutRepository implements WorkoutRepository {
       final body = {"idworkout": idWorkout, "feedback": feedback};
 
       await httpClient.request(url: '$url/${Environment.feedbackPath}', method: 'post', body: body);
-    } catch (e) {
+    } catch (error, stacktrace) {
+      debugPrint('${error.toString()}\n${stacktrace.toString()}');
       rethrow;
     }
   }

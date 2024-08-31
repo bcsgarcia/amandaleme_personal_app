@@ -27,6 +27,7 @@ abstract class Authentication {
   Future<LocalAuthStatusEnum> requestLocalAuth();
 
   Stream<UserAuthenticationModel> get user;
+
   UserAuthenticationModel get currentUser;
 
   Future<void> logout();
@@ -93,7 +94,8 @@ class RemoteAuthentication implements Authentication {
       _userStreamController.add(user);
 
       return user;
-    } catch (error) {
+    } catch (error, stacktrace) {
+      debugPrint('${error.toString()}\n${stacktrace.toString()}');
       rethrow;
     }
   }
@@ -119,7 +121,8 @@ class RemoteAuthentication implements Authentication {
       final user = UserAuthenticationModel.fromJson(httpResponse);
 
       _userStreamController.add(user);
-    } catch (e) {
+    } catch (error, stacktrace) {
+      debugPrint('${error.toString()}\n${stacktrace.toString()}');
       rethrow;
     }
   }
@@ -151,11 +154,12 @@ class RemoteAuthentication implements Authentication {
         } else {
           return LocalAuthStatusEnum.failure;
         }
-      } on PlatformException catch (e) {
-        if (e.code == auth_error.notEnrolled) {
+      } on PlatformException catch (error, stacktrace) {
+        debugPrint('${error.toString()}\n${stacktrace.toString()}');
+        if (error.code == auth_error.notEnrolled) {
           await refreshToken();
           return LocalAuthStatusEnum.notEnrolled;
-        } else if (e.code == auth_error.lockedOut || e.code == auth_error.permanentlyLockedOut) {
+        } else if (error.code == auth_error.lockedOut || error.code == auth_error.permanentlyLockedOut) {
           return LocalAuthStatusEnum.lockedOut;
         } else {
           return LocalAuthStatusEnum.errorDefault;

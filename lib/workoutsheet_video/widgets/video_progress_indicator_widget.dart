@@ -22,8 +22,8 @@ class _VideoPlayerWithProgressIndicatorState extends State<VideoPlayerWithProgre
       final Uri uri = Uri.parse(widget.videoUrl);
       _controller = VideoPlayerController.networkUrl(uri);
       _initializeVideoPlayerFuture = _controller.initialize();
-    } catch (e) {
-      debugPrint(e.toString());
+    } catch (error, stacktrace) {
+      debugPrint('${error.toString()}\n${stacktrace.toString()}');
     }
 
     super.initState();

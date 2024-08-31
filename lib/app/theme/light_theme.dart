@@ -11,15 +11,26 @@ const Color successColor = Color(0xFF32C71A);
 const Color errorColor = Color(0xFFDE3730);
 
 final theme = ThemeData(
+  // useMaterial3: true,
+  appBarTheme: const AppBarTheme(
+    color: Colors.black,
+    elevation: 0,
+  ),
   textTheme: GoogleFonts.robotoTextTheme(),
   textSelectionTheme: const TextSelectionThemeData(
     cursorColor: Colors.blue,
     selectionColor: Color(0xffbbd6fb),
   ),
   primaryColor: primaryColor,
+  // colorScheme: const ColorScheme.light(
+  //   primary: primaryColor,
+  //   secondary: Color(0xFFD45700),
+  // ),
   colorScheme: const ColorScheme.light(
     primary: primaryColor,
-    secondary: Color(0xFFD45700),
+    secondary: secondaryColor,
+    //background: Colors.black, // Ajustando para uma cor de fundo escura
+    // surface: Colors.black, // Superfícies com cor preta
   ),
   inputDecorationTheme: InputDecorationTheme(
     focusedBorder: OutlineInputBorder(

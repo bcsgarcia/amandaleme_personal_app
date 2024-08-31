@@ -14,9 +14,13 @@ mixin Disposable {
 
 abstract class SyncRepository {
   Future<void> call();
+
   Future<bool> mustSync();
+
   Future<bool> isFirstTimeLogin();
+
   Future<void> setFirstTimeLogin();
+
   Future<void> removeAllData();
 
   Stream<double> get downloadProgressStream;
@@ -61,8 +65,8 @@ class RemoteSyncRepostory implements SyncRepository, Disposable {
       remoteIdMediaList = [];
       await cacheStorage.removeFirstTimeLogin();
       await _deleteAllMedias();
-    } catch (error) {
-      debugPrint("Error removing all data: $error");
+    } catch (error, stackTrace) {
+      debugPrint("Error removing all data: $error\n${stackTrace.toString()}");
     }
   }
 
@@ -83,8 +87,8 @@ class RemoteSyncRepostory implements SyncRepository, Disposable {
       await downloadAllMidias();
 
       await listFilesInLocalDirectory();
-    } catch (error) {
-      debugPrint("Error during call: $error");
+    } catch (error, stacktrace) {
+      debugPrint("Error during call: $error\n${stacktrace.toString()}");
     }
   }
 
@@ -122,7 +126,8 @@ class RemoteSyncRepostory implements SyncRepository, Disposable {
       for (var element in remoteWorkoutsheetMidias) {
         remoteIdMediaList.add(element.id);
       }
-    } catch (e) {
+    } catch (error, stacktrace) {
+      debugPrint('${error.toString()}\n${stacktrace.toString()}');
       rethrow;
     }
   }
@@ -138,8 +143,8 @@ class RemoteSyncRepostory implements SyncRepository, Disposable {
         }
       }
       await Future.wait(futures);
-    } catch (e) {
-      print("Error downloading media: $e");
+    } catch (error, stackTrace) {
+      debugPrint("Error downloading media: $error \n${stackTrace.toString()}");
       rethrow;
     }
   }
@@ -187,13 +192,13 @@ class RemoteSyncRepostory implements SyncRepository, Disposable {
         );
 
         return file;
-      } on Exception catch (e) {
-        debugPrint('Download failed, retrying... Error: $e');
+      } catch (error, stacktrace) {
+        debugPrint('Download failed, retrying... Error: $error\n${stacktrace.toString()}');
       }
     }
 
     debugPrint('Failed to download file after $retries attempts.');
-    throw Exception();
+    throw Exception('Failed to download file after $retries attempts.');
   }
 
   Future<void> listFilesInLocalDirectory() async {
@@ -225,8 +230,8 @@ class RemoteSyncRepostory implements SyncRepository, Disposable {
       for (io.FileSystemEntity file in files) {
         try {
           file.deleteSync();
-        } catch (e) {
-          debugPrint("Error deleting file ${file.path}: $e");
+        } catch (error, stacktrace) {
+          debugPrint("Error deleting file ${file.path}: $error\n${stacktrace.toString()}");
         }
       }
     }
@@ -250,8 +255,8 @@ class RemoteSyncRepostory implements SyncRepository, Disposable {
       } else {
         debugPrint('Failed to get file size. Status code: ${response.statusCode}');
       }
-    } catch (e) {
-      debugPrint('Error occurred while getting file size: $e');
+    } catch (e, stacktrace) {
+      debugPrint('Error occurred while getting file size: $e\n${stacktrace.toString()}');
     } finally {
       ioHttpClient.close();
     }

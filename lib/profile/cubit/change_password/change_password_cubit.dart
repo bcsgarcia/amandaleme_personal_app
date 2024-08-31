@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
 import 'package:helpers/helpers.dart';
@@ -61,7 +62,8 @@ class ChangePasswordCubit extends Cubit<ChangePasswordState> {
       await _userRepository.changePassword(oldPass: oldPass, newPass: newPass);
 
       emit(state.copyWith(status: FormzSubmissionStatus.success));
-    } catch (e) {
+    } catch (error, stacktrace) {
+      debugPrint('${error.toString()}\n${stacktrace.toString()}');
       emit(state.copyWith(status: FormzSubmissionStatus.failure));
     }
   }

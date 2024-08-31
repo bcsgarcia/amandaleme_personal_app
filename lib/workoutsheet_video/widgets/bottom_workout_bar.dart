@@ -34,13 +34,17 @@ class BottomWorkoutBar extends StatefulWidget {
 
 class _BottomWorkoutBarState extends State<BottomWorkoutBar> {
   void Function()? get _nextButtonFunction => widget.nextButtonFunction;
+
   void Function()? get _previousButtonFunction => widget.previousButtonFunction;
+
   void Function()? get _concludeWorkoutsheetFunction => widget.concludeWorkoutsheetFunction;
 
   void Function()? get _playVideoFunction => widget.playVideoFunction;
+
   void Function()? get _pauseVideoFunction => widget.pauseVideoFunction;
 
   String get _subTitle => widget.subTitle;
+
   String get _description => widget.description;
 
   bool get _isVideoPlaying => widget.isVideoPlaying;
@@ -300,13 +304,15 @@ class ConcludeWorkoutButton extends StatelessWidget {
             ),
           ),
           onPressed: concludeWorkoutsheetFunction,
-          child: Text(
-            'Concluir',
-            style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                  fontSize: 16,
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                ),
+          child: FittedBox(
+            child: Text(
+              'Concluir',
+              style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                    fontSize: 16,
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
+            ),
           ),
         ),
       ),

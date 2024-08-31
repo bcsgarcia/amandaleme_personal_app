@@ -25,26 +25,33 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: blackColor,
-        automaticallyImplyLeading: false,
-        toolbarHeight: 0,
-        elevation: 0,
-      ),
+      appBar: const CustomAppBar(),
+      extendBodyBehindAppBar: true,
       resizeToAvoidBottomInset: false,
+      backgroundColor: Colors.white,
       body: SizedBox(
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
         child: Stack(
           children: [
-            _selectedPage == EnumPageSelected.login ? const LoginBody() : const MeetAppScreen(),
-            // _bodyPage,
-            const LoginHeader(),
+            Positioned(
+              top: 0,
+              bottom: 0,
+              left: 0,
+              right: 0,
+              child: _selectedPage == EnumPageSelected.login
+                  ? const LoginBody()
+                  : const Padding(
+                      padding: EdgeInsets.only(top: 190.0),
+                      child: MeetAppScreen(),
+                    ),
+            ),
             Positioned(
               bottom: 0,
               right: 0,
               left: 0,
-              child: SizedBox(
+              child: Container(
+                color: Colors.white,
                 height: 94,
                 child: MeetAppAndLogin(
                   function: (page) => setState(() => _selectedPage = page),
