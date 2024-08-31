@@ -12,9 +12,9 @@ typedef OnPickImageCallback = void Function(double? maxWidth, double? maxHeight,
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({
-    Key? key,
+    super.key,
     required this.userModel,
-  }) : super(key: key);
+  });
 
   final UserModel userModel;
 
@@ -66,17 +66,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                AppHeaderWithTitleLeadinAndAction(
-                  title: 'Perfil',
-                  leadingButton: IconButton(
-                    icon: const Icon(
-                      Icons.chevron_left_rounded,
-                      color: Colors.white,
-                      size: 35,
-                    ),
-                    onPressed: () => Navigator.pop(context),
-                  ),
-                ),
                 const SizedBox(height: 48),
                 // click to change photo
                 GestureDetector(
